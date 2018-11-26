@@ -153,8 +153,117 @@ List Delete( List L, Position P ){
 
 // 6-6
 
+List MakeEmpty()
+{
+    List L = (List)malloc(sizeof(List));
+    L->Next = NULL;
+    return L;
+}
+Position Find(List L, ElementType X)
+{
+    L = L->Next;
+    while (L)
+    {
+        if (L->Data == X)
+        {
+            return L;
+        }
+        L = L->Next;
+    }
+    return ERROR;
+}
+
+bool Insert(List L, ElementType X, Position P)
+{
+    List p = (List)malloc(sizeof(List));
+    p->Data = X;
+    p->Next = NULL;
+    List k = L;
+    while (k)
+    {
+        if (k->Next == P)
+        {
+            p->Next = P;
+            k->Next = p;
+            return true;
+        }
+        k = k->Next;
+    }
+    printf("Wrong Position for Insertion\n");
+    return false;
+}
+
+bool Delete(List L, Position P)
+{
+    if (L == P)
+    {
+        L = L->Next;
+        return true;
+    }
+    while (L)
+    {
+        if (L->Next == P)
+        {
+            L->Next = P->Next;
+            return true;
+        }
+        L = L->Next;
+    }
+    printf("Wrong Position for Deletion\n");
+    return false;
+}
+
+/**======================================================= */
 
 
+// 6-7
+
+Stack CreateStack(int MaxSize)
+{
+    Stack stack = (Stack)malloc(sizeof(struct SNode));
+    stack->Data = (int *)malloc(sizeof(ElementType) * MaxSize);
+    stack->Top1 = -1;
+    stack->Top2 = MaxSize;
+    stack->MaxSize = MaxSize;
+    return stack;
+}
+bool Push(Stack S, ElementType X, int Tag)
+{
+    if (S == NULL)
+        return false;
+    if (S->Top1 + 1 == S->Top2)
+    {
+        printf("Stack Full\n");
+        return false;
+    }
+
+    if (Tag == 1)
+        S->Data[++S->Top1] = X;
+    else
+        S->Data[--S->Top2] = X;
+    return true;
+}
+ElementType Pop(Stack S, int Tag)
+{
+    if (S == NULL)
+        return ERROR;
+    if (Tag == 1)
+    {
+        if (S->Top1 == -1)
+        {
+            printf("Stack %d Empty\n", Tag);
+            return ERROR;
+        }
+        return S->Data[S->Top1--];
+    }
+
+    if (S->Top2 == S->MaxSize)
+    {
+        printf("Stack %d Empty\n", Tag);
+        return ERROR;
+    }
+    return S->Data[S->Top2++];
+}
 
 /**======================================================= */
 

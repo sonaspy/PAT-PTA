@@ -1,4 +1,8 @@
 #  WHAT is  PAT ❓
+<<<<<<< HEAD
+=======
+```
+>>>>>>> c2a9ecc08f97f4fd2b5e9360a0eb867af8756543
 The Zhejiang University Computer Programming Ability Test (PAT) is a unified examination organized by the School of Computer Science and Technology of Zhejiang University. It aims to cultivate and demonstrate students' ability to analyze problems, solve problems and computer program design, scientifically evaluate computer programming talents, and provide reference standards for enterprises to select talents.
 
 The examination follows the principles of a unified examination syllabus, a unified examination proposition, a unified examination scoring standard, and a unified certificate.
@@ -19,7 +23,12 @@ Test scores can be checked in real time, and certificates are available. One hou
 
 
 #   PTA ❓
+<<<<<<< HEAD
 ```
 PTA(pintia) is not only A practicing platform for PAT, but a great platform with abundant exercises for students.
 ```
 [https://pintia.cn/](https://pintia.cn/)<br/>
+=======
+    PTA(pintia) is not only A practicing platform for PAT, but a great platform with abundant exercises for students.
+[https://pintia.cn/](https://pintia.cn/)<br/>
+>>>>>>> c2a9ecc08f97f4fd2b5e9360a0eb867af8756543

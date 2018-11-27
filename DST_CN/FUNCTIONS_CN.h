@@ -21,7 +21,7 @@ List Reverse(List L)
   a->Next = b;
   return a;
 }
-/**======================================================= */
+ 
 
 
 
@@ -71,7 +71,7 @@ bool Delete( List L, Position P ){
     L->Last--;
     return true;
 }
-/**======================================================= */
+ 
 
 
 // 6-3
@@ -83,7 +83,7 @@ int Length( List L ){
   }
   return cnt;
 }
-/**======================================================= */
+ 
 
 
 // 6-4
@@ -95,7 +95,7 @@ ElementType FindKth( List L, int K ){
     }
     return L->Data;          
 }
-/**======================================================= */
+ 
 
 
 // 6-5
@@ -148,7 +148,7 @@ List Delete( List L, Position P ){
     printf("Wrong Position for Deletion\n");
     return ERROR;
 }
-/**======================================================= */
+
 
 
 // 6-6
@@ -213,7 +213,7 @@ bool Delete(List L, Position P)
     return false;
 }
 
-/**======================================================= */
+
 
 
 // 6-7
@@ -265,8 +265,98 @@ ElementType Pop(Stack S, int Tag)
     return S->Data[S->Top2++];
 }
 
-/**======================================================= */
+
 
 //6-8
+int GetHeight( BinTree BT ){
+  if(BT == NULL)
+    return 0;
+  int HLeft = GetHeight(BT->Left);
+  int HRight = GetHeight(BT->Right);
+  if(HRight > HLeft)
+    return ++HRight;
+  else
+    return ++HLeft;
+}
+
+
+//6-9
+
+void InorderTraversal( BinTree BT ){
+  if(BT == NULL){
+    return;
+  }
+  InorderTraversal(BT->Left);
+  printf(" %c",BT->Data);
+  InorderTraversal(BT->Right);
+}
+ 
+void PreorderTraversal( BinTree BT ){
+  if(BT == NULL){
+    return;
+  }
+  printf(" %c",BT->Data);
+  PreorderTraversal(BT->Left);
+  PreorderTraversal(BT->Right);
+}
+ 
+void PostorderTraversal( BinTree BT ){
+  if(BT == NULL){
+    return;
+  }
+  PostorderTraversal(BT->Left);
+  PostorderTraversal(BT->Right);
+  printf(" %c",BT->Data);
+}
+ 
+void LevelorderTraversal( BinTree BT ){
+  BinTree Queue[1000];   
+  int top = -1;
+  int tail = -1;
+  if(BT)Queue[++tail] = BT;
+  while(top<tail){
+    BinTree bt = Queue[++top];
+    printf(" %c",bt->Data);
+    if(bt->Left){
+      Queue[++tail] = bt->Left;
+    }
+    if(bt->Right){
+      Queue[++tail] = bt->Right;
+    }
+  }
+}
+
+//6-10
+Position BinarySearch( List L, ElementType X ){
+  Position left = 1,
+           right = L->Last,
+           mid;
+  while(left <= right){
+    mid = left + (right - left)/2;
+    if(L->Data[mid] < X)
+      left = mid + 1;
+    else if(L->Data[mid] > X)
+      right = mid - 1;
+    else
+      return mid;
+  }
+  return NotFound;
+}
+
+//6-11
+void PreorderPrintLeaves( BinTree BT )
+{
+    if(BT == NULL){
+        return;
+    }
+    if(BT->Left == NULL && BT->Right == NULL){
+        printf(" %c",BT->Data);
+    }
+    PreorderPrintLeaves(BT->Left);
+    PreorderPrintLeaves(BT->Right);
+}
+
+
+
 
 #endif

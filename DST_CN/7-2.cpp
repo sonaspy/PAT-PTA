@@ -52,35 +52,31 @@ MAP Add(MAP p1, MAP p2)
 {   MAP m;
     if(p1.empty() && p2.empty()) return m;
     if(p1.empty() || p2.empty()){ m = (p1.empty())?p2:p1; return m ;}
-    MAP::iterator pt1, pt2;
-    int ceof, ex1, ex2,ceof1, ceof2;
-    pt1 = p1.begin(), pt2 = p2.begin();
-    while((pt1 != p1.end()) ||  (pt2 != p2.end())){
-        ceof = pt1->second + pt2->second;
-        ceof1 = pt1->second; ceof2 = pt2->second;
-        ex1 = pt1->first; ex2 = pt2->first;
-        if(ex1 == ex2){
-            if(ceof) m.insert(make_pair(ex1,ceof));
+    MAP::iterator pt1= p1.begin(), pt2= p2.begin();
+    while(pt1 != p1.end() && pt2 != p2.end()){
+        if(pt1->first > pt2->first){
+            m.insert(*pt1);pt1++;
+        }
+        else if(pt1->first < pt2->first){
+            m.insert(*pt2);pt2++;
         }
         else{
-        m.insert(make_pair(ex1,ceof1));
-        m.insert(make_pair(ex2,ceof2));
+            if(pt1->second + pt2->second)
+                m.insert(make_pair(pt1->first, pt1->second+pt2->second));
+            pt1++;pt2++;
         }
-        pt1++;pt2++;
     }
     if(pt1 != p1.end())
-        while (pt1 != p1.end()){
-            ex1 = pt1->first; ceof1 = pt1->second;
-            m.insert(make_pair(ex1,ceof1));
+        while(pt1 != p1.end()){
+            m.insert(*pt1);
             pt1++;
         }
-    else if(pt2 != p2.end())
-        while(pt2 != p2.end()){
-            ex2 = pt2->first;ceof2 = pt2->second;
-            m.insert(make_pair(ex2, ceof2));
+    if (pt2 != p2.end())
+        while (pt2 != p2.end())
+        {
+            m.insert(*pt2);
             pt2++;
         }
-    else return m;
     return m;
 }
 int main(int argc, char const *argv[])

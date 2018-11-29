@@ -2,26 +2,21 @@
 // coding - utf_8
 
 #include <iostream>
-#include <map>
+#include<vector>
 #include <algorithm>
 
 using namespace std;
-typedef map<int, int, greater<int> > MAP;
+
 
 
 int main(int argc, char const *argv[])
 {
   /* code */
-  MAP::iterator pt1, pt2;
-  MAP p1, p2, m;
-  for(int i = 0; i < 10; i++){
-    p1[i] = i;
-    p2[i] = i;
-  }
-  for(pt1 = p1.begin(); pt1 != p1.end(); pt1++)
-      m.insert(*pt1);
-  for(pt1 = m.begin(); pt1 != m.end(); pt1++)
-    cout << (*pt1).first;
+  int a[] = {1,2,3,4,5,6,7,8,9};
+  vector<int> vi(a,a+8);
+  for(int i = 6 ; i >= 0; i /= 2)
+    cout << a[i];
 
   return 0;
+
 }

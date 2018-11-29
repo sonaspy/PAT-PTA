@@ -2,14 +2,12 @@
 // coding - utf_8
 #include <iostream>
 using namespace std;
-
 struct TreeNode{
   int data;
   TreeNode *left;
   TreeNode *right;
   TreeNode(){data = 0; left = right = NULL;}
 };
-
 struct Tree{
   TreeNode* root;
   int cnt, travel[15];
@@ -34,7 +32,7 @@ struct Tree{
   }
   void pathOutput(TreeNode * t){
     if(!t)return;
-    travel[++cnt] = t->data;
+    travel[cnt++] = t->data;
     pathOutput(t->left);
     pathOutput(t->right);
   }
@@ -43,7 +41,7 @@ struct Tree{
 int main(int argc, char const *argv[])
 {
     /* code */
-    //freopen("in","r",stdin);
+    freopen("in","r",stdin);
     int N, L, var;
     cin >> N;
     while(N){
@@ -62,7 +60,7 @@ int main(int argc, char const *argv[])
         }
         tmp.pathOutput(tmp.root);
         bool flag = true;
-        for(int j = 1; j <= N; j++){
+        for(int j = 0; j < N; j++){
           if(tree.travel[j] != tmp.travel[j]) {flag = false; break;}
         }
         if(flag)  cout << "Yes\n";

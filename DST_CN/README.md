@@ -1,6 +1,5 @@
-Data Structure
+Data Structure And Algorithms(Chinese)
 ====
-Chinese Problem Set
 ----
 [https://pintia.cn/problem-sets/15/problems](https://pintia.cn/problem-sets/15/problems)<br />
 

@@ -81,7 +81,7 @@ MAP Add(MAP p1, MAP p2)
 int main(int argc, char const *argv[])
 {
     /* code */
-    //freopen("in","r",stdin);
+    freopen("in","r",stdin);
     MAP poly1, poly2, mp;
     poly1 = readInfo();
     poly2 = readInfo();

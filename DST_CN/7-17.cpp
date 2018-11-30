@@ -1,10 +1,12 @@
 // author - newguo@sonaspy.cn 
-// coding - utf_8
+// coding - utf_8 
 
 #include <iostream>
 #include <stack>
+using namespace std;
+
 char s[4] = {'q', 'a', 'b', 'c'};
-std::stack<int> a[4];
+stack<int> a[4];
 bool move(int before, int after)
 {
     if (a[before].empty())
@@ -14,7 +16,7 @@ bool move(int before, int after)
             return false;
     a[after].push(a[before].top());
     a[before].pop();
-    printf("%c -> %c\n", s[before], s[after]);
+    printf("%c -> %c\n", s[before], s[after]); //faster than cout
     return true;
 }
 int main()
@@ -31,8 +33,7 @@ int main()
     while (++count)
     {
         move((count - 1) % 3 + 1, (count) % 3 + 1);
-        if (!move((count - 1) % 3 + 1, (count + 1) % 3 + 1) &&
-            !move((count + 1) % 3 + 1, (count - 1) % 3 + 1))
+        if (!move((count - 1) % 3 + 1, (count + 1) % 3 + 1) && !move((count + 1) % 3 + 1, (count - 1) % 3 + 1))
             break;
     }
 }

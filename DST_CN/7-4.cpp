@@ -2,14 +2,12 @@
 // coding - utf_8
 #include <iostream>
 using namespace std;
-
 struct TreeNode{
   int data;
   TreeNode *left;
   TreeNode *right;
   TreeNode(){data = 0; left = right = NULL;}
 };
-
 struct Tree{
   TreeNode* root;
   int cnt, travel[15];

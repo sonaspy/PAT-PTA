@@ -40,6 +40,5 @@ int main(int argc, char const *argv[])
     else if (mid < N)
       left = mid + 1;
   }
-
   return 0;
 }

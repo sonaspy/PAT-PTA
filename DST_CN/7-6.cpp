@@ -24,10 +24,10 @@ void ReadInput(){
 int visit[11] = {0};
 void DFS(int i){
   visit[i] = 1;
+  set<int>::iterator p;
   cout << " " << i;
-  for(int j = 0; j < N;j++)
-    if(!visit[j] && graph[i].count(j))
-      DFS(j);
+  for(p = graph[i].begin(); p != graph[i].end(); p++)
+      if(!visit[*p]) DFS(*p);
 }
 
 int reached[11]= {0};
@@ -50,7 +50,7 @@ void BFS(int i){
 int main(int argc, char const *argv[])
 {
     /* code */
-    //freopen("in","r",stdin);
+    freopen("in","r",stdin);
     ReadInput();
     for(int i = 0; i < N; i++)
       if(!visit[i]){

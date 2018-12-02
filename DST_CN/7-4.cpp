@@ -41,7 +41,7 @@ struct Tree{
 int main(int argc, char const *argv[])
 {
     /* code */
-    freopen("in","r",stdin);
+    //freopen("in","r",stdin);
     int N, L, var;
     cin >> N;
     while(N){

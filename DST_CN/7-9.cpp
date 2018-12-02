@@ -27,16 +27,13 @@ void Build()
     M[v1].push_back(Edge(v2, c, d));
     M[v2].push_back(Edge(v1, c, d));
   }
-  for (int i = 0; i < n; i++)
-  {
-    dist[i] = INF;
-    cost[i] = INF;
-  }
+  fill(dist, dist+n, INF);
+  fill(cost, cost+n, INF);
 }
 void Dikjstra()
 {
   dist[src] = 0;
-  cost[src] = 0;
+  cost[src] = 0; // initialize
   STACK.push(src);
   while (!STACK.empty())
   {

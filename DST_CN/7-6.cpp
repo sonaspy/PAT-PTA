@@ -64,6 +64,5 @@ int main(int argc, char const *argv[])
         BFS(i);
         cout << " }\n";
       }
-      
     return 0;
 }

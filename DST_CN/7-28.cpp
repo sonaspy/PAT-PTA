@@ -1,28 +1,32 @@
-// author - newguo@sonaspy.cn 
-// coding - utf_8 
+// author - newguo@sonaspy.cn
+// coding - utf_8
 
-#include<iostream>
+#include <iostream>
 
-#define test() freopen("in","r",stdin)
+#define test() freopen("in", "r", stdin)
 
 using namespace std;
 
-typedef struct node* ptrNode;
-struct node{
+typedef struct node *ptrNode;
+struct node
+{
     int data;
     ptrNode Left, Right;
-    node(){
+    node()
+    {
         data = 0;
         Left = NULL;
         Right = NULL;
     }
 };
 
-int  seqNum[1002];
+int seqNum[1002];
 
-ptrNode Insert(ptrNode head, ptrNode tmp){
-    if(!head) return tmp;
-    if(tmp->data < head->data) 
+ptrNode Insert(ptrNode head, ptrNode tmp)
+{
+    if (!head)
+        return tmp;
+    if (tmp->data < head->data)
         head->Left = Insert(head->Left, tmp);
     else
         head->Right = Insert(head->Right, tmp);
@@ -30,32 +34,43 @@ ptrNode Insert(ptrNode head, ptrNode tmp){
 }
 
 bool isTheTree = true;
-    int cursor = 0;
+int cursor = 0;
 
-void preOrder(ptrNode t){
-    if(t && isTheTree){
-        if(t->data != seqNum[cursor++])
+void preOrder(ptrNode t)
+{
+    if (t && isTheTree)
+    {
+        if (t->data != seqNum[cursor++])
             isTheTree = false;
         preOrder(t->Left);
         preOrder(t->Right);
     }
-    else return;
+    else
+        return;
 }
 
-void postOrder(ptrNode t){
-    if(!t)  return;
-    else{
+void postOrder(ptrNode t)
+{
+    if (!t)
+        return;
+    else
+    {
         postOrder(t->Left);
         postOrder(t->Right);
-        if(isTheTree) isTheTree = false;
-        else cout << " ";
-        printf("%d",t->data);
+        if (isTheTree)
+            isTheTree = false;
+        else
+            cout << " ";
+        printf("%d", t->data);
     }
 }
 
-void makeImageTree(ptrNode t){
-    if(!t) return;
-    else{
+void makeImageTree(ptrNode t)
+{
+    if (!t)
+        return;
+    else
+    {
         makeImageTree(t->Left);
         makeImageTree(t->Right);
         ptrNode tmp = t->Left;
@@ -71,25 +86,28 @@ int main(int argc, char const *argv[])
     int N, b;
     cin >> N;
     ptrNode head = NULL; // Build Tree.
-    for(int i = 0; i < N; i++){
+    for (int i = 0; i < N; i++)
+    {
         ptrNode tmp = new node;
-        scanf("%d",&tmp->data);
+        scanf("%d", &tmp->data);
         seqNum[i] = tmp->data;
         head = Insert(head, tmp);
     }
     // Judge
     preOrder(head);
 
-    if(!isTheTree){
+    if (!isTheTree)
+    {
         makeImageTree(head);
         isTheTree = true;
         cursor = 0;
         preOrder(head);
     }
 
-    if(!isTheTree)
+    if (!isTheTree)
         cout << "NO";
-    else{
+    else
+    {
         cout << "YES\n";
         postOrder(head);
     }

@@ -1,20 +1,20 @@
-// author - newguo@sonaspy.cn 
-// coding - utf_8 
+// author - newguo@sonaspy.cn
+// coding - utf_8
 
-#include<iostream>
-#include<map>
-#include<string>
-#include<algorithm>
-#include<vector>
-#define test() freopen("in","r",stdin)
+#include <iostream>
+#include <map>
+#include <string>
+#include <algorithm>
+#include <vector>
+#define test() freopen("in", "r", stdin)
 
 using namespace std;
 const int MAXN = 102;
 
 int main(int argc, char const *argv[])
 {
-  vector<string> name(MAXN);     
-  map<string, string> _parent; 
+  vector<string> name(MAXN);
+  map<string, string> _parent;
   int n, m;
   scanf("%d%d", &n, &m);
   getchar();
@@ -22,17 +22,17 @@ int main(int argc, char const *argv[])
   {
     string __name;
     getline(cin, __name);
-    int cnt = count(__name.begin(), __name.end(), ' '); 
+    int cnt = count(__name.begin(), __name.end(), ' ');
     int general = cnt / 2;
     if (cnt == 0)
     {
-      _parent[__name] = "NULL"; 
+      _parent[__name] = "NULL";
       name[general] = __name;
     }
     else
     {
       __name = __name.substr(cnt);
-      _parent[__name] = name[general- 1];
+      _parent[__name] = name[general - 1];
       name[general] = __name;
     }
   }

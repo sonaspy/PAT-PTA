@@ -7,25 +7,24 @@
 #define test() freopen("in","r",stdin)
 
 using namespace std;
-stack<char> OP;
+stack<char> Operand;
 
 int main(int argc, char const *argv[])
 {
-  test();
+  //test();
   map<char, int> priority;
   string Expr;
   cin >> Expr;
   bool flag1st = true;
   priority['-'] = 1, priority['+'] = 1;
   priority['*'] = 2, priority['/'] = 2;
-  priority['('] = 3, priority[')'] = 3;
+  priority['('] = 0;
   for (int i = 0; i < Expr.size(); i++)
   {
     if (((i == 0 || Expr[i - 1] == '(') && (Expr[i] == '+' || Expr[i] == '-')) || (Expr[i] >= '0' && Expr[i] <= '9'))
     {
       if (!flag1st)
         cout << " ";
-      if (Expr[i] != '+')
         cout << Expr[i];
       while (Expr[i + 1] == '.' || (Expr[i + 1] >= '0' && Expr[i + 1] <= '9'))
       {
@@ -34,30 +33,33 @@ int main(int argc, char const *argv[])
       }
       flag1st = false;
     }
-    else
-    {
-      if (OP.empty() || priority[Expr[i]] > priority[OP.top()]){
-        if(Expr[i] == '('){
-          priority['('] = 0, priority[')'] = 0;
-        }
-        OP.push(Expr[i]);
-      }
-      else if (priority[Expr[i]] <= priority[OP.top()]){
-        if(Expr[i] == ')'){
-          priority['('] = 3, priority[')'] = 3;
-        }
-        while(!OP.empty()){
-          if(OP.top() != '(')
-            cout << " " << OP.top();
-          OP.pop();
-        }
-      }
+    else if(Expr[i] == '('){
+      Operand.push('(');
     }
-  }
-  while (!OP.empty())
+    else if(Expr[i] == ')'){
+      while(Operand.top() != '('){
+        cout << ' ' << Operand.top();
+        Operand.pop();
+      }
+      Operand.pop();
+    }
+    else if (Operand.empty())
+      Operand.push(Expr[i]);
+    else if(priority[Expr[i]] > priority[Operand.top()] )
+        Operand.push(Expr[i]);
+    else{
+      while (!Operand.empty() && !(priority[Expr[i]] > priority[Operand.top()]))
+      {
+        cout << " " << Operand.top();
+        Operand.pop();
+      }
+        Operand.push(Expr[i]);
+    }
+  } 
+  while (!Operand.empty())
   {
-    cout << ' ' << OP.top();
-    OP.pop();
+    cout << ' ' << Operand.top();
+    Operand.pop();
   }
   return 0;
 }

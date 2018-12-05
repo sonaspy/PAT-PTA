@@ -1,73 +1,61 @@
-// author - newguo@sonaspy.cn
-// coding - utf_8
+// author - newguo@sonaspy.cn 
+// coding - utf_8 
 
-#include <iostream>
+#include<iostream>
 
-#define test() freopen("in", "r", stdin)
+#define test() freopen("in","r",stdin)
 
 using namespace std;
 
-struct unionFindNode
-{
-  int parent;
-  bool root;
-  unionFindNode()
-  {
-    parent = 1;
-    root = true;
-  }
-};
+int students[30001];
 
-class fastUnionFind
-{
-public:
-  fastUnionFind(int numberOfElements)
-  { // Initialize numberOfElements trees, 1 element per set/class/tree.
-    node = new unionFindNode[numberOfElements + 1];
-  }
+int getRoot(int member){
+  if(students[member] < 0) return member;
+  return getRoot(students[member]);
+}
 
-  void unite(int rootA, int rootB)
-  {
-    if (node[rootA].parent < node[rootB].parent)
-    { // rootA becomes subtree of rootB
-      node[rootB].parent += node[rootA].parent;
-      node[rootA].root = false;
-      node[rootA].parent = rootB;
-    }
-    else
-    {
-      node[rootA].parent += node[rootB].parent;
-      node[rootB].root = false;
-      node[rootB].parent = rootA;
-    }
+void init(int n){
+  int i;
+  for (i = 1; i <= n; i++)
+    students[i] = -1;
+}
+
+void Union(int r1, int r2){
+  r1 = getRoot(r1); r2 = getRoot(r2);
+  if(r1 == r2) return;
+  if(students[r1] <= students[r2]){
+    students[r1] += students[r2];
+    students[r2] = r1;
   }
-  unionFindNode *node;
-};
+  else{
+    students[r2] += students[r1];
+    students[r1] = r2;
+  }
+}
 
 int main(int argc, char const *argv[])
 {
-  /* code */
-  test();
-  fastUnionFind uf(30001);
-  int totalStudents, clubs, stuOfclubs, fis, next;
-  cin >> totalStudents >> clubs;
-  for (int i = 0; i < clubs; i++)
-  {
-    scanf("%d", &stuOfclubs);
-    scanf("%d", &fis);
-    for (int j = 0; j < stuOfclubs - 1; j++)
+    /* code */
+    test();
+    int n, m, i, j, k, stu, root1, root2;
+    scanf("%d %d", &n, &m);
+    init(n);
+    for (i = 0; i < m; i++)
     {
-      scanf("%d", &next);
-      uf.unite(fis, next);
+      scanf("%d %d", &k, &root1);
+      for (j = 1; j < k; j++){
+        scanf("%d", &root2);
+        Union(root1, root2);
+      }
     }
-  }
-  int maxnum = 1;
-  for (int i = 1; i <= 30001; i++)
-  {
-    if (uf.node[i].parent > maxnum && uf.node[i].root == true)
-      maxnum = uf.node[i].parent;
-  }
-  cout << maxnum;
-
-  return 0;
+    int max = -1;
+    for (i = 1; i <= n; i++)
+    {
+      if ( students[i] < max)
+      {
+        max = students[i];
+      }
+    }
+    printf("%d", -max);
+    return 0;
 }

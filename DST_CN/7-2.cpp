@@ -2,93 +2,102 @@
 // coding - utf_8 
 
 #include<iostream>
-#include<map>
+
+#define test() freopen("in","r",stdin)
 
 using namespace std;
-typedef map<int,int,greater<int> > MAP;
 
-MAP readInfo(){
-    int N, ceof, ex;MAP m;
-    cin >> N;
-    for(int i = 0; i < N; i++){
-        cin >> ceof >> ex;
-        m.insert(make_pair(ex,ceof));
-    }
-    return m;
-}
-void outPut(MAP m){
-    if(m.empty()){
-        cout << "0 0";
-        cout << endl;
-        return;
-    }
-    MAP::iterator p;
-    int flag = 1;
-    for(p = m.begin(); p !=m.end(); p++){
-        if(flag) cout << p->second << " " << p->first, flag = 0;
-        else
-            cout << " " << p->second << " " << p->first;
-    }
-    cout << endl;
-}
 
-MAP Multiply(MAP p1, MAP p2){
-    MAP m;
-    if(p1.empty() || p2.empty())return m;
-    MAP::iterator pt1, pt2;
-    int coef, ex;
-    for(pt1 = p1.begin(); pt1 != p1.end(); pt1++)
-        for(pt2 = p2.begin(); pt2 != p2.end(); pt2++){
-            coef = (pt1->second) * (pt2->second);
-            ex = pt1->first + pt2->first;
-            if(m.count(ex)) m[ex] += coef;
-            else m.insert(make_pair(ex,coef));
-        }
-    return m;
-}
 
-MAP Add(MAP p1, MAP p2)
-{   MAP m;
-    if(p1.empty() && p2.empty()) return m;
-    if(p1.empty() || p2.empty()){ m = (p1.empty())?p2:p1; return m ;}
-    MAP::iterator pt1= p1.begin(), pt2= p2.begin();
-    while(pt1 != p1.end() && pt2 != p2.end()){
-        if(pt1->first > pt2->first){
-            m.insert(*pt1);pt1++;
-        }
-        else if(pt1->first < pt2->first){
-            m.insert(*pt2);pt2++;
-        }
-        else{
-            if(pt1->second + pt2->second)
-                m.insert(make_pair(pt1->first, pt1->second+pt2->second));
-            pt1++;pt2++;
-        }
+#include <iostream>
+#include <map>
+#include <set>
+using namespace std;
+map<int, int> ExpAndNumA, ExpAndNumB, result;
+set<int> ExpA, ExpB, resultSet;
+void input(map<int, int> &SomeoneMap, set<int> &SomeoneSet, int N)
+{
+    for (int i = 0; i < N; i++)
+    {
+        int num, exp;
+        cin >> num >> exp;
+        SomeoneMap[exp] = num;
+        SomeoneSet.insert(exp);
     }
-    if(pt1 != p1.end())
-        while(pt1 != p1.end()){
-            m.insert(*pt1);
-            pt1++;
-        }
-    if (pt2 != p2.end())
-        while (pt2 != p2.end())
+}
+void add()
+{
+    for (auto it = ExpA.begin(); it != ExpA.end(); it++)
+    {
+        resultSet.insert(*it);
+        result[*it] = ExpAndNumA[*it];
+    }
+    for (auto it = ExpB.begin(); it != ExpB.end(); it++)
+    {
+        if (!result.count(*it))
         {
-            m.insert(*pt2);
-            pt2++;
+            resultSet.insert(*it);
+            result[*it] = ExpAndNumB[*it];
         }
-    return m;
+        else
+            result[*it] += ExpAndNumB[*it];
+    }
+}
+void multi()
+{
+    for (auto it = ExpA.begin(); it != ExpA.end(); it++)
+    {
+        for (auto it2 = ExpB.begin(); it2 != ExpB.end(); it2++)
+        {
+            int newExp = *it + *it2;
+            int newNum = ExpAndNumA[*it] * ExpAndNumB[*it2];
+            if (result.count(newExp) == 0)
+            {
+                resultSet.insert(newExp);
+                result[newExp] = newNum;
+            }
+            else
+                result[newExp] += newNum;
+        }
+    }
+}
+void output()
+{
+    bool flag = 0;
+    for (auto rit = resultSet.rbegin(); rit != resultSet.rend(); rit++)
+    {
+        if (result[*rit] != 0)
+        {
+            flag = 1;
+            if (rit == resultSet.rbegin())
+            {
+                cout << result[*rit] << " " << *rit;
+            }
+            else
+            {
+                cout << " " << result[*rit] << " " << *rit;
+            }
+        }
+    }
+    if (!flag)
+        cout << "0 0";
 }
 int main(int argc, char const *argv[])
 {
     /* code */
-    freopen("in","r",stdin);
-    MAP poly1, poly2, mp;
-    poly1 = readInfo();
-    poly2 = readInfo();
-    mp = Multiply(poly1,poly2);
-    outPut(mp);
-    mp.clear();
-    mp = Add(poly1,poly2);
-    outPut(mp);
+    int N1, N2;
+    cin >> N1;
+    input(ExpAndNumA, ExpA, N1);
+    cin >> N2;
+    input(ExpAndNumB, ExpB, N2);
+    result.clear();
+    resultSet.clear();
+    multi();
+    output();
+    cout << endl;
+    result.clear();
+    resultSet.clear();
+    add();
+    output();
     return 0;
 }

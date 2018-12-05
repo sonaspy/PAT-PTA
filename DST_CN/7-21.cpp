@@ -1,48 +1,58 @@
-// author - newguo@sonaspy.cn 
-// coding - utf_8 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+double exp();
 
-#include<iostream>
-#include<stack>
-#include<string>
-#include<sstream>
-#include<algorithm>
-#define test() freopen("in","r",stdin)
-
-using namespace std;
-
-stack<double> operand;
-
-int main(int argc, char const *argv[])
+int main()
 {
-    /* code */
-    test();
-    bool error = false;
-    string Exp, op;
-    getline(cin, Exp);
-    reverse(Exp.begin(), Exp.end());
-    istringstream it(Exp);
-    while(it >> op){
-      if(op == "/" || op == "*" || op == "+" || op == "-"){
-        int v1, v2, newop;
-        v1 = operand.top();operand.pop();
-        v2 = operand.top();operand.pop();
-        if(op == "/"){
-          if(v2 == 0){error = true;break;}
-          newop = v1 * 1.0 / v2;
-        }
-        else if(op == "*") newop = v1 * v2 * 1.0;
-        else if(op == "+") newop = v1 + v2 + 0.0;
-        else newop  = v1 - v2 + 0.0;
-        operand.push(newop);
-      } 
-      else{
-          reverse(op.begin(),op.end());
-          double var;istringstream ss(op);
-          ss >> var;
-          operand.push(var);
+  printf("%.1f", exp());
+  return 0;
+}
+
+double exp()
+{
+  char a[10];
+  scanf("%s", a);
+  if (!a[1])
+  {
+    switch (a[0])
+    {
+    case '+': return exp() + exp();
+    case '-': return exp() - exp();
+    case '*': return exp() * exp();
+    case '/':
+    {
+      double numerator = exp();
+      double  denominator = exp();
+      if ( denominator != 0)
+        return numerator /  denominator;
+      else
+      {
+        printf("ERROR");
+        exit(0);
       }
     }
-    if(error) cout << "ERROR" ;
-    else printf("%.1f", operand.top());
-    return 0;
+    default:
+      return atof(a);
+    }
+  }
+  else
+  {
+    if (a[0] == '-' || a[0] == '+')
+    {
+      char flag = a[0];
+      int i = 0;
+      while (a[i])
+      {
+        a[i] = a[i + 1];
+        i++;
+      }
+      if (flag == '-')
+        return 0 - atof(a);
+      else
+        return atof(a);
+    }
+    else
+      return atof(a);
+  }
 }

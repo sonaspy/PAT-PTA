@@ -2,14 +2,15 @@
 // coding - utf_8
 
 #include <iostream>
-
+#include <string>
 using namespace std;
 
 int main(int argc, char const *argv[])
 {
-  /* code */
-  const int A = 1 << 16;
-  cout << A;
-  return 0;
-
+    /* code */  
+    string s = "fgh";
+    string d = s.substr(s.size() - 3);
+    cout << int(d[0]);
+    
+    return 0;
 }

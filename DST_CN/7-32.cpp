@@ -1,50 +1,48 @@
-// author - newguo@sonaspy.cn 
-// coding - utf_8 
+// author - newguo@sonaspy.cn
+// coding - utf_8
 
-#include<iostream>
-#include<vector>
-#include<algorithm>
-#define test() freopen("in","r",stdin)
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#define test() freopen("in", "r", stdin)
 
 using namespace std;
-
-int N, M;
-
-vector<int> mp[1001];
-int reached[1001];
-
-void DFS(int v){
+#define MAXN 1001
+int MAP[MAXN][MAXN], reached[MAXN] = {0}, degree[MAXN] = {0};
+void DFS(int v, int n)
+{
     reached[v] = 1;
-    int u;
-    vector<int>::iterator it;
-    for(it = mp[v].begin(); it != mp[v].end(); it++)
-        if(!reached[(*it)])
-            DFS((*it));
+    for (int j = 1; j <= n; j++)
+        if (MAP[v][j] && !reached[j])
+            DFS(j, n);
 }
 
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
-    cin >> N >> M;
-    int v1, v2;
-    bool isOra1 = true, isOra2 = true;
-    for(int i = 0; i < M; i++){
-        scanf("%d%d",&v1,&v2);
-        mp[v1].push_back(v2);
-        mp[v2].push_back(v1);
+    //test();
+    int N, M, isOral = 1;
+    scanf("%d%d", &N, &M);
+    for (int i = 1; i <= N; i++)
+        for (int j = 1; j <= N; j++)
+            MAP[i][j] = 0;
+    for (int i = 0; i < M; i++)
+    {
+        int c1, c2;
+        scanf("%d%d", &c1, &c2);
+        MAP[c1][c2] = 1;
+        MAP[c2][c1] = 1;
+        degree[c1]++;degree[c2]++;
     }
-    for(int i = 1; i <= N; i++){
-        if(mp[i].size() % 2){
-            isOra1 = false;
+    DFS(1, N);
+    for (int i = 1; i <= N; i++)
+    {
+        if (!reached[i] || degree[i] % 2)
+        {
+            isOral = 0;
             break;
         }
     }
-    DFS(1);
-    for(int i = 1; i <= N; i++)
-        if(!reached[i])
-            isOra2 = false;
-    cout << isOra1 && isOra2;
-
+    cout << isOral;
     return 0;
 }

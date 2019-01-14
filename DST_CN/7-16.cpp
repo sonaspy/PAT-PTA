@@ -1,53 +1,41 @@
-// author - newguo@sonaspy.cn 
-// coding - utf_8 
+// author - newguo@sonaspy.cn
+// coding - utf_8
 
-#include<iostream>
-#include<vector>
-#include<algorithm>
-#define test() freopen("in","r",stdin)
+#include <iostream>
+#include <vector>
+
+#define test() freopen("in", "r", stdin)
 
 using namespace std;
-
-struct numpair{
-  int ex, coef;
-  bool operator<(const numpair p2) const{
-    return ex > p2.ex;
-  }
-};
-
-vector<numpair> ex_coef;
-vector<numpair> res;
-numpair num;
-void Build(){
-  while(true){
-    scanf("%d%d",&num.coef,&num.ex);
-    if(!num.ex)break;
-    ex_coef.push_back(num);
-  }
-}
-void diff(){
-  sort(ex_coef.begin(), ex_coef.end());
-  for(int i = 0; i < ex_coef.size(); i++){
-    num.ex = ex_coef[i].ex - 1;
-    num.coef = ex_coef[i].ex * ex_coef[i].coef;
-    res.push_back(num);
-  }
-}
 
 int main(int argc, char const *argv[])
 {
     /* code */
     test();
-    Build();
-    diff();
-    if(!res.empty()){
-      cout << res[0].coef << " " << res[0].ex;
-    for(int i = 1; i < res.size(); i++){
-      printf(" %d %d",res[i].coef,res[i].ex);
-      }
+    int n1, n2;
+    vector<int> res;
+    while (cin >> n1 >> n2)
+    {
+        if (n2 != 0)
+        {
+            res.push_back(n1 * n2);
+            res.push_back(n2 - 1);
+        }
     }
+    if (!res.size())
+        printf("0 0");
     else
-      cout << 0 << " " << 0;
-    
+    {
+        bool f = true;
+        for (auto iter : res)
+        {
+            if(f){
+                printf("%d",iter);
+                f= false;
+            }
+            else printf(" %d", iter);
+        }
+    }
+
     return 0;
 }

@@ -11,32 +11,34 @@ using namespace std;
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+    //test();
     int tmp;
-    set<int> table[2];
-    vector<int> res;
+    vector<int> table[3];
     for (int i = 0; i < 2; i++)
     {
         scanf("%d", &tmp);
         while (tmp != -1)
         {
-            table[i].insert(tmp);
+            table[i].push_back(tmp);
             scanf("%d", &tmp);
         }
     }
-    set<int>::iterator p0, p1;
+    vector<int>::iterator p0, p1;
     p0 = table[0].begin(), p1 = table[1].begin();
     while (p0 != table[0].end() && p1 != table[1].end())
     {
-        if (*p0 == *p1)
-            res.push_back(*p0);
-        p0++, p1++;
+        if (*p0 == *p1){
+            table[2].push_back(*p0);
+            p0++;p1++;
+        }
+        else if(*p0 < *p1) p0++;
+        else p1++;
     }
-    if (!res.size())
+    if (!table[2].size())
         printf("NULL");
     else
     {   bool f  = true;
-        for (auto iter : res)
+        for (auto iter : table[2])
         {
             if(f){
                 f= false;
@@ -47,4 +49,4 @@ int main(int argc, char const *argv[])
     }
 
     return 0;
-}
+}   

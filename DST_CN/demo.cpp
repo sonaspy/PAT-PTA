@@ -8,14 +8,9 @@ using namespace std;
 int main(int argc, char const *argv[])
 {
     /* code */  
-    string s = "fgh22";
-    string t;
-    for(auto iter: s){
-        if(isalpha(iter)){
-            t.push_back(towlower(iter));
-        }
-    }
-    cout << t;
+    int cnt = 10;
+    int s = cnt++;
+    cout << s << cnt;
 
     return 0;
 }

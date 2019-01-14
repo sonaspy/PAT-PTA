@@ -70,6 +70,7 @@
     "cuchar": "cpp",
     "forward_list": "cpp",
     "unordered_set": "cpp",
-    "iterator": "cpp"
-  }
+    "iterator": "cpp",
+    "set": "cpp"
+}
 }

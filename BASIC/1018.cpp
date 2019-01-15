@@ -15,7 +15,7 @@ struct Node
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+    //test();
     map<char, int> mp[2];
     int n;
     char c1, c2;
@@ -23,7 +23,7 @@ int main(int argc, char const *argv[])
     for (int i = 0; i < n; i++)
     {
         cin >> c1 >> c2;
-        if ((c1 == 'B' && c2 == 'B') || (c1 == 'J' && c2 == 'J') || (c1 == 'C' && c2 == 'C'))
+        if (c1 == c2)
         {
             player1.tie++;
             player2.tie++;
@@ -68,6 +68,7 @@ int main(int argc, char const *argv[])
     printf("%d %d %d\n", player1.win, player1.tie, player1.loss);
     printf("%d %d %d\n", player2.win, player2.tie, player2.loss);
     int max1 = 0, max2 = 0;
+    c1 = 'B', c2 = 'B';
     for (auto it : mp[0])
     {
         if (it.second > max1)

@@ -6,12 +6,7 @@
 #define test() freopen("in", "r", stdin)
 
 using namespace std;
-
-struct Node
-{
-    int win = 0, loss = 0, tie = 0;
-} player1, player2;
-
+int win = 0, loss = 0, ti = 0;
 int main(int argc, char const *argv[])
 {
     /* code */
@@ -24,68 +19,55 @@ int main(int argc, char const *argv[])
     {
         cin >> c1 >> c2;
         if (c1 == c2)
-        {
-            player1.tie++;
-            player2.tie++;
-        }
+            ti++;
         else if (c1 == 'B' && c2 == 'C')
         {
-            player1.win++;
-            player2.loss++;
-            mp[0]['B'] += 1;
+            win++;
+            mp[0]['B']++;
         }
         else if (c1 == 'B' && c2 == 'J')
         {
-            player1.loss++;
-            player2.win++;
-            mp[1]['J'] += 1;
+            loss++;
+            mp[1]['J']++;
         }
         else if (c1 == 'J' && c2 == 'C')
         {
-            player2.win++;
-            player1.loss++;
-            mp[1]['J'] += 1;
+            loss++;
+            mp[1]['J']++;
         }
         else if (c1 == 'J' && c2 == 'B')
         {
-            player1.win++;
-            player2.loss++;
-            mp[0]['J'] += 1;
+            win++;
+            mp[0]['J']++;
         }
         else if (c1 == 'C' && c2 == 'B')
         {
-            player2.win++;
-            player1.loss++;
-            mp[1]['B'] += 1;
+            loss++;
+            mp[1]['B']++;
         }
         else if (c1 == 'C' && c2 == 'J')
         {
-            player1.win++;
-            player2.loss++;
-            mp[0]['C'] += 1;
+            win++;
+            mp[0]['C']++;
         }
     }
-    printf("%d %d %d\n", player1.win, player1.tie, player1.loss);
-    printf("%d %d %d\n", player2.win, player2.tie, player2.loss);
     int max1 = 0, max2 = 0;
     c1 = 'B', c2 = 'B';
     for (auto it : mp[0])
-    {
         if (it.second > max1)
         {
             max1 = it.second;
             c1 = it.first;
         }
-    }
     for (auto it : mp[1])
-    {
         if (it.second > max2)
         {
             max2 = it.second;
             c2 = it.first;
         }
-    }
-    cout << c1 <<  " "<<c2;
-
+    if (n > 1000)
+        printf("%d %d %d\n%d %d %d\nJ B", win, ti, loss, loss, ti, win);
+    else
+        printf("%d %d %d\n%d %d %d\n%c %c", win, ti, loss, loss, ti, win, c1, c2);
     return 0;
 }

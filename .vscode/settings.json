@@ -71,6 +71,7 @@
     "forward_list": "cpp",
     "unordered_set": "cpp",
     "iterator": "cpp",
-    "set": "cpp"
+    "set": "cpp",
+    "ios": "cpp"
 }
 }

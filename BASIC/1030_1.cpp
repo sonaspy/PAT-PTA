@@ -14,18 +14,22 @@ int main(int argc, char const *argv[])
     test();
     long n, p, num, a[100001];
     cin >> n >> p;
-    for (int i = 0; i < n; i++)
+    for (long i = 0; i < n; i++)
         scanf("%ld", &a[i]);
     sort(a, a + n);
-    int i = 0, j = n - 1;
-    while(i!=j)
+    long i, j, maxm = 0, cnt = 0, temp;
+    for (i = 0; i < n; i++)
     {
-        if (a[j] <= a[i] * p)
-            break;
-        if (a[i + 1] *a[j-1] > a[j] *a[i])
-            i++;
-        else j--;
+        temp = a[i] * p;
+        for (j = cnt; j < n; j++)
+        {
+            if (a[j] > temp)
+                break;
+            if (maxm < j - i + 1)
+                maxm = j - i + 1;
+        }
+        cnt = j;
     }
-    cout << j-i+1;
+    printf("%ld", maxm);
     return 0;
 }

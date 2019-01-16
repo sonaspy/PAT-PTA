@@ -13,13 +13,17 @@ int main(int argc, char const *argv[])
     test();
     map<int, int> mp;
     int num;
-    while (cin >> num)
-        mp[num] += 1;
+    for (int i = 0; i < 10; i++)
+    {
+        cin >> num;
+        if (num)
+            mp[i] += num;
+    }
     for (auto iter : mp)
     {
         if (iter.first != 0)
         {
-            cout << iter.first ;
+            cout << iter.first;
             mp[iter.first]--;
             break;
         }
@@ -27,8 +31,7 @@ int main(int argc, char const *argv[])
     for (auto iter : mp)
     {
         for (int i = 0; i < iter.second; i++)
-            cout << iter.first ;
+            cout << iter.first;
     }
-
     return 0;
 }

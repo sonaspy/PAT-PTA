@@ -17,12 +17,13 @@ int main(int argc, char const *argv[])
     cin >> a >> da >> b >> db;
     c1 = count(a.begin(), a.end(), da[0]);
     c2 = count(b.begin(), b.end(), db[0]);
-    while(c1--)p1.push_back(da[0]);
-    while(c2--)p2.push_back(db[0]);
+    while (c1--)
+        p1.push_back(da[0]);
+    while (c2--)
+        p2.push_back(db[0]);
     stringstream oss1(p1), oss2(p2);
-    oss1 >> pa;
-    oss2 >> pb;
-    cout << pa+pb;
+    oss1 >> pa, oss2 >> pb;
+    cout << pa + pb;
 
     return 0;
 }

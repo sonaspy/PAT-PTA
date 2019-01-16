@@ -3,7 +3,6 @@
 
 #include <iostream>
 #include <string>
-#include <sstream>
 #include <algorithm>
 #define test() freopen("in", "r", stdin)
 
@@ -38,11 +37,9 @@ int main(int argc, char const *argv[])
             s = convert(s);
             sort(s.begin(), s.end(), greater<int>());
             cout << s << " - ";
-            stringstream oss(s);
-            oss >> t1;
+            t1 = stoi(s);
             sort(s.begin(), s.end());
-            stringstream oss1(s);
-            oss1 >> t2;
+            t2 = stoi(s);
             cout << s << " = ";
             t3 = t1 - t2;
             tmp = to_string(t3);

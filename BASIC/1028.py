@@ -19,7 +19,7 @@ for i in range(0, n):
     if ymd < oldest:
         oldest = ymd
         old = name
-if n == 0:
+if count == 0:
     print(0)
 else:
     print("{} {} {}".format(count, old, young))

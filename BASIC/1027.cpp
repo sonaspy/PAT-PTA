@@ -2,7 +2,7 @@
 // coding - utf_8
 
 #include <iostream>
-
+#include <cmath>
 #define test() freopen("in", "r", stdin)
 
 using namespace std;
@@ -11,41 +11,27 @@ int main(int argc, char const *argv[])
 {
     /* code */
     //test();
-    int n, sum = 1, i = 1, cha;
+    int n, r, overflow;
     char c;
     cin >> n >> c;
-    while (n > sum)
+    r = (sqrt((n + 1) / 2));
+    overflow = n - (2 * pow(r, 2) - 1);
+    for (int i = r; i > 0; i--)
     {
-        i += 2;
-        sum += i * 2;
-    }
-    if (sum != n)
-    {
-        sum -= 2 * i;
-        i -= 2;
-    }
-    cha = n - sum;
-    for (int j = i; j >= 1; j -= 2)
-    {
-        for (int o = (i - j) / 2; o > 0; o--)
-            cout << " ";
-        for (int k = 0; k < j; k++)
+        for (int j = 0; j < r - i; j++)
+            printf(" ");
+        for (int j = 0; j < 2 * i - 1; j++)
             cout << c;
-        for (int o = (i - j) / 2; o > 0; o--)
-            cout << " ";
-        cout << endl;
+        printf("\n");
     }
-    for (int j = 3; j <= i; j += 2)
+    for (int i = 2; i <= r; i++)
     {
-
-        for (int o = (i - j) / 2; o > 0; o--)
-            cout << " ";
-        for (int k = 0; k < j; k++)
+        for (int j = 0; j < r - i; j++)
+            printf(" ");
+        for (int j = 0; j < 2 * i - 1; j++)
             cout << c;
-        for (int o = (i - j) / 2; o > 0; o--)
-            cout << " ";
-        cout << endl;
+        printf("\n");
     }
-    printf("%d\n", cha);
+    cout << overflow;
     return 0;
 }

@@ -3,9 +3,9 @@
 p, a = input().split()
 p = list(map(int, p.split('.')))
 a = list(map(int, a.split('.')))
-ans = [0, 0, 0]
+ans = [''] * 3
 if p[0] > a[0]:
-    p, a = a.copy(), p.copy()
+    p, a = a, p
     print('-', end='')
 if a[2] < p[2]:
     a[1] -= 1

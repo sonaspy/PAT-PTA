@@ -10,5 +10,7 @@ using namespace std;
 int main(int argc, char const *argv[])
 {
     /* code */
+    string s= "1111";
+    
     return 0;
 }

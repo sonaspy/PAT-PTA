@@ -29,17 +29,25 @@ int main(int argc, char const *argv[])
     for (int i = 0; i < n; i++)
     {
         nodes[i] = {walk, m[walk].data, 0};
-        walk = m[walk].next;    
-        if(walk == -1) {n = i+1;break;}
+        walk = m[walk].next;
+        if (walk == -1)
+        {
+            n = i + 1;
+            break;
+        }
     }
-    for (int i = 0; i < n; i++){
-        if((i + 1) % k  == 0)
-            reverse(nodes +i +1 -k, nodes+i+1);
+    for (int i = 0; i < n; i++)
+    {
+        if ((i + 1) % k == 0)
+            reverse(nodes + i + 1 - k, nodes + i + 1);
     }
-    for(int i = 0; i < n; i++){
+    for (int i = 0; i < n; i++)
+    {
         printf("%05d %d ", nodes[i].local, nodes[i].data);
-        if(i == n-1) printf("-1");
-        else printf("%05d\n",nodes[i+1].local);
+        if (i == n - 1)
+            printf("-1");
+        else
+            printf("%05d\n", nodes[i + 1].local);
     }
 
     return 0;

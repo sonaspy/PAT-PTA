@@ -31,17 +31,17 @@ int main()
             cloumns = n / k + n % k;
         else
             cloumns = n / k;
-        vector<string> ans(cloumns);
-        ans[cloumns / 2] = stu[stu_cur].name;
+        vector<string> one_row(cloumns);
+        one_row[cloumns / 2] = stu[stu_cur].name;
         int j = cloumns / 2 - 1;
         for (int i = stu_cur + 1; i < stu_cur + cloumns; i = i + 2)
-            ans[j--] = stu[i].name;
+            one_row[j--] = stu[i].name;
         j = cloumns / 2 + 1;
         for (int i = stu_cur + 2; i < stu_cur + cloumns; i = i + 2)
-            ans[j++] = stu[i].name;
-        cout << ans[0];
+            one_row[j++] = stu[i].name;
+        cout << one_row[0];
         for (int i = 1; i < cloumns; i++)
-            cout << " " << ans[i];
+            cout << " " << one_row[i];
         cout << endl;
         stu_cur += cloumns;
     }

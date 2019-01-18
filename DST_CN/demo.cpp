@@ -10,7 +10,8 @@ using namespace std;
 int main(int argc, char const *argv[])
 {
     /* code */
-    string s= "1111";
-    
+    string s = "3 4 2 a c";
+    s = s.substr(4,s.size()-4);
+    cout << s;
     return 0;
 }

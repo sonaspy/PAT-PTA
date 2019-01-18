@@ -2,7 +2,6 @@
 // coding - utf_8
 
 #include <iostream>
-#include <set>
 #define test() freopen("in", "r", stdin)
 
 using namespace std;
@@ -11,7 +10,6 @@ int main(int argc, char const *argv[])
 {
     /* code */
     test();
-    set<int> st;
     int n, tmp, sum = 0;
     cin >> n;
     int a[n];
@@ -24,12 +22,10 @@ int main(int argc, char const *argv[])
             if (i != j)
             {
                 tmp = a[i] * 10 + a[j];
-                st.insert(tmp);
+                sum += tmp;
             }
         }
     }
-    for (auto iter : st)
-        sum += iter;
     cout << sum;
     return 0;
 }

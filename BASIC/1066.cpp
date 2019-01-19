@@ -10,7 +10,7 @@ using namespace std;
 int main(int argc, char const *argv[])
 {
     /* code */
-  //test();
+    //test();
     int m, n, a, b, replace;
     cin >> m >> n;
     int image[m][n];

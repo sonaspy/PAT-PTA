@@ -3,7 +3,8 @@
 
 #include <iostream>
 #include <cmath>
-#include <vector>
+#include <unordered_map>
+#include <algorithm>
 #define test() freopen("in", "r", stdin)
 #define MAXN 2073741824
 using namespace std;
@@ -16,15 +17,18 @@ struct Node
 int main(int argc, char const *argv[])
 {
     /* code */
-    //test();
-    int m, n, tol, min;
+    test();
+    int m, n, tol, min, m1, n1, count = 0, pix;
     cin >> m >> n >> tol;
     int image[n + 2][m + 2];
-    vector<Node> vec;
+    unordered_map<int, int> mp;
     for (int i = 1; i <= n; i++)
     {
         for (int j = 1; j <= m; j++)
+        {
             scanf("%d", &image[i][j]);
+            mp[image[i][j]] += 1;
+        }
     }
     for (int i = 0; i <= n + 1; i++)
     {
@@ -32,7 +36,7 @@ int main(int argc, char const *argv[])
         image[0][i] = MAXN;
         image[n + 1][i] = MAXN;
         image[i][n + 1] = MAXN;
-    }
+    }// add guards surround matrix.
     for (int i = 1; i <= n; i++)
     {
         for (int j = 1; j <= m; j++)
@@ -41,33 +45,19 @@ int main(int argc, char const *argv[])
             int ORI = image[i][j], RD = image[i + 1][j + 1], R = image[i][j + 1],
                 D = image[i + 1][j], LD = image[i + 1][j - 1], L = image[i][j - 1],
                 U = image[i - 1][j], LU = image[i - 1][j - 1], RU = image[i - 1][j + 1];
-            if (abs(D - ORI) < min)
-                min = abs(D - ORI);
-            if (abs(U - ORI) < min)
-                min = abs(U - ORI);
-            if (abs(R - ORI) < min)
-                min = abs(R - ORI);
-            if (abs(L - ORI) < min)
-                min = abs(L - ORI);
-            if (abs(RD - ORI) < min)
-                min = abs(RD - ORI);
-            if (abs(RU - ORI) < min)
-                min = abs(RU - ORI);
-            if (abs(LD - ORI) < min)
-                min = abs(LD - ORI);
-            if (abs(LU - ORI) < min)
-                min = abs(LU - ORI);
-            if (min > tol)
+            int myints[] = {min, abs(D - ORI), abs(U - ORI), abs(R - ORI), abs(L - ORI), abs(RD - ORI), abs(RU - ORI), abs(LD - ORI), abs(LU - ORI)};
+            min = *min_element(myints, myints + 9);
+            if (min > tol && mp[ORI] == 1)
             {
-                tmp = {j, i, ORI};
-                vec.push_back(tmp);
+                m1 = j, n1 = i, pix = ORI;
+                count++;
             }
         }
     }
-    if (vec.size() == 0)
+    if (count == 0)
         printf("Not Exist");
-    else if (vec.size() == 1)
-        printf("(%d, %d): %d", vec[0].m, vec[0].n, vec[0].pix);
+    else if (count == 1)
+        printf("(%d, %d): %d", m1, n1, pix);
     else
         printf("Not Unique");
     return 0;

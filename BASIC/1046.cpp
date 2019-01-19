@@ -10,7 +10,7 @@ using namespace std;
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+  //test();
     int n, jhan,jhua,yhan,yhua, cnt1 = 0,cnt2 = 0;
     cin >> n;
     for(int i = 0; i < n; i++){

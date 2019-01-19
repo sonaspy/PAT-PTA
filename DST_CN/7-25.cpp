@@ -36,7 +36,7 @@ void Union(int r1, int r2){
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+  //test();
     int n, m, i, j, k, stu, root1, root2;
     scanf("%d %d", &n, &m);
     init(n);

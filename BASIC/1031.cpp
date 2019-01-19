@@ -11,7 +11,7 @@ using namespace std;
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+  //test();
     int n, valid = 0, weight[17] = {7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2};
     string s;
     char Z_M[11] = {'1', '0', 'X', '9', '8', '7', '6', '5', '4', '3', '2'};

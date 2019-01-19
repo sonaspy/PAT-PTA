@@ -11,7 +11,7 @@ using namespace std;
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+  //test();
     string s1, s2;
     unordered_map<char, int> sell, want;
     int f1 = 1, f2 = 1, remain = 0, lack = 0;

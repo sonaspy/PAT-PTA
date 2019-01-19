@@ -11,7 +11,7 @@ using namespace std;
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+  //test();
     int N, s = 2, tmp;
     vector<int> v;
     cin >> N;

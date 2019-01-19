@@ -34,7 +34,7 @@ bool judge(string s)
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+  //test();
     string s;
     int n, count = 0;
     cin >> n;

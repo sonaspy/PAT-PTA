@@ -53,7 +53,7 @@ void solve(string &s, set<string> &f_content)
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+  //test();
     int N, M;
     cin >> N;
     set<string> f_content[MAXN];

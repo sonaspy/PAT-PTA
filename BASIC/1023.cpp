@@ -10,7 +10,7 @@ using namespace std;
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+  //test();
     map<int, int> mp;
     int num;
     for (int i = 0; i < 10; i++)

@@ -25,7 +25,7 @@ int cmp(Students a, Students b)
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+  //test();
     int N, x = 0;
     cin >> N;
     Students _stu[30001];

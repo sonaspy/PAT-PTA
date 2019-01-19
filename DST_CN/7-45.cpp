@@ -13,7 +13,7 @@ map<string, int> table;
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+  //test();
     int N, K, M, tmp;
     char s[16];
     scanf("%d%d", &N, &K);

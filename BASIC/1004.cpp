@@ -20,7 +20,7 @@ bool cmp(struct Student A, struct Student B){
 int main(int argc, char const *argv[])
 {
     /* code */
-    test;
+  //test();
     int n;
     cin >> n;
     Student records[n];

@@ -13,7 +13,7 @@ int N;
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+  //test();
     char c;long id;string s;
     cin >> N;
     for(int i = 0; i < N; i++){

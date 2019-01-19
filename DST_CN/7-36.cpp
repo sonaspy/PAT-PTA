@@ -46,7 +46,7 @@ void solute(int source){
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+  //test();
     cin >> N >> M;
     int i, j;
     for (i = 1; i <= N; i++)

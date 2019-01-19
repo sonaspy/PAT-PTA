@@ -43,7 +43,7 @@ void Output(){
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+  //test();
     cin >> n >> m >> s;
     for (int i = 0; i < m; i++)
     {

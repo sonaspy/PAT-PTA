@@ -11,7 +11,7 @@ using namespace std;
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+  //test();
     int a[101], n, b[101], cur = 0, step;
     cin >> n;
     bool is_insert = true;

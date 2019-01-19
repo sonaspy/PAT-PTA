@@ -10,7 +10,7 @@ using namespace std;
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+  //test();
     int s_n, q_n;
     cin >> s_n >> q_n;
     int point[q_n], ans[q_n];

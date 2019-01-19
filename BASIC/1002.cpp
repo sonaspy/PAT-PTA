@@ -11,7 +11,7 @@ using namespace std;
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+  //test();
     string s, res;
     cin >> s;
     int sum = 0, flag = 1;

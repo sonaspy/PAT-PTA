@@ -11,7 +11,7 @@ using namespace std;
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+  //test();
     int c1,c2,t, h, m, s;
     double t1;
     cin >> c1 >> c2;

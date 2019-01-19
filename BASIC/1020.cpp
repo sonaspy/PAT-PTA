@@ -20,7 +20,7 @@ bool cmp(struct moonpie A, struct moonpie B)
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+  //test();
     int kinds, maxNeed;
     double profit = 0;
     cin >> kinds >> maxNeed;

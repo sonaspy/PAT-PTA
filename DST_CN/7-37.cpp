@@ -40,7 +40,7 @@ bool cmp_3(Student A, Student B)
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+  //test();
     int N, C;
     cin >> N >> C;
     for (int i = 0; i < N; i++)

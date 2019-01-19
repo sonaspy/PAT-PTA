@@ -82,7 +82,7 @@ void makeImageTree(ptrNode t)
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+  //test();
     int N, b;
     cin >> N;
     ptrNode head = NULL; // Build Tree.

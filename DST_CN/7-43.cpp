@@ -17,7 +17,7 @@ bool vis[MAXN] = {false};
 
 int main(int argc, char const *argv[])
 {
-    test();
+  //test();
     scanf("%d %d", &N, &P);
     for (int i = 0; i < N; ++i)
     {

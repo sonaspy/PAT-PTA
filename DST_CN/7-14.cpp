@@ -15,7 +15,7 @@ multimap<int, long, greater<int> >::iterator p;
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+  //test();
     int N;
     long  c1, c2;
     cin >> N;

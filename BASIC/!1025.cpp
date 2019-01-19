@@ -16,7 +16,7 @@ struct Node
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+  //test();
     int n, k, add, start, walk;
     map<int, Node> m;
     cin >> start >> n >> k;

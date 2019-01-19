@@ -25,7 +25,7 @@ bool cmp(struct Q a, struct Q b)
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+  //test();
     int n, m;
     cin >> n >> m;
     scanf("\n");

@@ -11,7 +11,7 @@ using namespace std;
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+  //test();
     set<char> set1;
     string s1, s2;
     cin >> s1 >> s2;

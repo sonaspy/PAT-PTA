@@ -25,7 +25,7 @@ bool cmp(struct topic A, struct topic B)
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+  //test();
     int N;
     string s;
     set<string> result, meta;

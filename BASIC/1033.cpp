@@ -12,7 +12,7 @@ using namespace std;
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+  //test();
     string s1, s2, s22, s3;
     getline(cin, s1);
     getline(cin, s2);

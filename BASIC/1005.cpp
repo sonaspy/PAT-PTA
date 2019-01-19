@@ -11,7 +11,7 @@ using namespace std;
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+  //test();
     int n, tmp, flag = 1;
     set<int, greater<int> > a, b;
     cin >> n;

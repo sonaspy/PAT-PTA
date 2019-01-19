@@ -10,7 +10,7 @@ using namespace std;
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+  //test();
     vector<int> a, b;
     int n, m, flag = 1, tmp;
     cin >> n >> m;

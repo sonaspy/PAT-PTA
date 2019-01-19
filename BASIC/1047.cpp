@@ -20,7 +20,7 @@ bool cmp(struct Node A, struct Node B){
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+  //test();
     int n, score, id;
     cin >>n;
     const char *sep  = "-";

@@ -15,7 +15,7 @@ struct hashnode
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+  //test();
     cin >> N >> P;
     struct hashnode table[100000];
     int in_num, pos;

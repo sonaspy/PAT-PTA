@@ -10,7 +10,7 @@ using namespace std;
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+  //test();
     string s1, s2, s3, s4,
         week[7] = {"MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"};
     cin >> s1 >> s2 >> s3 >> s4;

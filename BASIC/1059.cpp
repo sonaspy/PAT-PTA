@@ -28,7 +28,7 @@ bool isPrime(int num)
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+  //test();
     map<int, Node> mp;
     int n, m;
     cin >> n;

@@ -12,7 +12,7 @@ using namespace std;
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+    //test();
     int n, len;
     cin >> n;
     vector<double> st;
@@ -31,6 +31,5 @@ int main(int argc, char const *argv[])
             sum += st[i] * (double)pow(2, -i - 1);
     }
     cout << int(sum);
-
     return 0;
 }

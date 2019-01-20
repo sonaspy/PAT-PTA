@@ -37,7 +37,6 @@ int main(int argc, char const *argv[])
         ques[i].point = s[0] - '0';
         ques[i].items = s[2] - '0';
         ques[i].ans = s.substr(4, s.size() - 4);
-        ;
     }
     for (int i = 1; i <= n; i++)
     {

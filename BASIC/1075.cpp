@@ -2,7 +2,7 @@
 // coding - utf_8
 
 #include <iostream>
-#include <map>
+#include <unordered_map>
 #include <algorithm>
 #include <vector>
 
@@ -18,11 +18,11 @@ int main(int argc, char const *argv[])
 {
     /* code */
     test();
-    int n, k, adr, start, walk;
-    map<int, Node> m;
+    int n, k, adr, addr_1st, walk;
+    unordered_map<int, Node> m;
     vector<Node> l1, l2, l3, res;
-    cin >> start >> n >> k;
-    walk = start;
+    cin >> addr_1st >> n >> k;
+    walk = addr_1st;
     for (int i = 0; i < n; i++)
     {
         scanf("%d", &adr);

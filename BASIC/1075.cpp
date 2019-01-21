@@ -33,10 +33,7 @@ int main(int argc, char const *argv[])
         nodes[i] = {walk, m[walk].data, 0};
         walk = m[walk].next;
         if (walk == -1)
-        {
             n = i + 1;
-            break;
-        }
     }
     for (int i = 0; i < n; i++)
     {

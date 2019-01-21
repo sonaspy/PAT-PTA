@@ -2,8 +2,7 @@
 // coding - utf_8
 
 #include <iostream>
-#include <string>
-#include <vector>
+#include <cstring>
 #include <algorithm>
 #define test() freopen("in", "r", stdin)
 
@@ -12,53 +11,51 @@ using namespace std;
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
-    int a[21];
-    vector<int> res;
-    string s1, s2, s3;
-    cin >> s1 >> s2 >> s3;
-    int n1 = s1.size();
-    reverse(s2.begin(), s2.end());
-    reverse(s3.begin(), s3.end());
-    for (int i = 0; i < s1.size(); i++)
+    //test();
+    char jinzhi[21], s1[21], s2[21];
+    int ans[21];
+    int flag = 0;
+    scanf("%s %s %s", jinzhi, s1, s2);
+    int len1 = strlen(s1);
+    int len2 = strlen(s2);
+    int len = strlen(jinzhi);
+    reverse(s1, s1 + len1);
+    reverse(s2, s2 + len2);
+    reverse(jinzhi, jinzhi + len);
+    for (int i = len1; i < len; i++)
+        s1[i] = '0';
+    for (int i = len2; i < len; i++)
+        s2[i] = '0';
+    int carry = 0;
+    for (int i = 0; i < len; i++)
     {
-        if (s1[i] == '0')
-            a[n1 - i - 1] = 10;
-        else
-            a[n1 - i - 1] = s1[i] - '0';
+        int mod = jinzhi[i] - '0';
+        if (jinzhi[i] == '0')
+            mod = 10;
+        ans[i] = ((s1[i] - '0') + (s2[i] - '0') + carry) % mod;
+        carry = ((s1[i] - '0') + (s2[i] - '0') + carry) / mod;
     }
-    int carry = 0, i;
-    for (i = 0; i < s2.size() && i < s3.size(); i++)
+    if (carry != 0)
     {
-        int sum = 0;
-        int n2 = s2[i] - '0', n3 = s3[i] - '0';
-        sum = (n2 + n3 + carry) % a[i];
-        carry = (n2 + n3 + carry) / a[i];
-        res.push_back(sum);
+        printf("%d", carry);
+        for (int i = len - 1; i >= 0; i--)
+        {
+            flag = 1;
+            printf("%d", ans[i]);
+        }
     }
-    if (s2.size() != s3.size())
+    else
     {
-        if (i == s2.size())
-            for (; i < s3.size(); i++)
+        for (int i = len - 1; i >= 0; i--)
+        {
+            if (ans[i] != 0 || flag == 1)
             {
-                int sum = 0, num = s3[i] - '0';
-                sum = (num + carry) % a[i];
-                carry = (num + carry) / a[i];
-                res.push_back(sum);
+                flag = 1;
+                printf("%d", ans[i]);
             }
-        else
-            for (; i < s2.size(); i++)
-            {
-                int sum = 0, num = s2[i] - '0';
-                sum = (num + carry) % a[i];
-                carry = (num + carry) / a[i];
-                res.push_back(sum);
-            }
+        }
     }
-    reverse(res.begin(), res.end());
-    for(i = 0; i < res.size() && res[i] == 0;i++);
-    for (; i < res.size() ; i++)
-        cout << res[i];
-
+    if (flag == 0)
+        printf("0");
     return 0;
 }

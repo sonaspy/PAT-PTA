@@ -11,43 +11,35 @@ int main(int argc, char const *argv[])
 {
     /* code */
     test();
-    string s1, s2, num;
+    string s;
     char c;
     cin >> c;
     getchar();
-    getline(cin, s1);
+    getline(cin, s);
     if (c == 'C')
     {
-        for (int i = 0; i < s1.size(); i++)
+        for (int i = 0; i < s.size(); i++)
         {
-            int count = 1;
-            for (; i < s1.size() && isalpha(s1[i]) && s1[i + 1] == s1[i]; i++)
-                count++;
-            if (count > 1)
-                s2.push_back(count + '0');
-            s2.push_back(s1[i]);
+            int cnt = 1;
+            while (s[i] == s[i + 1])
+                i++, cnt++;
+            if (cnt > 1)
+                cout << cnt;
+            cout << s[i];
         }
-        cout << s2;
     }
     else
     {
-        for (int i = 0; i < s1.size(); i++)
+        for (int i = 0; i < s.size(); i++)
         {
-            if (s1[i] >= '0' && s1[i] <= '9')
-            {
-                int cur, len;
-                cur = i;
-                for (; i < s1.size() && s1[i] >= '0' && s1[i] <= '9'; i++)
-                    ;
-                num = s1.substr(cur, i - cur);
-                len = stoi(num);
-                for (int j = 0; j < len; j++)
-                    s2.push_back(s1[i]);
-            }
-            else
-                s2.push_back(s1[i]);
+            int cnt = 0;
+            while (s[i] <= '9' && s[i] >= '0')
+                cnt = cnt * 10 + s[i++] - '0';
+            for (int j = 0; j < cnt; j++)
+                cout << s[i];
+            if (cnt == 0)
+                cout << s[i];
         }
-        cout << s2;
     }
     return 0;
 }

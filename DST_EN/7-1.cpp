@@ -13,22 +13,22 @@ int main(int argc, char const *argv[])
     test();
     int k;
     cin >> k;
-    int a[k], thisSum = 0, maxSum = -1, start_count = 0, firstNum = 0, lastNum = 0;
-    int temp_first = 0;
+    int a[k], thisSum = 0, maxSum = -1, start_count = 0, firstNum = 0, last = 0;
+    int tmp_1st = 0;
     for (int i = 0; i < k; i++)
     {
-        cin >> a[i];
+        scanf("%d",&a[i]);
         thisSum += a[i];
         if (!start_count)
         {
-            temp_first = a[i];
+            tmp_1st = a[i];
             start_count = 1;
         }
         if (thisSum > maxSum)
         {
             maxSum = thisSum;
-            firstNum = temp_first;
-            lastNum = a[i];
+            firstNum = tmp_1st;
+            last = a[i];
         }
         else if (thisSum < 0)
         {
@@ -39,6 +39,6 @@ int main(int argc, char const *argv[])
     if (maxSum < 0)
         cout << 0 << " " << a[0] << " " << a[k - 1];
     else
-        cout << maxSum << " " << firstNum << " " << lastNum;
+        cout << maxSum << " " << firstNum << " " << last;
     return 0;
 }

@@ -15,9 +15,7 @@ void PercolateDown(int p, PriorityQueue H)
     {
         Child = Parent * 2;
         if (Child != H->Size && H->Elements[Child] > H->Elements[Child + 1])
-        {
             Child++;
-        }
         if (X <= H->Elements[Child])
             break;
         else

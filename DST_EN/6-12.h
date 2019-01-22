@@ -1,26 +1,41 @@
-void ShortestDist(LGraph Graph, int dist[], Vertex S)
-{
-    int front = 0, rear = 0;
-    PtrToAdjVNode p = NULL;
-    Vertex que[MaxVertexNum];
-    for (int i = 0; i < MaxVertexNum; i++)
-        que[i] = dist[i] = -1;
-    dist[S] = 0;
-    que[0] = S;
 
-    while (front <= rear)
+void ShortestDist(MGraph Graph, int dist[], Vertex S)
+{
+    int book[MaxVertexNum];
+    int i, j, k;
+    for (j = 0; j < Graph->Nv; j++)
     {
-        Vertex s = que[front++];
-        p = Graph->G[s].FirstEdge;
-        while (p)
+        book[j] = 0;
+        dist[j] = Graph->G[S][j];
+    }
+    book[S] = 1;
+    dist[S] = 0;
+    for (j = 0; j < Graph->Nv - 1; j++)
+    {
+        int min = INFINITY;
+        int u = -1;
+        for (k = 0; k < Graph->Nv; k++)
         {
-            Vertex v = p->AdjV;
-            if (dist[v] == -1)
+            if (book[k] == 0 && dist[k] < min)
             {
-                dist[v] = 1 + dist[s];
-                que[++rear] = v;
+                min = dist[k];
+                u = k;
             }
-            p = p->Next;
         }
+        if (u == -1)
+            break;
+        book[u] = 1;
+        for (k = 0; k < Graph->Nv; k++)
+        {
+            if (!book[k] && dist[k] > dist[u] + Graph->G[u][k])
+            {
+                dist[k] = dist[u] + Graph->G[u][k];
+            }
+        }
+    }
+    for (i = 0; i < Graph->Nv; i++)
+    {
+        if (dist[i] == INFINITY)
+            dist[i] = -1;
     }
 }

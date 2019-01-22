@@ -1,27 +1,26 @@
-int CountConnectedComponents(LGraph Graph)
+void ShortestDist(LGraph Graph, int dist[], Vertex S)
 {
-    int Count = 0, Front = 0, Rear = 0;
-    Vertex Visit[MaxVertexNum] = {0};
-    Vertex Queue[MaxVertexNum] = {0};
-    Vertex V;
-    for (int i = 0; i < Graph->Nv; i++)
-        if (!Visit[i])
+    int front = 0, rear = 0;
+    PtrToAdjVNode p = NULL;
+    Vertex que[MaxVertexNum];
+    for (int i = 0; i < MaxVertexNum; i++)
+        que[i] = dist[i] = -1;
+    dist[S] = 0;
+    que[0] = S;
+
+    while (front <= rear)
+    {
+        Vertex s = que[front++];
+        p = Graph->G[s].FirstEdge;
+        while (p)
         {
-            Queue[Front] = i;
-            Visit[i] = 1;
-            while (Front <= Rear)
+            Vertex v = p->AdjV;
+            if (dist[v] == -1)
             {
-                PtrToAdjVNode Ptr = Graph->G[Queue[Front]].FirstEdge;
-                for (; Ptr != NULL; Ptr = Ptr->Next)
-                    if (!Visit[Ptr->AdjV])
-                    {
-                        Queue[++Rear] = Ptr->AdjV;
-                        Visit[Ptr->AdjV] = 1;
-                    }
-                Front++;
+                dist[v] = 1 + dist[s];
+                que[++rear] = v;
             }
-            Count++;
-            Rear = Front;
+            p = p->Next;
         }
-    return Count;
+    }
 }

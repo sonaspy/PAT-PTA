@@ -2,7 +2,7 @@ void ShortestDist(LGraph Graph, int dist[], Vertex S)
 {
     int front = 0, rear = 0;
     PtrToAdjVNode p = NULL;
-    Vertex *que = (Vertex *)malloc(MaxVertexNum * sizeof(Vertex));
+    Vertex que[MaxVertexNum];
     for (int i = 0; i < MaxVertexNum; i++)
         que[i] = dist[i] = -1;
     dist[S] = 0;

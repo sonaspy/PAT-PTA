@@ -9,7 +9,7 @@ void ShortestDist(MGraph Graph, int dist[], Vertex S)
     }
     book[S] = 1;
     dist[S] = 0;
-    for (j = 0; j < Graph->Nv; j++)
+    while(1)
     {
         int min = INFINITY;
         int u = -1;

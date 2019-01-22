@@ -10,7 +10,6 @@ using namespace std;
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
     string s;
     char c;
     cin >> c;

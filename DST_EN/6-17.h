@@ -22,9 +22,9 @@ void ShortestDist(MGraph Graph, int dist[], int path[], Vertex S)
                 count[i] = count[S];
                 path[i] = S;
             }
-            else if (!vis[i] && Graph->G[S][i] + mi == dist[i] && count[i] > count[S] + 1)
+            else if (!vis[i] && Graph->G[S][i] + mi == dist[i] && count[i] > count[S])
             {
-                count[i] = count[S] + 1;
+                count[i] = count[S];
                 path[i] = S;
             }
         }

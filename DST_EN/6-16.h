@@ -1,8 +1,8 @@
-void ShortestDist(MGraph Graph, int dist[], int path[], Vertex S)
+void ShortestDist(MGraph Graph, int dist[], int count[], Vertex S)
 {
-    int vis[MaxVertexNum], count[MaxVertexNum];
-    for (int i = 0; i < Graph->Nv; i++)
-        count[i] = vis[i] = 0, dist[i] = INFINITY, path[i] = -1;
+    int vis[MaxVertexNum];
+    for (int i = 0; i < MaxVertexNum; i++)
+        dist[i] = INFINITY, vis[i] = count[i] = 0;
     dist[S] = 0, count[S] = 1;
     while (1)
     {
@@ -16,20 +16,13 @@ void ShortestDist(MGraph Graph, int dist[], int path[], Vertex S)
         vis[S] = 1;
         for (int i = 0; i < Graph->Nv; i++)
         {
-            if (!vis[i] && Graph->G[S][i] + mi < dist[i])
-            {
-                dist[i] = Graph->G[S][i] + mi;
-                count[i] = count[S];
-                path[i] = S;
-            }
-            else if (!vis[i] && Graph->G[S][i] + mi == dist[i] && count[S] + 1 < count[i])
-            {
-                count[i] = count[S] + 1;
-                path[i] = S;
-            }
+            if (!vis[i] && mi + Graph->G[S][i] < dist[i])
+                dist[i] = mi + Graph->G[S][i], count[i] = count[S];
+            else if (!vis[i] && mi + Graph->G[S][i] == dist[i]) // 注释针对点
+                count[i] += count[S];
         }
     }
     for (int i = 0; i < MaxVertexNum; i++)
-        if (INFINITY == dist[i])
-            dist[i] = -1;
+        if (dist[i] == INFINITY)
+            dist[i] = -1, count[i] = 0;
 }

@@ -47,6 +47,5 @@ int main(int argc, char const *argv[])
         else
             printf("%05d\n", nodes[i + 1].local);
     }
-
     return 0;
 }

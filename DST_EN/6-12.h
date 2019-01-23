@@ -35,4 +35,5 @@ void ShortestDist(MGraph Graph, int dist[], Vertex S)
         if (dist[i] == INFINITY)
             dist[i] = -1;
     }
-}// Dijkstra
+}
+//  Dijkstra

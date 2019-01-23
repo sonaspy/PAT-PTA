@@ -18,7 +18,7 @@ void ShortestDist(MGraph Graph, int dist[], int count[], Vertex S)
         {
             if (!vis[i] && mi + Graph->G[S][i] < dist[i])
                 dist[i] = mi + Graph->G[S][i], count[i] = count[S];
-            else if (!vis[i] && mi + Graph->G[S][i] == dist[i]) // 注释针对点
+            else if (!vis[i] && mi + Graph->G[S][i] == dist[i])
                 count[i] += count[S];
         }
     }

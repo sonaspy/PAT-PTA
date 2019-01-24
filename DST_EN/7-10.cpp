@@ -1,55 +1,52 @@
-// author - newguo@sonaspy.cn
-// coding - utf_8
+// author - newguo@sonaspy.cn 
+// coding - utf_8 
 
-#include <iostream>
-#include <vector>
-#include <cmath>
+#include<iostream>
+#include<vector>
+#include<cmath>
+#define test() freopen("in","r",stdin)
 
 using namespace std;
-
-struct node
-{
+struct Node{
     int x = 0, y = 0, vis = 0;
-}tmp;
-node ori;
-vector<node> cayman;
+}tmp, o;
 int n, d;
-inline double distance(node a, node b)
-{
+vector<int> firstjump;
+vector<Node> cayman;
+
+inline double distance( Node a, Node b){
     return sqrt(pow(a.x - b.x, 2) + pow(a.y - b.y, 2));
 }
-void dfs(int i)
-{
-    cayman[i].vis = 1;
-    if (50 - abs(cayman[i].x) <= d || 50 - abs(cayman[i].y) <= d)
-    {
+
+void DFS(int i){
+    cayman[i].vis =1;
+    if (50 - abs(cayman[i].x) <= d || 50 - abs(cayman[i].y) <= d){
         printf("Yes");
         exit(0);
     }
-    for (int j = 0; j < n; j++)
-        if (!cayman[j].vis && distance(cayman[i], cayman[j]) <= d)
-            dfs(j);
+    for(int j = 0; j < n; j++)
+        if(!cayman[j].vis && distance(cayman[i], cayman[j]) <= d)
+            DFS(j);
 }
-int main()
+int main(int argc, char const *argv[])
 {
-    vector<int> firstJump;
-    scanf("%d%d", &n, &d);
-    for (int i = 0; i < n; i++)
-    {
-        scanf("%d%d", &tmp.x, &tmp.y);
+    /* code */
+    test();
+    cin >> n >> d;
+    for(int i = 0; i < n; i++){
+        cin >> tmp.x >> tmp.y;
         cayman.push_back(tmp);
     }
-    if (7.5 + d >= 50)
-    {
-        printf("Yes");
+    if(d+7.5 >= 50){
+        printf("Yes\n");
         return 0;
     }
     for (int i = 0; i < n; i++)
-        if (distance(cayman[i], ori) <= d + 7.5)
-            firstJump.push_back(i); // first jump
-    for (int i = 0; i < firstJump.size(); i++)
-        if (!cayman[firstJump[i]].vis)
-            dfs(firstJump[i]);
+        if(distance(o, cayman[i]) <= 7.5 + d)
+            firstjump.push_back(i);
+    for(int i = 0; i < firstjump.size(); i++)
+        if(!cayman[firstjump[i]].vis)
+            DFS(firstjump[i]);
     printf("No");
     return 0;
 }

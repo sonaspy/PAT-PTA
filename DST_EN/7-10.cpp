@@ -9,8 +9,7 @@ using namespace std;
 
 struct node
 {
-    double x = 0, y = 0;
-    int vis = 0;
+    int x = 0, y = 0, vis = 0;
 }tmp;
 node ori;
 vector<node> cayman;
@@ -37,7 +36,7 @@ int main()
     scanf("%d%d", &n, &d);
     for (int i = 0; i < n; i++)
     {
-        scanf("%lf%lf", &tmp.x, &tmp.y);
+        scanf("%d%d", &tmp.x, &tmp.y);
         cayman.push_back(tmp);
     }
     if (7.5 + d >= 50)

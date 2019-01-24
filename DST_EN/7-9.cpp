@@ -14,7 +14,7 @@ using namespace std;
 
 string nodes[70];
 priority_queue<int, vector<int>, greater<int>> pq;
-unordered_map<char, int> mp;
+unordered_map<char, int> freq;
 int n;
 int main(int argc, char const *argv[])
 {
@@ -26,8 +26,8 @@ int main(int argc, char const *argv[])
     for (int i = 0; i < n; i++)
     {
         cin >> c;
-        cin >> mp[c];
-        pq.push(mp[c]);
+        cin >> freq[c];
+        pq.push(freq[c]);
     }
     cin >> m;
     while (true)
@@ -48,7 +48,7 @@ int main(int argc, char const *argv[])
         {
             cin >> c;
             cin >> nodes[i];
-            sum += mp[c] * nodes[i].size();
+            sum += freq[c] * nodes[i].size();
         }
         bool flag = true;
         for (int i = 0; i < n; i++)

@@ -12,7 +12,7 @@
 
 using namespace std;
 
-string nodes[70];
+string codes[100];
 priority_queue<int, vector<int>, greater<int>> pq;
 unordered_map<char, int> freq;
 int n;
@@ -47,15 +47,15 @@ int main(int argc, char const *argv[])
         for (int i = 0; i < n; i++)
         {
             cin >> c;
-            cin >> nodes[i];
-            sum += freq[c] * nodes[i].size();
+            cin >> codes[i];
+            sum += freq[c] * codes[i].size();
         }
         bool flag = true;
         for (int i = 0; i < n; i++)
         {
-            string str = nodes[i];
+            string str = codes[i];
             for (int j = 0; j < n; j++)
-                if (i != j && str == nodes[j].substr(0, str.length()))
+                if (i != j && str == codes[j].substr(0, str.length()))
                     flag = false;
         }
         if (sum == wpl && flag)

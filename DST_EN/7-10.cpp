@@ -15,7 +15,7 @@ struct node
 node ori;
 vector<node> cayman;
 int n, d;
-inline double fdis(node a, node b)
+inline double distance(node a, node b)
 {
     return sqrt(pow(a.x - b.x, 2) + pow(a.y - b.y, 2));
 }
@@ -28,7 +28,7 @@ void dfs(int i)
         exit(0);
     }
     for (int j = 0; j < n; j++)
-        if (!cayman[j].vis && fdis(cayman[i], cayman[j]) <= d)
+        if (!cayman[j].vis && distance(cayman[i], cayman[j]) <= d)
             dfs(j);
 }
 int main()
@@ -46,7 +46,7 @@ int main()
         return 0;
     }
     for (int i = 0; i < n; i++)
-        if (fdis(cayman[i], ori) <= d + 7.5)
+        if (distance(cayman[i], ori) <= d + 7.5)
             firstJump.push_back(i); // first jump
     for (int i = 0; i < firstJump.size(); i++)
         if (!cayman[firstJump[i]].vis)

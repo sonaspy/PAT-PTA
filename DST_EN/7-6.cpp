@@ -1,63 +1,65 @@
-#include <iostream>
+// author - newguo@sonaspy.cn
+// coding - utf_8
 
+#include <iostream>
 using namespace std;
-typedef struct node *ptrnode;
+typedef struct node *avlNode;
 struct node
 {
-    int v, height = 1;
-    ptrnode left = NULL, right = NULL;
+    avlNode left = NULL, right = NULL;
+    int data, height = 1;
 };
-ptrnode root;
-int getHeight(ptrnode root)
+avlNode Root;
+
+int getHeight(avlNode root)
 {
     if (!root)
         return 0;
     return root->height;
 }
-void updateHeight(ptrnode root)
+void updateHeight(avlNode root)
 {
     root->height = max(getHeight(root->left), getHeight(root->right)) + 1;
 }
-
-int getBfactor(ptrnode root)
+int getAVLfactor(avlNode root)
 {
     return getHeight(root->left) - getHeight(root->right);
 }
-void RR(ptrnode &root)
+void LL(avlNode &root)
 {
-    ptrnode temp = root->right;
-    root->right = temp->left;
-    temp->left = root;
+    avlNode tmp = root->left;
+    root->left = tmp->right;
+    tmp->right = root;
     updateHeight(root);
-    updateHeight(temp);
-    root = temp;
+    updateHeight(tmp);
+    root= tmp;
 }
-void LL(ptrnode &root)
+void RR(avlNode &root)
 {
-    ptrnode temp = root->left;
-    root->left = temp->right;
-    temp->right = root;
+    avlNode tmp = root->right;
+    root->right = tmp->left;
+    tmp->left = root;
     updateHeight(root);
-    updateHeight(temp);
-    root = temp;
+    updateHeight(tmp);
+    root = tmp;
 }
-void insert(ptrnode &root, int v)
+void insert_2_avlTree(avlNode &root, int data)
 {
     if (!root)
     {
         root = new node;
-        root->v = v;
+        root->data = data;
         return;
     }
-    if (v < root->v)
+    if (data < root->data)
     {
-        insert(root->left, v);
+        insert_2_avlTree(root->left, data);
         updateHeight(root);
-        if (getBfactor(root) == 2)
+        if (getAVLfactor(root) == 2)
         {
-            if (getBfactor(root->left) == 1) //LL
+            if (getAVLfactor(root->left) == 1)
                 LL(root);
-            else if (getBfactor(root->left) == -1) //LR
+            else if (getAVLfactor(root->left) == -1)
             {
                 RR(root->left);
                 LL(root);
@@ -66,13 +68,13 @@ void insert(ptrnode &root, int v)
     }
     else
     {
-        insert(root->right, v);
+        insert_2_avlTree(root->right, data);
         updateHeight(root);
-        if (getBfactor(root) == -2)
+        if (getAVLfactor(root) == -2)
         {
-            if (getBfactor(root->right) == -1) //RR
+            if (getAVLfactor(root->right) == -1)
                 RR(root);
-            else if (getBfactor(root->right) == 1) //RL
+            else if (getAVLfactor(root->right) == 1)
             {
                 LL(root->right);
                 RR(root);
@@ -80,15 +82,16 @@ void insert(ptrnode &root, int v)
         }
     }
 }
-int main()
+int main(int argc, char const *argv[])
 {
-    int n, data;
+    /* code */
+    int data, n;
     cin >> n;
     for (int i = 0; i < n; i++)
     {
         cin >> data;
-        insert(root, data);
+        insert_2_avlTree(Root, data);
     }
-    cout << root->v;
+    cout << Root->data;
     return 0;
 }

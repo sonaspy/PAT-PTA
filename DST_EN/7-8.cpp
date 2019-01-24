@@ -10,22 +10,22 @@
 using namespace std;
 const int maxn = 10001;
 vector<int> Root(maxn, -1);
-int findRoot(int n)
+int getRoot(int n)
 {
     if (Root[n] == -1)
         return n;
-    return (Root[n] = findRoot(Root[n]));
+    return (Root[n] = getRoot(Root[n]));
 }
 void uni(int a, int b)
 {
-    int fa = findRoot(a);
-    int fb = findRoot(b);
+    int fa = getRoot(a);
+    int fb = getRoot(b);
     if (fa != fb)
         Root[fa] = fb;
 }
 void check(int a, int b)
 {
-    if (findRoot(a) == findRoot(b))
+    if (getRoot(a) == getRoot(b))
         cout << "yes" << endl;
     else
         cout << "no" << endl;

@@ -20,7 +20,7 @@ int main(int argc, char const *argv[])
 {
     /* code */
     //test();
-    int n, m, wpl = 0;
+    int n, m, total_w = 0;
     char c;
     cin >> n;
     for (int i = 0; i < n; i++)
@@ -39,7 +39,7 @@ int main(int argc, char const *argv[])
         tp += pq.top();
         pq.pop();
         pq.push(tp);
-        wpl += tp;
+        total_w += tp;
     }
     while (m--)
     {
@@ -58,7 +58,7 @@ int main(int argc, char const *argv[])
                 if (i != j && str == codes[j].substr(0, str.length()))
                     flag = false;
         }
-        if (sum == wpl && flag)
+        if (sum == total_w && flag)
             printf("Yes\n");
         else
             printf("No\n");

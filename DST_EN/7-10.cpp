@@ -40,7 +40,6 @@ int main()
     for (int i = 0; i < n; i++)
     {
         scanf("%lf%lf", &nd.x, &nd.y);
-        nd.vis = 0;
         map_cro.push_back(nd);
     }
     if (7.5 + d >= 50)

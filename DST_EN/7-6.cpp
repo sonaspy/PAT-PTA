@@ -5,7 +5,7 @@ typedef struct node *ptrnode;
 struct node
 {
     int v, height = 1;
-    ptrnode lchild = NULL, rchild = NULL;
+    ptrnode left = NULL, right = NULL;
 };
 ptrnode root;
 int getHeight(ptrnode root)
@@ -16,27 +16,27 @@ int getHeight(ptrnode root)
 }
 void updateHeight(ptrnode root)
 {
-    root->height = max(getHeight(root->lchild), getHeight(root->rchild)) + 1;
+    root->height = max(getHeight(root->left), getHeight(root->right)) + 1;
 }
 
 int getBfactor(ptrnode root)
 {
-    return getHeight(root->lchild) - getHeight(root->rchild);
+    return getHeight(root->left) - getHeight(root->right);
 }
 void RR(ptrnode &root)
 {
-    ptrnode temp = root->rchild;
-    root->rchild = temp->lchild;
-    temp->lchild = root;
+    ptrnode temp = root->right;
+    root->right = temp->left;
+    temp->left = root;
     updateHeight(root);
     updateHeight(temp);
     root = temp;
 }
 void LL(ptrnode &root)
 {
-    ptrnode temp = root->lchild;
-    root->lchild = temp->rchild;
-    temp->rchild = root;
+    ptrnode temp = root->left;
+    root->left = temp->right;
+    temp->right = root;
     updateHeight(root);
     updateHeight(temp);
     root = temp;
@@ -51,30 +51,30 @@ void insert(ptrnode &root, int v)
     }
     if (v < root->v)
     {
-        insert(root->lchild, v);
+        insert(root->left, v);
         updateHeight(root);
         if (getBfactor(root) == 2)
         {
-            if (getBfactor(root->lchild) == 1) //LL
+            if (getBfactor(root->left) == 1) //LL
                 LL(root);
-            else if (getBfactor(root->lchild) == -1) //LR
+            else if (getBfactor(root->left) == -1) //LR
             {
-                RR(root->lchild);
+                RR(root->left);
                 LL(root);
             }
         }
     }
     else
     {
-        insert(root->rchild, v);
+        insert(root->right, v);
         updateHeight(root);
         if (getBfactor(root) == -2)
         {
-            if (getBfactor(root->rchild) == -1) //RR
+            if (getBfactor(root->right) == -1) //RR
                 RR(root);
-            else if (getBfactor(root->rchild) == 1) //RL
+            else if (getBfactor(root->right) == 1) //RL
             {
-                LL(root->rchild);
+                LL(root->right);
                 RR(root);
             }
         }

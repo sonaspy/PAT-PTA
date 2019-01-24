@@ -12,11 +12,7 @@
 
 using namespace std;
 
-struct Node
-{
-    int weight;
-    string s;
-} nodes[70];
+string nodes[70];
 priority_queue<int, vector<int>, greater<int>> pq;
 unordered_map<char, int> mp;
 int n;
@@ -51,15 +47,15 @@ int main(int argc, char const *argv[])
         for (int i = 0; i < n; i++)
         {
             cin >> c;
-            cin >> nodes[i].s;
-            sum += mp[c] * nodes[i].s.size();
+            cin >> nodes[i];
+            sum += mp[c] * nodes[i].size();
         }
         bool flag = true;
         for (int i = 0; i < n; i++)
         {
-            string pre = nodes[i].s;
+            string str = nodes[i];
             for (int j = 0; j < n; j++)
-                if (i != j && pre == nodes[j].s.substr(0, pre.length()))
+                if (i != j && str == nodes[j].substr(0, str.length()))
                     flag = false;
         }
         if (sum == wpl && flag)

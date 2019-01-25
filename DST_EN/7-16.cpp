@@ -1,23 +1,23 @@
-// author - newguo@sonaspy.cn 
-// coding - utf_8 
+// author - newguo@sonaspy.cn
+// coding - utf_8
 
-#include<iostream>
+#include <iostream>
 
-#define test() freopen("in","r",stdin)
+#define test() freopen("in", "r", stdin)
 
 using namespace std;
 
+int n, t, cnt = 0, a[100002];
 int main(int argc, char const *argv[])
 {
     /* code */
-    int n, t, cnt = 0, a[100002];
     cin >> n;
     for (int i = 0; i < n; i++)
     {
-        cin >> t;
+        scanf("%d",&t);
         a[t] = i;
     }
-    for (int i = 1; i < n; i++)
+    for (int i = 0; i < n; i++)
     {
         while (i != a[i])
         {

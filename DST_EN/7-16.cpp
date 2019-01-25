@@ -18,7 +18,6 @@ int main(int argc, char const *argv[])
         a[t] = i;
     }
     for (int i = 0; i < n; i++)
-    {
         while (i != a[i])
         {
             while (a[0] != 0)
@@ -32,7 +31,6 @@ int main(int argc, char const *argv[])
                 cnt++;
             }
         }
-    }
     cout << cnt;
     return 0;
 }

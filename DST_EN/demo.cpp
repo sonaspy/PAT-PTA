@@ -24,10 +24,9 @@ void insert(int *&a, int data, int cur)
 int main(int argc, char const *argv[])
 {
     /* code */
-    int *a = new int[10];
-    fill(a, a+10,0);
-    a[0] = 10;
-    insert(a, 100, 0);
-    cout << a[2];
+    string s = "421321";
+    for(auto i : s)
+        if(isdigit(i))
+            cout << 1;
     return 0;
 }

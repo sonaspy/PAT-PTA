@@ -77,6 +77,7 @@
     "__functional_03": "cpp",
     "__mutex_base": "cpp",
     "functional": "cpp",
-    "regex": "cpp"
+    "regex": "cpp",
+    "queue": "cpp"
 }
 }

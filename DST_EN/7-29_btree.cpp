@@ -387,7 +387,6 @@ class BPlusTree
         cout << endl;
     }
 };
-
 int main()
 {
     BPlusTree<int> *p = new BPlusTree<int>;
@@ -398,7 +397,7 @@ int main()
         int x;
         scanf("%d", &x);
         p->insert(x, 2);
-    }
+    } 
     p->print();
     system("pause");
     return 0;

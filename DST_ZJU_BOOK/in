@@ -1,7 +1,5 @@
-void test()
-{
-    int i, A[10];
-    for (i=0; i<10; i++) /*/
-        A[i] = i;
-}
-.
+4 10
+SSSXXSXXSX
+SSSXXSXXS
+SSSSSSSSSSXSSXXXXXXXXXXX
+SSSXXSXXX

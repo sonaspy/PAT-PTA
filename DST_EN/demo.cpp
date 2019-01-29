@@ -4,6 +4,8 @@
 #include <iostream>
 #include<string.h>
 #include<algorithm>
+#include<vector>
+#include<regex>
 #define test() freopen("in", "r", stdin)
 
 using namespace std;
@@ -24,9 +26,7 @@ void insert(int *&a, int data, int cur)
 int main(int argc, char const *argv[])
 {
     /* code */
-    string s = "421321";
-    for(auto i : s)
-        if(isdigit(i))
-            cout << 1;
+    
+
     return 0;
 }

@@ -70,6 +70,5 @@ int main(int argc, char const *argv[])
     expression.pop_back();
     cout << expression;
 
-
     return 0;
 }

@@ -1,74 +1,59 @@
-// author - newguo@sonaspy.cn
-// coding - utf_8
 
+// author - newguo@sonaspy.cn 
+// coding - utf_8 
 #include <iostream>
-#include <stack>
-#include <cmath>
-#include <unordered_map>
-#define test() freopen("in", "r", stdin)
+#include <map>
+#include <algorithm>
 
 using namespace std;
-stack<int> oprand;
-stack<char> oprator;
-stack<int> number;
-int getNum()
+int main()
 {
-    int expr = 0, num = 0;
-    while (number.size())
+    char s[50];
+    int c = 0;
+    string a, res;
+    cin >> a;
+    map<char, int> p;
+    p['*'] = p['/'] = 1;
+    p['('] = p[')'] = 2;
+    for (int i = 0; i < a.size(); i++)
     {
-        num += number.top() * pow(10, expr);
-        number.pop();
-        expr++;
-    }
-    return num;
-}
-int main(int argc, char const *argv[])
-{
-    /* code */
-    test();
-    string s, expression;
-    unordered_map<char, int> mp;
-    mp['+'] = 1, mp['-'] = 1, mp['/'] = 2, mp['*'] = 2, mp['('] = 3, mp[')'] = 0;
-    cin >> s, s.push_back('!');
-    for (int i = 0; i < s.size(); i++)
-    {
-        if (isdigit(s[i]))
+        if (((i==0|| a[i - 1] == '(') && (a[i] == '+' || a[i] == '-')) || a[i] == '.' || isdigit(a[i]))
         {
-            number.push(s[i] - '0');
-            continue;
+            if (a[i] != '+')
+                res.push_back(a[i]);
+            while (a[i + 1] == '.' || isdigit(a[i+1]))
+                res.push_back(a[++i]);
+            res.push_back(' ');
         }
         else
         {
-            if (number.size())
-                expression += to_string(getNum()) + " ";
-            if (i == s.size() - 1)
-                break;
-            if (oprator.size() && mp[s[i]] < mp[oprator.top()])
+            if (a[i] == ')')
             {
-                if(s[i] == ')') mp['('] = 3;
-                while (oprator.size())
+                while (c && s[c - 1] != '(')
                 {
-                    if (oprator.top()!= '(')
-                        expression.push_back(oprator.top()), expression.push_back(' ');
-                    oprator.pop();
+                    res.push_back(s[c-1]), res.push_back(' ');
+                    c--;
                 }
+                c--;
             }
+            else if (!c || p[a[i]] > p[s[c - 1]])// priority cur > stack top, then push
+                s[c++] = a[i];
             else
             {
-                if (s[i] == '(')
-                    mp['('] = 0;
-                oprator.push(s[i]);
+                while (c && s[c - 1] != '(')
+                {
+                    res.push_back(s[c - 1]), res.push_back(' ');
+                    c--;
+                }
+                s[c++] = a[i];
             }
         }
     }
-    while (oprator.size())
+    while (c)
     {
-        expression.push_back(oprator.top());
-        expression.push_back(' ');
-        oprator.pop();
+        res.push_back(s[c - 1]), res.push_back(' ');
+        c--;
     }
-    expression.pop_back();
-    cout << expression;
-
-    return 0;
+    res.pop_back();
+    cout << res;
 }

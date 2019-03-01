@@ -52,7 +52,7 @@ int main(int argc, char const *argv[])
                 }
             }
         }
-    }
+    }//dijkstra
     printf("%d %d", num[c2], w[c2]);
     return 0;
 }

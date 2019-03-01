@@ -16,17 +16,17 @@ struct Node
     int id, level = 0;
     vector<ptrNode> childs;
 };
-int solve(int *&a, int root, unordered_map<int, ptrNode> &mp, int level)
+int solve(int *&leaf, int root, unordered_map<int, ptrNode> &mp, int level)
 {
     int maxLevel = 0, tmp;
     if (!mp.count(root))
     {
-        a[level]++;
+        leaf[level]++;
         return level;
     }
     for (auto iter : mp[root]->childs)
     {
-        tmp = solve(a, iter->id, mp, level+1);
+        tmp = solve(leaf, iter->id, mp, level+1);
         maxLevel = max(maxLevel, tmp);
     }
     return maxLevel;
@@ -36,9 +36,9 @@ int main(int argc, char const *argv[])
     /* code */
     //test();
     int n, m, k, p, c, level;
-    int *layer = new int[100];
+    int *leaf = new int[100];
     unordered_map<int, ptrNode> mp;
-    fill(layer, layer + 100, 0);
+    fill(leaf, leaf + 100, 0);
     cin >> n >> m;
     if (n == 1)
     {
@@ -59,8 +59,8 @@ int main(int argc, char const *argv[])
         }
         mp[p] = tParent;
     }
-    level = solve(layer, 1, mp, 0);
+    level = solve(leaf, 1, mp, 0);
     for (int i = 0; i <= level; i++)
-        cout << (i == 0 ? "" : " ") << layer[i];
+        cout << (i == 0 ? "" : " ") << leaf[i];
     return 0;
 }

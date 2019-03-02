@@ -10,7 +10,7 @@ using namespace std;
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+    //test();
     int k;
     cin >> k;
     int a[k], thisSum = 0, maxSum = -1, start_count = 0, firstNum = 0, last = 0;

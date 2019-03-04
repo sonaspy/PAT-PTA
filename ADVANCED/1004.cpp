@@ -9,7 +9,7 @@
 #define test() freopen("in", "r", stdin)
 
 using namespace std;
-
+// attention
 typedef struct Node *ptrNode;
 struct Node
 {

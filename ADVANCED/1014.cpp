@@ -83,6 +83,7 @@ int main(int argc, char const *argv[])
         }
         solve(nowTime);
     }
+    
     for (int i = 0; i < q; i++)
     {
         int id;

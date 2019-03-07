@@ -34,22 +34,22 @@ int main()
     double totalWait = 0.0;
     for (int i = 0; i < Customers.size(); i++)
     {
-        int ti = 0, min = window[0];
+        int index = 0, min = window[0];
         for (int j = 1; j < k; j++)
         {
             if (window[j] < min)
             {
                 min = window[j];
-                ti = j;
+                index = j;
             }
         }
-        if (Customers[i].arrive < window[ti])
+        if (Customers[i].arrive < window[index])
         {
-            totalWait += (window[ti] - Customers[i].arrive);
-            window[ti] += Customers[i].serv_t;
+            totalWait += (window[index] - Customers[i].arrive);
+            window[index] += Customers[i].serv_t;
         }
         else
-            window[ti] = Customers[i].arrive + Customers[i].serv_t;
+            window[index] = Customers[i].arrive + Customers[i].serv_t;
     }
     printf("%.1f", totalWait / (60.0 * Customers.size()));
     return 0;

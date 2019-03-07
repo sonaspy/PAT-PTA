@@ -34,12 +34,12 @@ int main()
     double totalWait = 0.0;
     for (int i = 0; i < Customers.size(); i++)
     {
-        int ti = 0, minfinish = window[0];
+        int ti = 0, min = window[0];
         for (int j = 1; j < k; j++)
         {
-            if (window[j] < minfinish)
+            if (window[j] < min)
             {
-                minfinish = window[j];
+                min = window[j];
                 ti = j;
             }
         }

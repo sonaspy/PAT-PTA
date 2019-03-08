@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include<queue>
 #define test() freopen("in", "r", stdin)
 using namespace std;
 struct node

@@ -24,6 +24,5 @@ int main(int argc, char const *argv[])
     stringstream oss1(p1), oss2(p2);
     oss1 >> pa, oss2 >> pb;
     cout << pa + pb;
-
     return 0;
 }

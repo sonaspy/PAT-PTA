@@ -16,15 +16,15 @@ int main(int argc, char const *argv[])
     map<int, int, greater<int>> mp;
     cin >> n;
     for (int i = 1; i <= n; i++)
-    {
-        cin >> num;
-        d_value = abs(num - i);
-        mp[d_value] += 1;
-    }
+        {
+            cin >> num;
+            d_value = abs(num - i);
+            mp[d_value] += 1;
+        }
     for (auto iter : mp)
-    {
-        if (iter.second != 1)
-            cout << iter.first << " " << iter.second << endl;
-    }
+        {
+            if (iter.second != 1)
+                cout << iter.first << " " << iter.second << endl;
+        }
     return 0;
 }

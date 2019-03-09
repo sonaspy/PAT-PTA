@@ -5,12 +5,12 @@ List Reverse(List L)
     PtrToNode nd, p = L->Next->Next, nx = L->Next;
     nx->Next = NULL;
     while (p)
-    {
-        nd = p->Next;
-        p->Next = nx;
-        nx = p;
-        p = nd;
-    }
+        {
+            nd = p->Next;
+            p->Next = nx;
+            nx = p;
+            p = nd;
+        }
     L->Next = nx;
     return L;
 }

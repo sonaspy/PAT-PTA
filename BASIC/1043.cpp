@@ -18,17 +18,17 @@ int main(int argc, char const *argv[])
     map<char, int> mp;
     for (auto i : s)
         if (i == 'P' || i == 'A' || i == 'T' || i == 'e' || i == 's' || i == 't')
-        {
-            count++;
-            mp[i] += 1;
-        }
+            {
+                count++;
+                mp[i] += 1;
+            }
     while (count)
         for (auto c : r)
             if (mp[c] != 0)
-            {
-                count--;
-                mp[c]--;
-                cout << c;
-            }
+                {
+                    count--;
+                    mp[c]--;
+                    cout << c;
+                }
     return 0;
 }

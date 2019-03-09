@@ -12,25 +12,25 @@ using namespace std;
 int main(int argc, char const *argv[])
 {
     /* code */
-  //test();
+    //test();
     string s1, s2, s22, s3;
     getline(cin, s1);
     getline(cin, s2);
     set<char> st;
     for (auto i : s1)
-    {
-        st.insert(towlower(i));
-        st.insert(i);
-    }
+        {
+            st.insert(towlower(i));
+            st.insert(i);
+        }
     if (st.count('+'))
-    {
-        for (auto i : s2)
-            if (!isupper(i))
-                s22.push_back(i);
-        for (auto i : s22)
-            if (!st.count(i))
-                s3.push_back(i);
-    }
+        {
+            for (auto i : s2)
+                if (!isupper(i))
+                    s22.push_back(i);
+            for (auto i : s22)
+                if (!st.count(i))
+                    s3.push_back(i);
+        }
     else
         for (auto i : s2)
             if (!st.count(i))

@@ -24,26 +24,26 @@ int main(int argc, char const *argv[])
     sort(merchandise, merchandise + sort_num);
     int i = 0, j = 0, sum = 0;
     while (i < N && j < N)
-    {
-        if (coupon[i] < 0 && merchandise[j] < 0)
         {
-            sum += coupon[i] * merchandise[j];
-            i++, j++;
+            if (coupon[i] < 0 && merchandise[j] < 0)
+                {
+                    sum += coupon[i] * merchandise[j];
+                    i++, j++;
+                }
+            else
+                break;
         }
-        else
-            break;
-    }
     i = N - 1, j = N - 1;
     while (i > -1 && j > -1)
-    {
-        if (coupon[i] > 0 && merchandise[j] > 0)
         {
-            sum += coupon[i] * merchandise[j];
-            i--, j--;
+            if (coupon[i] > 0 && merchandise[j] > 0)
+                {
+                    sum += coupon[i] * merchandise[j];
+                    i--, j--;
+                }
+            else
+                break;
         }
-        else
-            break;
-    }
     cout << sum;
     return 0;
 }

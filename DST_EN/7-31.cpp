@@ -30,22 +30,22 @@ int main(int argc, char const *argv[])
         scanf("%s %d %d", node[i].name, &node[i].age, &node[i].worth);
     sort(node, node + n, cmp);
     for (int i = 1; i <= k; i++)
-    {
-        scanf("%d%d%d", &m, &amin, &amax);
-        printf("Case #%d:\n", i);
-        int cnt = 0;
-        for (int j = 0; j < n; j++)
         {
-            if (node[j].age >= amin && node[j].age <= amax)
-            {
-                printf("%s %d %d\n", node[j].name, node[j].age, node[j].worth);
-                cnt++;
-            }
-            if (cnt == m)
-                break;
+            scanf("%d%d%d", &m, &amin, &amax);
+            printf("Case #%d:\n", i);
+            int cnt = 0;
+            for (int j = 0; j < n; j++)
+                {
+                    if (node[j].age >= amin && node[j].age <= amax)
+                        {
+                            printf("%s %d %d\n", node[j].name, node[j].age, node[j].worth);
+                            cnt++;
+                        }
+                    if (cnt == m)
+                        break;
+                }
+            if (cnt == 0)
+                printf("None\n");
         }
-        if (cnt == 0)
-            printf("None\n");
-    }
     return 0;
 }

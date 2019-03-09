@@ -11,7 +11,7 @@ using namespace std;
 int main(int argc, char const *argv[])
 {
     /* code */
-  //test();
+    //test();
     int n;
     scanf("%d", &n);
     int a[n + 1];
@@ -21,11 +21,10 @@ int main(int argc, char const *argv[])
     int ans = 0;
     int p = 1;
     while (ans <= n && a[p] > p)
-    {
-        ans++;
-        p++;
-    }
+        {
+            ans++;
+            p++;
+        }
     printf("%d", ans);
-
     return 0;
 }

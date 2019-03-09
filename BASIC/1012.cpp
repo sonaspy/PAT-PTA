@@ -16,25 +16,26 @@ int main(int argc, char const *argv[])
     bool s = false;
     cin >> n;
     for (int i = 0; i < n; i++)
-    {
-        scanf("%d", &num);
-        if (num % 5 == 0 && num % 2 == 0)
-            a1 += num;
-        else if (num % 5 == 1)
         {
-            f *= -1;
-            s = true;
-            a2 += (f * num);
+            scanf("%d", &num);
+            if (num % 5 == 0 && num % 2 == 0)
+                a1 += num;
+            else if (num % 5 == 1)
+                {
+                    f *= -1;
+                    s = true;
+                    a2 += (f * num);
+                }
+            else if (num % 5 == 2)
+                a3 += 1;
+            else if (num % 5 == 3)
+                {
+                    sum += num;
+                    count += 1;
+                }
+            else if (num % 5 == 4 && num > a5)
+                a5 = num;
         }
-        else if (num % 5 == 2)
-            a3 += 1;
-        else if (num % 5 == 3){
-            sum += num;
-            count += 1;
-        }
-        else if (num % 5 == 4 && num > a5)
-            a5 = num;
-    }
     a4 = sum * 1.0 / count;
     if (a1 != 0)
         printf("%d", a1);

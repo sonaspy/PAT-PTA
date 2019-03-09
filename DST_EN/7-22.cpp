@@ -1,5 +1,5 @@
-// author -  newguo@sonaspy.cn 
-// coding - utf_8 
+// author -  newguo@sonaspy.cn
+// coding - utf_8
 
 #include<iostream>
 #include<string>
@@ -15,7 +15,5 @@ int main(int argc, char const *argv[])
     string s1, s2;
     cin >> n >> m;
     getchar();
-    
-    
     return 0;
 }

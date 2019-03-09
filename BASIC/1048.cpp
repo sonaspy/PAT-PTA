@@ -21,22 +21,22 @@ int main(int argc, char const *argv[])
         B += string(A.length() - B.length(), '0');
     int len = B.length();
     for (int i = 0; i < len; i++)
-    {
-        if (i % 2 == 0)
         {
-            int temp = (A[i] + B[i] - '0' - '0') % 13;
-            if (temp == 10)
-                result += 'J';
-            else if (temp == 11)
-                result += 'Q';
-            else if (temp == 12)
-                result += 'K';
+            if (i % 2 == 0)
+                {
+                    int temp = (A[i] + B[i] - '0' - '0') % 13;
+                    if (temp == 10)
+                        result += 'J';
+                    else if (temp == 11)
+                        result += 'Q';
+                    else if (temp == 12)
+                        result += 'K';
+                    else
+                        result += temp + '0';
+                }
             else
-                result += temp + '0';
+                result += (B[i] - A[i] + 10) % 10 + '0';
         }
-        else
-            result += (B[i] - A[i] + 10) % 10 + '0';
-    }
     reverse(result.begin(), result.end());
     cout << result;
     return 0;

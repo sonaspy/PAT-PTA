@@ -1,5 +1,5 @@
-// author -  newguo@sonaspy.cn 
-// coding - utf_8 
+// author -  newguo@sonaspy.cn
+// coding - utf_8
 
 #include<iostream>
 #include<cmath>
@@ -11,7 +11,7 @@ using namespace std;
 int main(int argc, char const *argv[])
 {
     /* code */
-  //test();
+    //test();
     int c1,c2,t, h, m, s;
     double t1;
     cin >> c1 >> c2;
@@ -28,6 +28,5 @@ int main(int argc, char const *argv[])
     if(m < 10) s2 = '0' + s2;
     if(s < 10) s3 = '0' + s3;
     cout << s1  << ":" << s2<< ":" << s3;
-
     return 0;
 }

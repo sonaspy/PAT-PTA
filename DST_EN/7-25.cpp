@@ -18,33 +18,33 @@ int main()
     scanf("%d%d", &n, &m);
     memset(mp, INF, sizeof(mp));
     for (i = 0; i < m; i++)
-    {
-        scanf("%d%d%d", &a, &b, &d);
-        mp[a][b] = mp[b][a] = d;
-    }
+        {
+            scanf("%d%d%d", &a, &b, &d);
+            mp[a][b] = mp[b][a] = d;
+        }
     Floyd();
     int min = INF;
     int f = -1;
     for (i = 1; i <= n; i++)
-    {
-        int tmpMax = 0;
-        for (j = 1; j <= n; j++)
         {
-            if (j == i)continue;
-            if (mp[i][j] == INF)
-            { 
-                printf("0");
-                return 0;
-            }
-            if (mp[i][j] > tmpMax)
-                tmpMax = mp[i][j];
+            int tmpMax = 0;
+            for (j = 1; j <= n; j++)
+                {
+                    if (j == i)continue;
+                    if (mp[i][j] == INF)
+                        {
+                            printf("0");
+                            return 0;
+                        }
+                    if (mp[i][j] > tmpMax)
+                        tmpMax = mp[i][j];
+                }
+            if (tmpMax > 0 && tmpMax < min)
+                {
+                    min = tmpMax;
+                    f = i;
+                }
         }
-        if (tmpMax > 0 && tmpMax < min)
-        { 
-            min = tmpMax;
-            f = i;
-        }
-    }
     printf("%d %d\n", f, min);
     return 0;
 }

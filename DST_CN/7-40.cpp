@@ -43,85 +43,84 @@ int main(int argc, char const *argv[])
     /* code */
     scanf("%d %d", &n, &m);
     for (int i = 0; i < n; ++i)
-    {
-        a[i].id = b[i].id = c[i].id = d[i].id = i;
-        scanf("%d %d %d", &a[i].au, &a[i].al, &a[i].p);
-        a[i].d1 = 1.0 * a[i].au / a[i].p, a[i].d2 = 1.0 * a[i].al / a[i].p;
-        b[i].au = c[i].au = d[i].au = a[i].au;
-        b[i].al = c[i].al = d[i].al = a[i].al;
-        b[i].p = c[i].p = d[i].p = a[i].p;
-        b[i].d1 = c[i].d1 = d[i].d1 = a[i].d1;
-        b[i].d2 = c[i].d2 = d[i].d2 = a[i].d2;
-    }
+        {
+            a[i].id = b[i].id = c[i].id = d[i].id = i;
+            scanf("%d %d %d", &a[i].au, &a[i].al, &a[i].p);
+            a[i].d1 = 1.0 * a[i].au / a[i].p, a[i].d2 = 1.0 * a[i].al / a[i].p;
+            b[i].au = c[i].au = d[i].au = a[i].au;
+            b[i].al = c[i].al = d[i].al = a[i].al;
+            b[i].p = c[i].p = d[i].p = a[i].p;
+            b[i].d1 = c[i].d1 = d[i].d1 = a[i].d1;
+            b[i].d2 = c[i].d2 = d[i].d2 = a[i].d2;
+        }
     sort(a, a + n, cmp1);
     sort(b, b + n, cmp2);
     sort(c, c + n, cmp3);
     sort(d, d + n, cmp4);
-
     for (int i = 0; i < m; ++i)
-    {
-        int dd;
-        scanf("%d", &dd);
-        if (i)
-            printf(" ");
-        int id = 1000, cc;
-        for (int j = 0; j < n; ++j)
         {
-            if (a[j].id == dd)
-            {
-                while (j > 0  && a[j].au == a[j - 1].au)
-                    j--;
-                if (j < id)
+            int dd;
+            scanf("%d", &dd);
+            if (i)
+                printf(" ");
+            int id = 1000, cc;
+            for (int j = 0; j < n; ++j)
                 {
-                    id = j;
-                    cc = 1;
+                    if (a[j].id == dd)
+                        {
+                            while (j > 0  && a[j].au == a[j - 1].au)
+                                j--;
+                            if (j < id)
+                                {
+                                    id = j;
+                                    cc = 1;
+                                }
+                            break;
+                        }
                 }
-                break;
-            }
-        }
-        for (int j = 0; j < n; ++j)
-        {
-            if (b[j].id == dd)
-            {
-                while (j > 0 && b[j].al == b[j - 1].al)
-                    j--;
-                if (j < id)
+            for (int j = 0; j < n; ++j)
                 {
-                    id = j;
-                    cc = 2;
+                    if (b[j].id == dd)
+                        {
+                            while (j > 0 && b[j].al == b[j - 1].al)
+                                j--;
+                            if (j < id)
+                                {
+                                    id = j;
+                                    cc = 2;
+                                }
+                            break;
+                        }
                 }
-                break;
-            }
-        }
-        for (int j = 0; j < n; ++j)
-        {
-            if (c[j].id == dd)
-            {
-                while (j > 0 && c[j].d1 == c[j - 1].d1)
-                    j--;
-                if (j < id)
+            for (int j = 0; j < n; ++j)
                 {
-                    id = j;
-                    cc = 3;
+                    if (c[j].id == dd)
+                        {
+                            while (j > 0 && c[j].d1 == c[j - 1].d1)
+                                j--;
+                            if (j < id)
+                                {
+                                    id = j;
+                                    cc = 3;
+                                }
+                            break;
+                        }
                 }
-                break;
-            }
-        }
-        for (int j = 0; j < n; ++j)
-        {
-            if (d[j].id == dd)
-            {
-                while (j > 0 && d[j].d2 == d[j - 1].d2)
-                    j--;
-                if (j < id)
+            for (int j = 0; j < n; ++j)
                 {
-                    id = j;
-                    cc = 4;
+                    if (d[j].id == dd)
+                        {
+                            while (j > 0 && d[j].d2 == d[j - 1].d2)
+                                j--;
+                            if (j < id)
+                                {
+                                    id = j;
+                                    cc = 4;
+                                }
+                            break;
+                        }
                 }
-                break;
-            }
+            printf("%d:%d", id + 1, cc);
         }
-        printf("%d:%d", id + 1, cc);
-    }
     return 0;
 }

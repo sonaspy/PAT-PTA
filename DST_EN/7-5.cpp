@@ -16,7 +16,8 @@ struct Node
     int id;
 };
 
-void Post(nodePtr root){
+void Post(nodePtr root)
+{
     if(root->left) Post(root->left);
     if(root->right) Post(root->right);
     res.push_back(root->id);
@@ -32,47 +33,46 @@ int main(int argc, char const *argv[])
     vector<nodePtr> vec(50);
     nodePtr lastNode = new Node;
     for (int i = 0; i < 2 * n; i++, lastop = curop)
-    {
-        nodePtr tmp = new Node;
-        cin >> curop;
-        if (curop == "Push")
-            cin >> id;
-        else if (curop == "Pop")
         {
-
-            lastNode = S.top();
-            S.pop();
-            vec[lastNode->id] = lastNode;
+            nodePtr tmp = new Node;
+            cin >> curop;
+            if (curop == "Push")
+                cin >> id;
+            else if (curop == "Pop")
+                {
+                    lastNode = S.top();
+                    S.pop();
+                    vec[lastNode->id] = lastNode;
+                }
+            if (curop == "Push" && lastop == "Pop")
+                {
+                    tmp->id = id;
+                    S.push(tmp);
+                    vec[lastNode->id]->right = tmp;
+                    lastNode = tmp;
+                }
+            else if (curop == "Push" && lastop == "Push")
+                {
+                    tmp->id = id;
+                    S.push(tmp);
+                    if (i == 0)
+                        root = id;
+                    else
+                        lastNode->left = tmp;
+                    lastNode = tmp;
+                }
         }
-        if (curop == "Push" && lastop == "Pop")
-        {
-            tmp->id = id;
-            S.push(tmp);
-            vec[lastNode->id]->right = tmp;
-            lastNode = tmp;
-        }
-        else if (curop == "Push" && lastop == "Push")
-        {
-            tmp->id = id;
-            S.push(tmp);
-            if (i == 0)
-                root = id;
-            else
-                lastNode->left = tmp;
-            lastNode = tmp;
-        }
-    }
     Post(vec[root]);
     int flag = 1;
     for (auto i : res)
-    {
-        if (flag)
         {
-            cout << i;
-            flag = 0;
+            if (flag)
+                {
+                    cout << i;
+                    flag = 0;
+                }
+            else
+                cout << " " << i;
         }
-        else
-            cout << " " << i;
-    }
     return 0;
 }

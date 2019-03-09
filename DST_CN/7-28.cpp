@@ -39,12 +39,12 @@ int cursor = 0;
 void preOrder(ptrNode t)
 {
     if (t && isTheTree)
-    {
-        if (t->data != seqNum[cursor++])
-            isTheTree = false;
-        preOrder(t->Left);
-        preOrder(t->Right);
-    }
+        {
+            if (t->data != seqNum[cursor++])
+                isTheTree = false;
+            preOrder(t->Left);
+            preOrder(t->Right);
+        }
     else
         return;
 }
@@ -54,15 +54,15 @@ void postOrder(ptrNode t)
     if (!t)
         return;
     else
-    {
-        postOrder(t->Left);
-        postOrder(t->Right);
-        if (isTheTree)
-            isTheTree = false;
-        else
-            cout << " ";
-        printf("%d", t->data);
-    }
+        {
+            postOrder(t->Left);
+            postOrder(t->Right);
+            if (isTheTree)
+                isTheTree = false;
+            else
+                cout << " ";
+            printf("%d", t->data);
+        }
 }
 
 void makeImageTree(ptrNode t)
@@ -70,46 +70,44 @@ void makeImageTree(ptrNode t)
     if (!t)
         return;
     else
-    {
-        makeImageTree(t->Left);
-        makeImageTree(t->Right);
-        ptrNode tmp = t->Left;
-        t->Left = t->Right;
-        t->Right = tmp;
-    }
+        {
+            makeImageTree(t->Left);
+            makeImageTree(t->Right);
+            ptrNode tmp = t->Left;
+            t->Left = t->Right;
+            t->Right = tmp;
+        }
 }
 
 int main(int argc, char const *argv[])
 {
     /* code */
-  //test();
+    //test();
     int N, b;
     cin >> N;
     ptrNode head = NULL; // Build Tree.
     for (int i = 0; i < N; i++)
-    {
-        ptrNode tmp = new node;
-        scanf("%d", &tmp->data);
-        seqNum[i] = tmp->data;
-        head = Insert(head, tmp);
-    }
+        {
+            ptrNode tmp = new node;
+            scanf("%d", &tmp->data);
+            seqNum[i] = tmp->data;
+            head = Insert(head, tmp);
+        }
     // Judge
     preOrder(head);
-
     if (!isTheTree)
-    {
-        makeImageTree(head);
-        isTheTree = true;
-        cursor = 0;
-        preOrder(head);
-    }
-
+        {
+            makeImageTree(head);
+            isTheTree = true;
+            cursor = 0;
+            preOrder(head);
+        }
     if (!isTheTree)
         cout << "NO";
     else
-    {
-        cout << "YES\n";
-        postOrder(head);
-    }
+        {
+            cout << "YES\n";
+            postOrder(head);
+        }
     return 0;
 }

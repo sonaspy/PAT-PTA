@@ -11,10 +11,10 @@ using namespace std;
 inline bool isPrime(int num)
 {
     for (int i = 2; i <= sqrt(num); i++)
-    {
-        if (num % i == 0)
-            return false;
-    }
+        {
+            if (num % i == 0)
+                return false;
+        }
     return true;
 }
 
@@ -27,15 +27,15 @@ int main(int argc, char const *argv[])
     string num;
     cin >> num;
     for (int i = 0; i < num.size() - m + 1; i++)
-    {
-        string s = num.substr(i, m);
-        int number = stoi(s);
-        if (isPrime(number))
         {
-            cout << s;
-            return 0;
+            string s = num.substr(i, m);
+            int number = stoi(s);
+            if (isPrime(number))
+                {
+                    cout << s;
+                    return 0;
+                }
         }
-    }
     cout << 404;
     return 0;
 }

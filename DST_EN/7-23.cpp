@@ -1,5 +1,5 @@
-// author -  newguo@sonaspy.cn 
-// coding - utf_8 
+// author -  newguo@sonaspy.cn
+// coding - utf_8
 
 #include<iostream>
 
@@ -11,6 +11,5 @@ int main(int argc, char const *argv[])
 {
     /* code */
     test();
-    
     return 0;
 }

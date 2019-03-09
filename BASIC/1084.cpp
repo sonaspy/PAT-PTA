@@ -14,26 +14,26 @@ int main(int argc, char const *argv[])
     int n;
     cin >> a >> n;
     while (--n)
-    {
-        string ans;
-        char c = a[0];
-        int cnt = 0;
-        for (int i = 0; i < a.length(); i++)
         {
-            if (a[i] == c)
-                cnt++;
-            else
-            {
-                ans += c;
-                ans += cnt + '0';
-                c = a[i];
-                cnt = 1;
-            }
+            string ans;
+            char c = a[0];
+            int cnt = 0;
+            for (int i = 0; i < a.length(); i++)
+                {
+                    if (a[i] == c)
+                        cnt++;
+                    else
+                        {
+                            ans += c;
+                            ans += cnt + '0';
+                            c = a[i];
+                            cnt = 1;
+                        }
+                }
+            ans += c;
+            ans += cnt + '0';
+            a = ans;
         }
-        ans += c;
-        ans += cnt + '0';
-        a = ans;
-    }
     cout << a << endl;
     return 0;
 }

@@ -15,7 +15,8 @@ inline bool isPrime(long long n)
             return false;
     return true;
 }
-inline int ReturnMaxPrime(int n){
+inline int ReturnMaxPrime(int n)
+{
     if(n <= 2) return 2;
     while(!isPrime(n))n++;
     return n;
@@ -30,20 +31,23 @@ int main(int argc, char const *argv[])
     bool table[m];
     memset(table, false, sizeof table);
     for (int i = 0; i < n; i++)
-    {
-        if(i > 0) printf(" ");
-        scanf("%d", &num);
-        int step = 0;
-        do{
-            pos = (num+step*step) % m;
-            step++;
-        }while(table[pos] && step < m);
-        if(step == m)
-            printf("-");
-        else{
-            table[pos] = true;
-            printf("%d",pos);
+        {
+            if(i > 0) printf(" ");
+            scanf("%d", &num);
+            int step = 0;
+            do
+                {
+                    pos = (num+step*step) % m;
+                    step++;
+                }
+            while(table[pos] && step < m);
+            if(step == m)
+                printf("-");
+            else
+                {
+                    table[pos] = true;
+                    printf("%d",pos);
+                }
         }
-    }
     return 0;
 }

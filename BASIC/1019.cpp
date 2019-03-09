@@ -8,7 +8,8 @@
 
 using namespace std;
 
-string  convert(string & tmp){
+string  convert(string & tmp)
+{
     string s;
     if (tmp.size() == 1)
         s = "000" + tmp;
@@ -30,22 +31,22 @@ int main(int argc, char const *argv[])
         cout << s << " - " << s << " = "
              << "0000";
     else
-    {
-        int t1, t2, t3;
-        while (t3 != 6174)
         {
-            s = convert(s);
-            sort(s.begin(), s.end(), greater<int>());
-            cout << s << " - ";
-            t1 = stoi(s);
-            sort(s.begin(), s.end());
-            t2 = stoi(s);
-            cout << s << " = ";
-            t3 = t1 - t2;
-            tmp = to_string(t3);
-            s = convert(tmp);
-            cout << s << endl;
+            int t1, t2, t3;
+            while (t3 != 6174)
+                {
+                    s = convert(s);
+                    sort(s.begin(), s.end(), greater<int>());
+                    cout << s << " - ";
+                    t1 = stoi(s);
+                    sort(s.begin(), s.end());
+                    t2 = stoi(s);
+                    cout << s << " = ";
+                    t3 = t1 - t2;
+                    tmp = to_string(t3);
+                    s = convert(tmp);
+                    cout << s << endl;
+                }
         }
-    }
     return 0;
 }

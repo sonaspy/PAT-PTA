@@ -16,20 +16,20 @@ int main(int argc, char const *argv[])
     cin >> correct >> n;
     getchar();
     while (getline(cin, trypwd), trypwd != "#")
-    {
-        if (trypwd == correct)
         {
-            printf("Welcome in\n");
-            break;
+            if (trypwd == correct)
+                {
+                    printf("Welcome in\n");
+                    break;
+                }
+            else
+                printf("Wrong password: %s\n", trypwd.c_str());
+            if (count == n)
+                {
+                    printf("Account locked\n");
+                    break;
+                }
+            count++;
         }
-        else
-            printf("Wrong password: %s\n", trypwd.c_str());
-        if (count == n)
-        {
-            printf("Account locked\n");
-            break;
-        }
-        count++;
-    }
     return 0;
 }

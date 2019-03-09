@@ -16,29 +16,29 @@ int main(int argc, char const *argv[])
     getchar();
     getline(cin, s);
     if (c == 'C')
-    {
-        for (int i = 0; i < s.size(); i++)
         {
-            int cnt = 1;
-            while (s[i] == s[i + 1])
-                i++, cnt++;
-            if (cnt > 1)
-                cout << cnt;
-            cout << s[i];
+            for (int i = 0; i < s.size(); i++)
+                {
+                    int cnt = 1;
+                    while (s[i] == s[i + 1])
+                        i++, cnt++;
+                    if (cnt > 1)
+                        cout << cnt;
+                    cout << s[i];
+                }
         }
-    }
     else
-    {
-        for (int i = 0; i < s.size(); i++)
         {
-            int cnt = 0;
-            while (s[i] <= '9' && s[i] >= '0')
-                cnt = cnt * 10 + s[i++] - '0';
-            for (int j = 0; j < cnt; j++)
-                cout << s[i];
-            if (cnt == 0)
-                cout << s[i];
+            for (int i = 0; i < s.size(); i++)
+                {
+                    int cnt = 0;
+                    while (s[i] <= '9' && s[i] >= '0')
+                        cnt = cnt * 10 + s[i++] - '0';
+                    for (int j = 0; j < cnt; j++)
+                        cout << s[i];
+                    if (cnt == 0)
+                        cout << s[i];
+                }
         }
-    }
     return 0;
 }

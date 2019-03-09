@@ -27,22 +27,23 @@ int main(int argc, char const *argv[])
         for (int j = 1; j <= N; j++)
             MAP[i][j] = 0;
     for (int i = 0; i < M; i++)
-    {
-        int c1, c2;
-        scanf("%d%d", &c1, &c2);
-        MAP[c1][c2] = 1;
-        MAP[c2][c1] = 1;
-        degree[c1]++;degree[c2]++;
-    }
+        {
+            int c1, c2;
+            scanf("%d%d", &c1, &c2);
+            MAP[c1][c2] = 1;
+            MAP[c2][c1] = 1;
+            degree[c1]++;
+            degree[c2]++;
+        }
     DFS(1, N);
     for (int i = 1; i <= N; i++)
-    {
-        if (!reached[i] || degree[i] % 2)
         {
-            isOral = 0;
-            break;
+            if (!reached[i] || degree[i] % 2)
+                {
+                    isOral = 0;
+                    break;
+                }
         }
-    }
     cout << isOral;
     return 0;
 }

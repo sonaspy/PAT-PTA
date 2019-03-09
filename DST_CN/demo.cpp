@@ -16,6 +16,5 @@ int main(int argc, char const *argv[])
     st.insert('e');
     cout << st.count('q');
     cout << st.count('q');
-
     return 0;
 }

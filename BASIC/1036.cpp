@@ -15,7 +15,7 @@ int main(int argc, char const *argv[])
     cin >> n >> c;
     row = n, cloumn = int(row * 0.5 + 0.5);
     string s1, s2;
-    for(int i = 0;i < row; i++) s1.push_back(c);
+    for(int i = 0; i < row; i++) s1.push_back(c);
     s2.push_back(c);
     for (int i = 0; i < row-2; i++)
         s2.push_back(' ');

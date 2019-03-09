@@ -34,30 +34,29 @@ int main(int argc, char const *argv[])
     // test();
     scanf("%d%d", &N, &M);
     for (int i = 0; i < N; i++)
-    {
-        MAP[i].clear();
-        union_set[i] = -1;
-    }
+        {
+            MAP[i].clear();
+            union_set[i] = -1;
+        }
     int a1, a2;
     for (int i = 0; i < M; i++)
-    {
-        scanf("%d%d", &a1, &a2);
-        union_connect(a1, a2);
-        MAP[a1].push_back(a2);
-        MAP[a2].push_back(a1);
-    }
+        {
+            scanf("%d%d", &a1, &a2);
+            union_connect(a1, a2);
+            MAP[a1].push_back(a2);
+            MAP[a2].push_back(a1);
+        }
     int root_num = 0, odd_num = 0;
     for (int i = 1; i <= N; i++)
-    {
-        if (MAP[i].size() % 2)
-            odd_num++;
-        if (trace_root(i) == i)
-            root_num++;
-    }
+        {
+            if (MAP[i].size() % 2)
+                odd_num++;
+            if (trace_root(i) == i)
+                root_num++;
+        }
     if (odd_num == 0 && root_num == 1)
         cout << 1;
     else
         cout << 0;
-
     return 0;
 }

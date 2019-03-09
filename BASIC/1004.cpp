@@ -1,5 +1,5 @@
-// author -  newguo@sonaspy.cn 
-// coding - utf_8 
+// author -  newguo@sonaspy.cn
+// coding - utf_8
 
 #include<iostream>
 #include<string>
@@ -8,19 +8,21 @@
 
 using namespace std;
 
-struct Student{
+struct Student
+{
     char name[12];
     char id[12];
     int score;
-}low, high;
+} low, high;
 
-bool cmp(struct Student A, struct Student B){
+bool cmp(struct Student A, struct Student B)
+{
     return  A.score > B.score;
 }
 int main(int argc, char const *argv[])
 {
     /* code */
-  //test();
+    //test();
     int n;
     cin >> n;
     Student records[n];

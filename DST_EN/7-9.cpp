@@ -24,44 +24,44 @@ int main(int argc, char const *argv[])
     char c;
     cin >> n;
     for (int i = 0; i < n; i++)
-    {
-        cin >> c;
-        cin >> freq[c];
-        pq.push(freq[c]);
-    }
-    cin >> m;
-    while (true)
-    {
-        int tp = pq.top();
-        pq.pop();
-        if (pq.empty())
-            break;
-        tp += pq.top();
-        pq.pop();
-        pq.push(tp);
-        total_w += tp;
-    }
-    while (m--)
-    {
-        int sum = 0;
-        for (int i = 0; i < n; i++)
         {
             cin >> c;
-            cin >> codes[i];
-            sum += freq[c] * codes[i].size();
+            cin >> freq[c];
+            pq.push(freq[c]);
         }
-        bool flag = true;
-        for (int i = 0; i < n; i++)
+    cin >> m;
+    while (true)
         {
-            string str = codes[i];
-            for (int j = 0; j < n; j++)
-                if (i != j && str == codes[j].substr(0, str.length()))
-                    flag = false;
+            int tp = pq.top();
+            pq.pop();
+            if (pq.empty())
+                break;
+            tp += pq.top();
+            pq.pop();
+            pq.push(tp);
+            total_w += tp;
         }
-        if (sum == total_w && flag)
-            printf("Yes\n");
-        else
-            printf("No\n");
-    }
+    while (m--)
+        {
+            int sum = 0;
+            for (int i = 0; i < n; i++)
+                {
+                    cin >> c;
+                    cin >> codes[i];
+                    sum += freq[c] * codes[i].size();
+                }
+            bool flag = true;
+            for (int i = 0; i < n; i++)
+                {
+                    string str = codes[i];
+                    for (int j = 0; j < n; j++)
+                        if (i != j && str == codes[j].substr(0, str.length()))
+                            flag = false;
+                }
+            if (sum == total_w && flag)
+                printf("Yes\n");
+            else
+                printf("No\n");
+        }
     return 0;
 }

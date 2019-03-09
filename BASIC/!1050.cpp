@@ -19,25 +19,25 @@ int main()
     m = N /n;
     int i, j, k = -1, a[m][n];
     for (i = 0; k < m * n - 1; i++)
-    {
-        for (j = i; j < n - i && k < m * n - 1; j++)
-            a[i][j] = v[++k];
-        for (j = i + 1; j < m - i && k < m * n - 1; j++)
-            a[j][n - i - 1] = v[++k];
-        for (j = n - i - 2; j >= i && k < m * n - 1; j--)
-            a[m - i - 1][j] = v[++k];
-        for (j = m - 2 - i; j >= i + 1 && k < m * n - 1; j--)
-            a[j][i] = v[++k];
-    }
-    for (int i = 0; i < m; i++)
-    {
-        for (int j = 0; j < n; j++)
         {
-            cout << a[i][j];
-            if (j != n - 1)
-                printf(" ");
+            for (j = i; j < n - i && k < m * n - 1; j++)
+                a[i][j] = v[++k];
+            for (j = i + 1; j < m - i && k < m * n - 1; j++)
+                a[j][n - i - 1] = v[++k];
+            for (j = n - i - 2; j >= i && k < m * n - 1; j--)
+                a[m - i - 1][j] = v[++k];
+            for (j = m - 2 - i; j >= i + 1 && k < m * n - 1; j--)
+                a[j][i] = v[++k];
         }
-        printf("\n");
-    }
+    for (int i = 0; i < m; i++)
+        {
+            for (int j = 0; j < n; j++)
+                {
+                    cout << a[i][j];
+                    if (j != n - 1)
+                        printf(" ");
+                }
+            printf("\n");
+        }
     return 0;
 }

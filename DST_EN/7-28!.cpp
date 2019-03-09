@@ -25,45 +25,44 @@ inline int debugtime(int currentTime)
 }
 void dfs(int currentTime, int penaltyTime, int totalTime)
 {
-
     if ((tmpOrder.size() > solvedOrder.size()) ||
-        (tmpOrder.size() == solvedOrder.size() && totalTime + penaltyTime * 20 < minTime))
-    {
-        solvedOrder = tmpOrder;
-        minTime = totalTime + penaltyTime * 20;
-    }
+            (tmpOrder.size() == solvedOrder.size() && totalTime + penaltyTime * 20 < minTime))
+        {
+            solvedOrder = tmpOrder;
+            minTime = totalTime + penaltyTime * 20;
+        }
     for (int i = 0; i < N; i++)
         if (!solved[i])
-        {
-            int dtime = debugtime(currentTime + t[i]), now = currentTime + t[i] + dtime * d[i];
-            if (now <= totalMinutes)
             {
-                solved[i] = true;
-                tmpOrder.push_back(i);
-                dfs(now, penaltyTime + dtime, totalTime + now);
-                solved[i] = false;
-                tmpOrder.pop_back();
+                int dtime = debugtime(currentTime + t[i]), now = currentTime + t[i] + dtime * d[i];
+                if (now <= totalMinutes)
+                    {
+                        solved[i] = true;
+                        tmpOrder.push_back(i);
+                        dfs(now, penaltyTime + dtime, totalTime + now);
+                        solved[i] = false;
+                        tmpOrder.pop_back();
+                    }
             }
-        }
 }
 int main()
 {
     while (true)
-    {
-        scanf("%d", &H);
-        if (H < 0)
-            break;
-        scanf("%d %d", &N, &t0);
-        for (int i = 0; i < N; i++)
-            cin >> names[i] >> t[i] >> d[i];
-        totalMinutes = H * 60;
-        minTime = INF;
-        solvedOrder.clear();
-        fill(solved, solved + N, false);
-        dfs(t0, 0, 0);
-        printf("Total Time = %d\n", minTime);
-        for (int i = 0; i < solvedOrder.size(); i++)
-            printf("%s\n", names[solvedOrder[i]].c_str());
-    }
+        {
+            scanf("%d", &H);
+            if (H < 0)
+                break;
+            scanf("%d %d", &N, &t0);
+            for (int i = 0; i < N; i++)
+                cin >> names[i] >> t[i] >> d[i];
+            totalMinutes = H * 60;
+            minTime = INF;
+            solvedOrder.clear();
+            fill(solved, solved + N, false);
+            dfs(t0, 0, 0);
+            printf("Total Time = %d\n", minTime);
+            for (int i = 0; i < solvedOrder.size(); i++)
+                printf("%s\n", names[solvedOrder[i]].c_str());
+        }
     return 0;
 }

@@ -28,33 +28,33 @@ int main(int argc, char const *argv[])
         s2[i] = '0';
     int carry = 0;
     for (int i = 0; i < len; i++)
-    {
-        int mod = jinzhi[i] - '0';
-        if (jinzhi[i] == '0')
-            mod = 10;
-        ans[i] = ((s1[i] - '0') + (s2[i] - '0') + carry) % mod;
-        carry = ((s1[i] - '0') + (s2[i] - '0') + carry) / mod;
-    }
+        {
+            int mod = jinzhi[i] - '0';
+            if (jinzhi[i] == '0')
+                mod = 10;
+            ans[i] = ((s1[i] - '0') + (s2[i] - '0') + carry) % mod;
+            carry = ((s1[i] - '0') + (s2[i] - '0') + carry) / mod;
+        }
     if (carry != 0)
-    {
-        printf("%d", carry);
-        for (int i = len - 1; i >= 0; i--)
         {
-            flag = 1;
-            printf("%d", ans[i]);
+            printf("%d", carry);
+            for (int i = len - 1; i >= 0; i--)
+                {
+                    flag = 1;
+                    printf("%d", ans[i]);
+                }
         }
-    }
     else
-    {
-        for (int i = len - 1; i >= 0; i--)
         {
-            if (ans[i] != 0 || flag == 1)
-            {
-                flag = 1;
-                printf("%d", ans[i]);
-            }
+            for (int i = len - 1; i >= 0; i--)
+                {
+                    if (ans[i] != 0 || flag == 1)
+                        {
+                            flag = 1;
+                            printf("%d", ans[i]);
+                        }
+                }
         }
-    }
     if (flag == 0)
         printf("0");
     return 0;

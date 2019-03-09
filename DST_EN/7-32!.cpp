@@ -7,7 +7,10 @@ struct station
 {
     double price, dis;
 } st[maxn];
-bool cmp(station a, station b){return a.dis < b.dis;}
+bool cmp(station a, station b)
+{
+    return a.dis < b.dis;
+}
 int main(int argc, char const *argv[])
 {
     int n;
@@ -19,46 +22,46 @@ int main(int argc, char const *argv[])
     st[n].dis = d;
     sort(st, st + n, cmp);
     if (st[0].dis != 0)
-    {
-        printf("The maximum travel distance = 0.00\n");
-        return 0;
-    }
+        {
+            printf("The maximum travel distance = 0.00\n");
+            return 0;
+        }
     int now = 0;
     double cost = 0, leftgas = 0, oneFull = maxc * davg;
     while (now < n)
-    {
-        int k = -1;
-        double minPrice = INF;
-        for (int i = now + 1; i <= n && st[i].dis - st[now].dis <= oneFull; i++)
         {
-            if (st[i].price < minPrice)
-            {
-                minPrice = st[i].price;
-                k = i;
-                if (minPrice < st[now].price)
-                    break;
-            }
-        }
-        if (k == -1)
-            break;
-        double need = (st[k].dis - st[now].dis) / davg;
-        if (minPrice < st[now].price)
-        {
-            if (leftgas < need)
-            {
-                cost += (need - leftgas) * st[now].price;
-                leftgas = 0;
-            }
+            int k = -1;
+            double minPrice = INF;
+            for (int i = now + 1; i <= n && st[i].dis - st[now].dis <= oneFull; i++)
+                {
+                    if (st[i].price < minPrice)
+                        {
+                            minPrice = st[i].price;
+                            k = i;
+                            if (minPrice < st[now].price)
+                                break;
+                        }
+                }
+            if (k == -1)
+                break;
+            double need = (st[k].dis - st[now].dis) / davg;
+            if (minPrice < st[now].price)
+                {
+                    if (leftgas < need)
+                        {
+                            cost += (need - leftgas) * st[now].price;
+                            leftgas = 0;
+                        }
+                    else
+                        leftgas -= need;
+                }
             else
-                leftgas -= need;
+                {
+                    cost += (maxc - leftgas) * st[now].price;
+                    leftgas = maxc - need;
+                }
+            now = k;
         }
-        else
-        {
-            cost += (maxc - leftgas) * st[now].price;
-            leftgas = maxc - need;
-        }
-        now = k;
-    }
     if (now == n)
         printf("%.2f\n", cost);
     else

@@ -23,11 +23,11 @@ int main(int argc, char const *argv[])
     int n, id, score;
     cin >> n;
     for (int i = 0; i < n; i++)
-    {
-        scanf("%d%d", &id, &score);
-        nodes[id].id = id;
-        nodes[id].score += score;
-    }
+        {
+            scanf("%d%d", &id, &score);
+            nodes[id].id = id;
+            nodes[id].score += score;
+        }
     sort(nodes + 1, nodes + n + 1, cmp);
     cout << nodes[1].id << " " << nodes[1].score;
     return 0;

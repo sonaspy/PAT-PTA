@@ -27,14 +27,14 @@ int main(int argc, char const *argv[])
     int N, M, num;
     cin >> N >> M;
     for (int i = 0; i < M; i++)
-    {
-        for (int j = 1; j <= N; j++)
         {
-            pies[j].id = j;
-            scanf("%d", &num);
-            pies[j].total += num;
+            for (int j = 1; j <= N; j++)
+                {
+                    pies[j].id = j;
+                    scanf("%d", &num);
+                    pies[j].total += num;
+                }
         }
-    }
     sort(pies + 1, pies + N + 1, cmp);
     cout << pies[1].total << endl;
     cout << pies[1].id;

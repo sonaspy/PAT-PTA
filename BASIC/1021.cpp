@@ -1,5 +1,5 @@
-// author -  newguo@sonaspy.cn 
-// coding - utf_8 
+// author -  newguo@sonaspy.cn
+// coding - utf_8
 
 #include<iostream>
 #include<map>
@@ -11,15 +11,17 @@ using namespace std;
 int main(int argc, char const *argv[])
 {
     /* code */
-  //test();
+    //test();
     map<char,int> mp;
     string s;
     cin >> s;
-    for(auto iter : s){
-        mp[iter] += 1;
-    }
-    for(auto iter: mp){
-        printf("%c:%d\n",iter.first,iter.second);
-    }
+    for(auto iter : s)
+        {
+            mp[iter] += 1;
+        }
+    for(auto iter: mp)
+        {
+            printf("%c:%d\n",iter.first,iter.second);
+        }
     return 0;
 }

@@ -10,13 +10,13 @@ Stack CreateStack(int MaxElements)
 int IsEmpty(Stack S, int Stacknum)
 {
     if (Stacknum == 1)
-    {
-        return S->Top1 == -1;
-    }
+        {
+            return S->Top1 == -1;
+        }
     if (Stacknum == 2)
-    {
-        return S->Top2 == S->Capacity;
-    }
+        {
+            return S->Top2 == S->Capacity;
+        }
 }
 int IsFull(Stack S)
 {
@@ -27,14 +27,13 @@ int Push(ElementType X, Stack S, int Stacknum)
     if (IsFull(S))
         return 0;
     if (Stacknum == 1)
-    {
-        S->Array[++S->Top1] = X;
-    }
+        {
+            S->Array[++S->Top1] = X;
+        }
     else
-    {
-
-        S->Array[--S->Top2] = X;
-    }
+        {
+            S->Array[--S->Top2] = X;
+        }
     return 1;
 }
 ElementType Top_Pop(Stack S, int Stacknum)
@@ -42,11 +41,11 @@ ElementType Top_Pop(Stack S, int Stacknum)
     if (IsEmpty(S, Stacknum))
         return ERROR;
     if (Stacknum == 1)
-    {
-        return S->Array[S->Top1--];
-    }
+        {
+            return S->Array[S->Top1--];
+        }
     if (Stacknum == 2)
-    {
-        return S->Array[S->Top2++];
-    }
+        {
+            return S->Array[S->Top2++];
+        }
 }

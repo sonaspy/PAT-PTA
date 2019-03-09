@@ -24,11 +24,10 @@ int main(int argc, char const *argv[])
             mp[i] += 1;
     for (auto i : mp)
         if (i.second > max)
-        {
-            max = i.second;
-            c = i.first;
-        }
+            {
+                max = i.second;
+                c = i.first;
+            }
     cout << c << " " << max;
-
     return 0;
 }

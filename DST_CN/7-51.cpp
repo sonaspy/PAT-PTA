@@ -11,35 +11,34 @@ using namespace std;
 int main(int argc, char const *argv[])
 {
     /* code */
-  //test();
+    //test();
     vector<int> list;
     int tmp, seq = 2;
     while (seq--)
-    {
-        scanf("%d", &tmp);
-        while (tmp != -1)
         {
-            list.push_back(tmp);
             scanf("%d", &tmp);
+            while (tmp != -1)
+                {
+                    list.push_back(tmp);
+                    scanf("%d", &tmp);
+                }
         }
-    }
     if (!list.size())
         printf("NULL");
     else
-    {
-        sort(list.begin(), list.end());
-        bool flag = true;
-        for (auto iter : list)
         {
-            if (flag)
-            {
-                flag = false;
-                printf("%d", iter);
-            }
-            else
-                printf(" %d", iter);
+            sort(list.begin(), list.end());
+            bool flag = true;
+            for (auto iter : list)
+                {
+                    if (flag)
+                        {
+                            flag = false;
+                            printf("%d", iter);
+                        }
+                    else
+                        printf(" %d", iter);
+                }
         }
-    }
-
     return 0;
 }

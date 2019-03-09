@@ -22,15 +22,15 @@ int main(int argc, char const *argv[])
     cin >> n;
     unordered_map<int, Node> mp;
     for (int i = 0; i < n; i++)
-    {
-        cin >> node.id >> test >> node.center;
-        mp[test] = node;
-    }
+        {
+            cin >> node.id >> test >> node.center;
+            mp[test] = node;
+        }
     cin >> m;
     for (int i = 0; i < m; i++)
-    {
-        cin >> test;
-        cout << mp[test].id << " " << mp[test].center << endl;
-    }
+        {
+            cin >> test;
+            cout << mp[test].id << " " << mp[test].center << endl;
+        }
     return 0;
 }

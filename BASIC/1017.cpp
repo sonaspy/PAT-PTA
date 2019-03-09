@@ -1,5 +1,5 @@
-// author -  newguo@sonaspy.cn 
-// coding - utf_8 
+// author -  newguo@sonaspy.cn
+// coding - utf_8
 
 #include<iostream>
 #include<string>
@@ -14,13 +14,14 @@ int main(int argc, char const *argv[])
     int d, r, meta, sh;
     cin >> s >> d;
     meta = s[0] - '0';
-    for(int i = 0; i < s.size();){
+    for(int i = 0; i < s.size();)
+        {
             sh = meta / d;
             res.push_back('0' + sh);
             r = meta % d;
             if(i == s.size() - 1) break;
             meta = r*10 + (s[++i] - '0');
-    }
+        }
     int i = 0;
     while(res[i] == '0') i++;
     res = res.substr(i, res.size()-i);

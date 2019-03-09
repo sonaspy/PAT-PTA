@@ -5,11 +5,11 @@ void Level_order(Tree T, void (*visit)(Tree ThisNode))
     if (T != NULL)
         Queue[Next++] = T;
     while (Head < Next)
-    {
-        if (Queue[Head]->Left)
-            Queue[Next++] = Queue[Head]->Left;
-        if (Queue[Head]->Right)
-            Queue[Next++] = Queue[Head]->Right;
-        visit(Queue[Head++]);
-    }
+        {
+            if (Queue[Head]->Left)
+                Queue[Next++] = Queue[Head]->Left;
+            if (Queue[Head]->Right)
+                Queue[Next++] = Queue[Head]->Right;
+            visit(Queue[Head++]);
+        }
 }

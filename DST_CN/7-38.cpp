@@ -1,5 +1,5 @@
-// author -  newguo@sonaspy.cn 
-// coding - utf_8 
+// author -  newguo@sonaspy.cn
+// coding - utf_8
 
 #include<iostream>
 #include<algorithm>
@@ -10,20 +10,22 @@ using namespace std;
 int main(int argc, char const *argv[])
 {
     /* code */
-  //test();
+    //test();
     int N, M, richer[1000001];
     cin >> N >> M;
     for(int i = 0; i < N; i++)
         scanf("%d",&richer[i]);
     sort(richer,richer+N,greater<int>());
     printf("%d",richer[0]);
-    if(N >= M){
-        for(int i = 1; i < M; i++)
-            printf(" %d", richer[i]);
-    }
-    else{
-        for (int i = 1; i < N; i++)
-            printf(" %d", richer[i]);
-    }
+    if(N >= M)
+        {
+            for(int i = 1; i < M; i++)
+                printf(" %d", richer[i]);
+        }
+    else
+        {
+            for (int i = 1; i < N; i++)
+                printf(" %d", richer[i]);
+        }
     return 0;
 }

@@ -13,7 +13,10 @@ using namespace std;
 struct Node
 {
     int id, data;
-    bool operator<(const Node &b)const{ return id < b.id; }
+    bool operator<(const Node &b)const
+    {
+        return id < b.id;
+    }
 };
 vector<int> post, in;
 set<Node> res;
@@ -26,7 +29,7 @@ void solve(int root, int left, int right, int id)
     while (i < right && in[i] != post[root]) i++;
     tmp.id = id, tmp.data = post[root];
     res.insert(tmp);
-    solve(root - 1 - right + i , left, i - 1, id * 2 + 1);
+    solve(root - 1 - right + i, left, i - 1, id * 2 + 1);
     solve(root - 1, i + 1, right, id * 2 + 2);
 }
 

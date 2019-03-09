@@ -11,20 +11,21 @@ using namespace std;
 int main(int argc, char const *argv[])
 {
     /* code */
-  //test();
+    //test();
     list<string> container;
     string s;
     int flag = 1;
     while(cin >> s)
         container.push_front(s);
-    for(auto iter : container){
-        if (flag)
+    for(auto iter : container)
         {
-            flag = 0;
-            cout << iter;
+            if (flag)
+                {
+                    flag = 0;
+                    cout << iter;
+                }
+            else
+                cout << " " << iter;
         }
-        else
-            cout << " " << iter;
-    }
     return 0;
 }

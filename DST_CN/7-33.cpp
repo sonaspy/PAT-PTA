@@ -1,5 +1,5 @@
-// author -  newguo@sonaspy.cn 
-// coding - utf_8 
+// author -  newguo@sonaspy.cn
+// coding - utf_8
 
 #include<iostream>
 #include<set>
@@ -18,21 +18,22 @@ void dfs(int source)
     path.push_back(source);
     reached[source] = 1;
     for (int i = 0; i < MAP[source].size(); i++)
-    {
-        int next = MAP[source][i];
-        int hasNext = 0;
-        if (reached[next] == 0)
         {
-            hasNext = 1;
-            dfs(next);
+            int next = MAP[source][i];
+            int hasNext = 0;
+            if (reached[next] == 0)
+                {
+                    hasNext = 1;
+                    dfs(next);
+                }
+            if (hasNext == 1)
+                path.push_back(source);
         }
-        if (hasNext == 1)
-            path.push_back(source);
-    }
     return;
 }
 
-void Output(){
+void Output()
+{
     vector<int>::iterator it;
     it = path.begin();
     printf("%d", (*it));
@@ -43,25 +44,26 @@ void Output(){
 int main(int argc, char const *argv[])
 {
     /* code */
-  //test();
+    //test();
     cin >> n >> m >> s;
     for (int i = 0; i < m; i++)
-    {
-        int a, b;
-        cin >> a >> b;
-        MAP[a].push_back(b);
-        MAP[b].push_back(a);
-    }
+        {
+            int a, b;
+            cin >> a >> b;
+            MAP[a].push_back(b);
+            MAP[b].push_back(a);
+        }
     for (int i = 1; i <= n; i++)
         sort(MAP[i].begin(), MAP[i].end());
-    
     dfs(s);
-    if(connect == n){
-       Output();
-    }
-    else{
-        Output();
-        cout << " "<< 0;
-    }
+    if(connect == n)
+        {
+            Output();
+        }
+    else
+        {
+            Output();
+            cout << " "<< 0;
+        }
     return 0;
 }

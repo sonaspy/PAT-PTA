@@ -16,16 +16,16 @@ Tree *RestoreTree(int h1, int h2, int z1, int z2)
     Tree *root = new Tree();
     root->data = h[h2];
     for (int i = z1; i <= z2; i++)
-    {
-        if (z[i] == h[h2])
         {
-            if (i != z1)
-                root->left = RestoreTree(h1, h1 - 1 + i - z1, z1, i - 1);
-            if (i != z2)
-                root->right = RestoreTree(h2 + i - z2, h2 - 1, i + 1, z2);
-            break;
+            if (z[i] == h[h2])
+                {
+                    if (i != z1)
+                        root->left = RestoreTree(h1, h1 - 1 + i - z1, z1, i - 1);
+                    if (i != z2)
+                        root->right = RestoreTree(h2 + i - z2, h2 - 1, i + 1, z2);
+                    break;
+                }
         }
-    }
     return root;
 }
 void preOrder(Tree *tree)

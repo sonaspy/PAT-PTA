@@ -18,21 +18,20 @@ int main(int argc, char const *argv[])
     double distance = 0.0;
     cin >> n;
     for (int i = 0; i < n; i++)
-    {
-        cin >> s >> a1 >> a2;
-        distance = pow(abs(a1) * abs(a1) + abs(a2) * abs(a2), 0.5);
-        if (distance > max)
         {
-            max = distance;
-            first = s;
+            cin >> s >> a1 >> a2;
+            distance = pow(abs(a1) * abs(a1) + abs(a2) * abs(a2), 0.5);
+            if (distance > max)
+                {
+                    max = distance;
+                    first = s;
+                }
+            if (distance < min)
+                {
+                    min = distance;
+                    last = s;
+                }
         }
-        if (distance < min)
-        {
-            min = distance;
-            last = s;
-        }
-    }
     cout << last << " " << first;
-
     return 0;
 }

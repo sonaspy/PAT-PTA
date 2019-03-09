@@ -15,11 +15,10 @@ int main(int argc, char const *argv[])
     unordered_set<int> st;
     cin >> n;
     for (; n > 0; n--)
-    {
-        sum = n / 2 + n / 3 + n / 5;
-        st.insert(sum);
-    }
+        {
+            sum = n / 2 + n / 3 + n / 5;
+            st.insert(sum);
+        }
     cout << st.size();
-
     return 0;
 }

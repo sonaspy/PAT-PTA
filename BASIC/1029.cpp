@@ -1,5 +1,5 @@
-// author -  newguo@sonaspy.cn 
-// coding - utf_8 
+// author -  newguo@sonaspy.cn
+// coding - utf_8
 
 #include<iostream>
 #include<string>
@@ -11,7 +11,7 @@ using namespace std;
 int main(int argc, char const *argv[])
 {
     /* code */
-  //test();
+    //test();
     set<char> set1;
     string s1, s2;
     cin >> s1 >> s2;
@@ -23,9 +23,10 @@ int main(int argc, char const *argv[])
         if(set1.count(iter))
             set1.erase(iter);
     for(auto i : s1)
-        if(set1.count(i)){
-            cout << i;
-            set1.erase(i);
-        }
+        if(set1.count(i))
+            {
+                cout << i;
+                set1.erase(i);
+            }
     return 0;
 }

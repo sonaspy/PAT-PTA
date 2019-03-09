@@ -20,15 +20,15 @@ void Build()
     int a[N];
     fill(a, a + N, 0);
     for (i = 0; i < N; i++)
-    {
-        scanf("%d%d%d%d", &Tree[i].K1, &Tree[i].K2, &l, &r);
-        Tree[i].Left = l;
-        Tree[i].Right = r;
-        if (l != -1)
-            a[l] = 1;
-        if (r != -1)
-            a[r] = 1;
-    }
+        {
+            scanf("%d%d%d%d", &Tree[i].K1, &Tree[i].K2, &l, &r);
+            Tree[i].Left = l;
+            Tree[i].Right = r;
+            if (l != -1)
+                a[l] = 1;
+            if (r != -1)
+                a[r] = 1;
+        }
     for (i = 0; i < N && a[i]; i++)
         ;
     root = i;
@@ -38,11 +38,11 @@ int c = 0;
 void JudgeBST(int ROOT)
 {
     if (ROOT != -1)
-    {
-        JudgeBST(Tree[ROOT].Left);
-        inorder[c++] = Tree[ROOT].K1;
-        JudgeBST(Tree[ROOT].Right);
-    }
+        {
+            JudgeBST(Tree[ROOT].Left);
+            inorder[c++] = Tree[ROOT].K1;
+            JudgeBST(Tree[ROOT].Right);
+        }
     else
         return;
 }
@@ -53,17 +53,17 @@ bool JudgeHeap(int ROOT)
     if (Tree[ROOT].Left == -1 && Tree[ROOT].Right == -1)
         return true;
     if (Tree[ROOT].Left != -1)
-    {
-        if (Tree[Tree[ROOT].Left].K2 < Tree[ROOT].K2)
-            return false;
-        f1 = JudgeHeap(Tree[ROOT].Left);
-    }
+        {
+            if (Tree[Tree[ROOT].Left].K2 < Tree[ROOT].K2)
+                return false;
+            f1 = JudgeHeap(Tree[ROOT].Left);
+        }
     if (Tree[ROOT].Right != -1)
-    {
-        if (Tree[Tree[ROOT].Right].K2 < Tree[ROOT].K2)
-            return false;
-        f2 = JudgeHeap(Tree[ROOT].Right);
-    }
+        {
+            if (Tree[Tree[ROOT].Right].K2 < Tree[ROOT].K2)
+                return false;
+            f2 = JudgeHeap(Tree[ROOT].Right);
+        }
     return f2 && f1;
 }
 

@@ -28,9 +28,9 @@ int main(int argc, char const *argv[])
     sort(arr, arr + n);
     inOrder(1);
     for(int i =1; i <= n; i++)
-    {
-        cout << CBT[i];
-        if(i != n) cout << " ";
-    }
+        {
+            cout << CBT[i];
+            if(i != n) cout << " ";
+        }
     return 0;
 }

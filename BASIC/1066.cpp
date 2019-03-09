@@ -17,16 +17,15 @@ int main(int argc, char const *argv[])
     cin >> a >> b >> replace;
     for (int i = 0; i < m; i++)
         for (int j = 0; j < n; j++)
-        {
-            scanf("%d", &image[i][j]);
-            if (image[i][j] >= a && image[i][j] <= b)
-                image[i][j] = replace;
-            printf("%03d", image[i][j]);
-            if (j == n - 1)
-                printf("\n");
-            else
-                printf(" ");
-        }
-
+            {
+                scanf("%d", &image[i][j]);
+                if (image[i][j] >= a && image[i][j] <= b)
+                    image[i][j] = replace;
+                printf("%03d", image[i][j]);
+                if (j == n - 1)
+                    printf("\n");
+                else
+                    printf(" ");
+            }
     return 0;
 }

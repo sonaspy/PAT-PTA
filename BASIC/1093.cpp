@@ -18,16 +18,16 @@ int main(int argc, char const *argv[])
     getline(cin, s2);
     for (auto i : s1)
         if (!st.count(i))
-        {
-            st.insert(i);
-            s3.push_back(i);
-        }
+            {
+                st.insert(i);
+                s3.push_back(i);
+            }
     for (auto i : s2)
         if (!st.count(i))
-        {
-            st.insert(i);
-            s3.push_back(i);
-        }
+            {
+                st.insert(i);
+                s3.push_back(i);
+            }
     cout << s3;
     return 0;
 }

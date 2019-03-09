@@ -23,7 +23,6 @@ int main()
     //test();
     int n;
     scanf("%d", &n);
-
     Head.name = (char *)malloc(sizeof(char) * 5);
     strcpy(Head.name, "root");
     Head.subFile = NULL;
@@ -31,10 +30,10 @@ int main()
     Head.Next = NULL;
     Head.isDir = true;
     for (int i = 0; i < n; i++)
-    {
-        getchar();
-        Read();
-    }
+        {
+            getchar();
+            Read();
+        }
     Print(&Head, 0);
     return 0;
 }
@@ -44,38 +43,37 @@ void Read()
     char FileName[266];
     Node temp = &Head; // root
     scanf("%s", FileName);
-
     char words[266];
     int j, L = 0;
     for (int i = 0; i < strlen(FileName); i++)
-    {
-        if (FileName[i] == '\\')
         {
-            for (j = L; j < i; j++)
-                words[j - L] = FileName[j];
-            words[j - L] = '\0';
-            temp->subDir = insertDir(temp->subDir, words);
-            temp = temp->subDir;
-            while (strcmp(temp->name, words))
-                temp = temp->Next;
-            L = i + 1;
+            if (FileName[i] == '\\')
+                {
+                    for (j = L; j < i; j++)
+                        words[j - L] = FileName[j];
+                    words[j - L] = '\0';
+                    temp->subDir = insertDir(temp->subDir, words);
+                    temp = temp->subDir;
+                    while (strcmp(temp->name, words))
+                        temp = temp->Next;
+                    L = i + 1;
+                }
         }
-    }
     if (L < strlen(FileName))
-    {
-        for (int j = L; j <= strlen(FileName); j++)
-            words[j - L] = FileName[j];
-        temp->subFile = InsertFile(temp->subFile, words);
-    }
+        {
+            for (int j = L; j <= strlen(FileName); j++)
+                words[j - L] = FileName[j];
+            temp->subFile = InsertFile(temp->subFile, words);
+        }
 }
 Node insertDir(Node H, char *k)
 {
     if (!H || strcmp(H->name, k) > 0)
-    {
-        Node temp = New(k);
-        temp->Next = H;
-        return temp;
-    }
+        {
+            Node temp = New(k);
+            temp->Next = H;
+            return temp;
+        }
     if (strcmp(H->name, k) == 0)
         return H;
     H->Next = insertDir(H->Next, k);
@@ -84,12 +82,12 @@ Node insertDir(Node H, char *k)
 Node InsertFile(Node H, char *k)
 {
     if (!H || strcmp(H->name, k) > 0)
-    {
-        Node temp = New(k);
-        temp->isDir = false;
-        temp->Next = H;
-        return temp;
-    }
+        {
+            Node temp = New(k);
+            temp->isDir = false;
+            temp->Next = H;
+            return temp;
+        }
     H->Next = InsertFile(H->Next, k);
     return H;
 }
@@ -107,13 +105,13 @@ Node New(char *k)
 void Print(Node H, int space)
 {
     if (H)
-    {
-        for (int i = 0; i < space; i++)
-            printf(" ");
-        printf("%s\n", H->name);
-        if (H->isDir == true)
-            Print(H->subDir, space + 2);
-        Print(H->subFile, space + 2);
-        Print(H->Next, space);
-    }
+        {
+            for (int i = 0; i < space; i++)
+                printf(" ");
+            printf("%s\n", H->name);
+            if (H->isDir == true)
+                Print(H->subDir, space + 2);
+            Print(H->subFile, space + 2);
+            Print(H->Next, space);
+        }
 }

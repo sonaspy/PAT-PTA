@@ -37,15 +37,15 @@ int main()
     char s;
     cin >> s;
     while (s != 'S')
-    {
-        int a, b;
-        cin >> a >> b;
-        if (s == 'C')
-            check(a, b);
-        else if (s == 'I')
-            uni(a, b);
-        cin >> s;
-    }
+        {
+            int a, b;
+            cin >> a >> b;
+            if (s == 'C')
+                check(a, b);
+            else if (s == 'I')
+                uni(a, b);
+            cin >> s;
+        }
     for (int i = 1; i <= n; i++)
         if (Root[i] == -1)
             cnt++;

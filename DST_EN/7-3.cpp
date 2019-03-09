@@ -16,30 +16,30 @@ int main(int argc, char const *argv[])
     stack<int> S;
     int arr[10000];
     while (K--)
-    {
-        while (!S.empty())
-            S.pop();
-        for (int i = 0; i < N; i++)
-            cin >> arr[i];
-        int cur = 0;
-        bool flag = true;
-        for (int i = 0; i < N; i++)
         {
-            S.push(i + 1);
-            if (S.size() > M)
-            {
-                flag = false;
-                break;
-            }
-            while (!S.empty() && S.top() == arr[cur])
-            {
+            while (!S.empty())
                 S.pop();
-                cur++;
-            }
+            for (int i = 0; i < N; i++)
+                cin >> arr[i];
+            int cur = 0;
+            bool flag = true;
+            for (int i = 0; i < N; i++)
+                {
+                    S.push(i + 1);
+                    if (S.size() > M)
+                        {
+                            flag = false;
+                            break;
+                        }
+                    while (!S.empty() && S.top() == arr[cur])
+                        {
+                            S.pop();
+                            cur++;
+                        }
+                }
+            if(S.empty() && flag)
+                printf("YES\n");
+            else printf("NO\n");
         }
-        if(S.empty() && flag)
-            printf("YES\n");
-        else printf("NO\n");
-    }
     return 0;
 }

@@ -19,22 +19,21 @@ int main(int argc, char const *argv[])
     for (int i = 1; i <= m; i++)
         cin >> str[i];
     if (s > m)
-    {
-        cout << "Keep going...";
-        return 0;
-    }
+        {
+            cout << "Keep going...";
+            return 0;
+        }
     else
         for (int i = s; i <= m;)
-        {
-
-            if (!st.count(str[i]))
             {
-                cout << str[i] << endl;
-                st.insert(str[i]);
-                i += n;
+                if (!st.count(str[i]))
+                    {
+                        cout << str[i] << endl;
+                        st.insert(str[i]);
+                        i += n;
+                    }
+                else
+                    i++;
             }
-            else
-                i++;
-        }
     return 0;
 }

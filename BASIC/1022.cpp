@@ -19,11 +19,11 @@ int main(int argc, char const *argv[])
     sh = c / d;
     r = c % d;
     while (sh || r)
-    {   
-        s.push_back(r+'0');
-        r = sh % d;
-        sh /= d;
-    }
+        {
+            s.push_back(r+'0');
+            r = sh % d;
+            sh /= d;
+        }
     reverse(s.begin(),s.end());
     if (!c)
         cout << 0;

@@ -46,41 +46,41 @@ void RR(avlNode &root)
 void insert_2_avlTree(avlNode &root, int data)
 {
     if (!root)
-    {
-        root = new node;
-        root->data = data;
-        return;
-    }
+        {
+            root = new node;
+            root->data = data;
+            return;
+        }
     if (data < root->data)
-    {
-        insert_2_avlTree(root->left, data);
-        updateHeight(root);
-        if (getAVLfactor(root) == 2)
         {
-            if (getAVLfactor(root->left) == 1)
-                LL(root);
-            else if (getAVLfactor(root->left) == -1)
-            {
-                RR(root->left);
-                LL(root);
-            }
+            insert_2_avlTree(root->left, data);
+            updateHeight(root);
+            if (getAVLfactor(root) == 2)
+                {
+                    if (getAVLfactor(root->left) == 1)
+                        LL(root);
+                    else if (getAVLfactor(root->left) == -1)
+                        {
+                            RR(root->left);
+                            LL(root);
+                        }
+                }
         }
-    }
     else
-    {
-        insert_2_avlTree(root->right, data);
-        updateHeight(root);
-        if (getAVLfactor(root) == -2)
         {
-            if (getAVLfactor(root->right) == -1)
-                RR(root);
-            else if (getAVLfactor(root->right) == 1)
-            {
-                LL(root->right);
-                RR(root);
-            }
+            insert_2_avlTree(root->right, data);
+            updateHeight(root);
+            if (getAVLfactor(root) == -2)
+                {
+                    if (getAVLfactor(root->right) == -1)
+                        RR(root);
+                    else if (getAVLfactor(root->right) == 1)
+                        {
+                            LL(root->right);
+                            RR(root);
+                        }
+                }
         }
-    }
 }
 int main(int argc, char const *argv[])
 {
@@ -88,10 +88,10 @@ int main(int argc, char const *argv[])
     int data, n;
     cin >> n;
     for (int i = 0; i < n; i++)
-    {
-        cin >> data;
-        insert_2_avlTree(Root, data);
-    }
+        {
+            cin >> data;
+            insert_2_avlTree(Root, data);
+        }
     cout << Root->data;
     return 0;
 }

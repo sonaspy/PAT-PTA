@@ -5,7 +5,7 @@
 #include <set>
 #include <vector>
 #include <algorithm>
-#include<string>
+#include <string>
 #define test() freopen("in", "r", stdin)
 
 using namespace std;

@@ -5,10 +5,10 @@
 #include <vector>
 #include <algorithm>
 #define test() freopen("in", "r", stdin)
-
+#define _MAX_NUM_ 10001
 using namespace std;
-int vis[10001], n, deep[10001];
-vector<int> map[10001];
+int vis[_MAX_NUM_], n, deep[_MAX_NUM_];
+vector<int> map[_MAX_NUM_];
 
 void DFS(int id)
 {
@@ -33,7 +33,7 @@ void solve(int id, int root)
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+    //test();
     cin >> n;
     for (int i = 0; i < n - 1; i++)
     {
@@ -51,14 +51,10 @@ int main(int argc, char const *argv[])
             DFS(i);
         }
     }
-    if (cnt > 1)
-    {
-        printf("Error: %d components", cnt);
-        return 0;
-    }
+    if (cnt > 1){ printf("Error: %d components", cnt); return 0;}
     for (int i = 1; i <= n; i++)
     {
-        fill(vis, vis + 10001, 0);
+        fill(vis, vis + _MAX_NUM_, 0);
         solve(i, i);
     }
     int max = -1;

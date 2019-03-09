@@ -1,4 +1,4 @@
-# author - newguo@sonaspy.cn
+# author -  newguo@sonaspy.cn
 # coding - utf_8
 import re
 str = re.sub('[^a-zA-Z]', '', input()).upper()

@@ -1,4 +1,4 @@
-# author - newguo@sonaspy.cn 
+# author -  newguo@sonaspy.cn 
 # coding - utf_8 
 A,B = eval(','.join(input().split()))
 

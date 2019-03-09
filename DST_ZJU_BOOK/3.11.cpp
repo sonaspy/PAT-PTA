@@ -1,5 +1,5 @@
 
-// author - newguo@sonaspy.cn 
+// author -  newguo@sonaspy.cn 
 // coding - utf_8 
 #include <iostream>
 #include <map>

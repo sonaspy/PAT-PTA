@@ -1,4 +1,4 @@
-# author - newguo@sonaspy.cn
+# author -  newguo@sonaspy.cn
 # coding - utf_8
 p, a = input().split()
 p = list(map(int, p.split('.')))

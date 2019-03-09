@@ -79,5 +79,6 @@
     "functional": "cpp",
     "regex": "cpp",
     "queue": "cpp"
-}
+},
+"search.usePCRE2": true
 }

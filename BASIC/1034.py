@@ -1,3 +1,6 @@
+# author -  newguo@sonaspy.cn 
+# coding - utf_8 
+
 from fractions import Fraction
 import re
 

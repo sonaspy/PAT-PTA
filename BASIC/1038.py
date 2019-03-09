@@ -1,4 +1,4 @@
-# author - newguo@sonaspy.cn
+# author -  newguo@sonaspy.cn
 # coding - utf_8
 n = eval(input())
 l1 = list(map(int, input().split()))

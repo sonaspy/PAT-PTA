@@ -1,4 +1,4 @@
-// author - newguo@sonaspy.cn
+// author -  newguo@sonaspy.cn
 // coding - utf_8
 /*
 给出n个城市，城市间有m条路，k个要检查的城市

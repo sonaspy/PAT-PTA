@@ -20,14 +20,27 @@ void solve(int root, int left, int right, int id)
     int i = left;
     while (i < right && in[i] != post[root]) i++;
     res[id] = post[root];
-    solve(root - 1 - right + i, left, i - 1, id * 2 + 1);
+    solve(root - 1 + i - right, left, i - 1, id * 2 + 1);
     solve(root - 1, i + 1, right, id * 2 + 2);
 }
+
+// pre , in -> level
+// void solve(int root, int left, int right, int id)
+// {
+//     if (left > right)
+//         return;
+//     int i = left;
+//     while (i < right && in[i] != pre[root])
+//         i++;
+//     res[id] = pre[root];
+//     solve(root + 1, left, i - 1, id * 2 + 1);
+//     solve(root + 1 + i - left, i + 1, right, id * 2 + 2);
+// }
 
 int main(int argc, char const *argv[])
 {
     /* code */
-    //test();
+    test();
     int n;
     string s;
     cin >> n;

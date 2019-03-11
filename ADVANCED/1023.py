@@ -1,9 +1,7 @@
 # author - newguo@sonaspy.cn 
 # coding - utf_8 
-s = input()
-num = int(s)
-set1 = {'.'}
-set2 = {'.'}
+s = input() ;num = int(s)
+set1 = {'.'}; set2 = {'.'}
 for i in s:
     set1.add(i)
 for i in str(num*2):

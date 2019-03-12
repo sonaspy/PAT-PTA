@@ -1,111 +1,112 @@
-// author -  newguo@sonaspy.cn
-// coding - utf_8
+// author - newguo@sonaspy.cn 
+// coding - utf_8 
 
-#include <iostream>
-#include <vector>
-#include <set>
-#include <queue>
-#include <functional>
-#include <cstdio>
-#define test() freopen("in", "r", stdin)
-
+#include<iostream>
+#include<vector>
+#include<algorithm>
+#define test() freopen("in","r",stdin)
 using namespace std;
-struct Table
-{
-    int served = 0;
-    bool isVIP = false;
-} table[102];
+#define _INF_ 99999999
 struct Player
 {
-    int arriveTime, useMinutes;
-    bool isVIP;
-    Player(int p, int tu, bool v) : arriveTime(p), useMinutes(tu), isVIP(v) {}
-    bool operator<(const Player &b) const {return arriveTime < b.arriveTime;}
+    int arrive, use_time, start;
+    bool served, isVIP;      
 };
-bool operator<(const pair<int, int> &a, const pair<int, int> &b){return a.first < b.first;}
-
-set<Player> waitingQ;
-priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> usedTables;
-set<int> freeTables;
-
-int main(int argc, char const *argv[])
+int cmp1(Player &a, Player &b) {return a.arrive < b.arrive ;}
+int cmp2(Player &a, Player &b){return a.start < b.start;} 
+struct Table
 {
-    /* code */
-    //test();
-    int n, tableNum, tableVipNum, tableVipRemain, a, b, c, p, vip, nowTime = 8 * 3600;
-    scanf("%d", &n);
-    for (int i = 0; i < n; ++i)
+    int endtime = 8*3600, serve_cnt = 0; 
+    bool isVIP = false;         
+};
+vector<Player> players; 
+vector<Table> tables;  
+
+int findvip(int index, int before)
+{
+    for (int i = index; i < players.size() && players[i].arrive <= before; i++){if (!players[i].served && players[i].isVIP) return i;}
+    return -1;
+}
+
+void update(int pla_id, int tb_id)
+{
+    players[pla_id].start = max(players[pla_id].arrive, tables[tb_id].endtime);players[pla_id].served = 1;
+    tables[tb_id].endtime = players[pla_id].start + players[pla_id].use_time; tables[tb_id].serve_cnt++;
+}
+
+int main()
+{
+    test();
+    int n, m, k, t_id;
+    cin >> n;
+    for (int i = 0; i < n; i++)
     {
-        scanf("%d:%d:%d %d %d", &a, &b, &c, &p, &vip);
-        p = min(p, 120);
-        waitingQ.insert(Player(a * 3600 + b * 60 + c, p, vip == 1));
+        int h, m, s, use_time, isVIP, arrive;
+        scanf("%d:%d:%d%d%d", &h, &m, &s, &use_time, &isVIP);
+        arrive = h * 3600 + m * 60 + s;
+        use_time = use_time > 120 ? 7200 : use_time * 60;
+        players.push_back({arrive, use_time, 0, 0, isVIP > 0});
     }
-    scanf("%d%d", &tableNum, &tableVipNum);
-    for (int i = 0; i < tableNum; ++i)
-        freeTables.insert(i);
-    for (int i = 0; i < tableVipNum; ++i)
+    sort(players.begin(), players.end(), cmp1);
+    cin >> m >> k;
+    tables.resize(m);
+    for (int i = 0; i < k; i++)
     {
-        scanf("%d", &vip);
-        table[--vip].isVIP = true;
+        scanf("%d", &t_id);
+        tables[t_id - 1].isVIP = 1;
     }
-    tableVipRemain = tableVipNum;
-    while (waitingQ.size() && nowTime < 21 * 3600)
+    for (int i = 0; i < players.size();)
     {
-        int arrive_t = waitingQ.begin()->arriveTime;
-        if (freeTables.size() && arrive_t <= nowTime)
+        int minEndTime = _INF_, minEndIndex;
+        for (int j = 0; j < m; j++)
         {
-            if (tableVipRemain > 0)
+            if (tables[j].endtime < minEndTime) 
             {
-                set<Player>::iterator it = waitingQ.begin();
-                while (it != waitingQ.end() && it->arriveTime <= nowTime)
-                {
-                    if (it->isVIP) break;
-                    it++;
-                }
-                if (it != waitingQ.end() && it->arriveTime <= nowTime)
-                {
-                    tableVipRemain--;
-                    arrive_t = it->arriveTime;
-                    set<int>::iterator iter = freeTables.begin();
-                    for (; !table[(*iter)].isVIP; iter++)
-                        ;
-                    table[*iter].served++;
-                    usedTables.push(make_pair(nowTime + it->useMinutes * 60, *iter));
-                    freeTables.erase(*iter);
-                    waitingQ.erase(*it);
-                    printf("%02d:%02d:%02d %02d:%02d:%02d %d\n", arrive_t / 3600, arrive_t % 3600 / 60, arrive_t % 60, nowTime / 3600, nowTime % 3600 / 60, nowTime % 60, (nowTime - arrive_t + 30) / 60);
-                    continue;
-                }
+                minEndTime = tables[j].endtime;
+                minEndIndex = j;
             }
-            printf("%02d:%02d:%02d %02d:%02d:%02d %d\n", arrive_t / 3600, arrive_t % 3600 / 60, arrive_t % 60, nowTime / 3600, nowTime % 3600 / 60, nowTime % 60, (nowTime - arrive_t + 30) / 60);
-            table[*freeTables.begin()].served++;
-            usedTables.push(make_pair(nowTime + waitingQ.begin()->useMinutes * 60, *freeTables.begin()));
-            if (table[*freeTables.begin()].isVIP)
-                tableVipRemain--;
-            freeTables.erase(*freeTables.begin());
-            waitingQ.erase(*waitingQ.begin());
-            continue;
+        }
+        if (21 * 3600 <= minEndTime || 21 * 3600 <= players[i].arrive ) break;
+        int pla_id = i, tb_id = minEndIndex; // pla_id : player's id(soon will be served ) .tb_id : Table's id (that will serve the player).
+        if ( players[i].arrive <= minEndTime)
+        {
+            if (tables[tb_id].isVIP)
+            {
+                int vipid = findvip(pla_id, minEndTime);
+                pla_id = (vipid != -1) ? vipid : pla_id;
+            }
+            else if (players[i].isVIP)
+            {
+                for (int j = 0; j < m; j++)
+                    if (tables[j].isVIP && tables[j].endtime <= players[pla_id].arrive){tb_id = j;break;}
+            }
         }
         else
         {
-            if (usedTables.empty() || (freeTables.size() && arrive_t <= usedTables.top().first))
-                nowTime = arrive_t;
-            else
+            for (int j = 0; j < m; j++)
             {
-                if (nowTime < usedTables.top().first)
-                    nowTime = usedTables.top().first;
-                while (usedTables.size() && nowTime >= usedTables.top().first)
-                {
-                    freeTables.insert(usedTables.top().second);
-                    if (table[usedTables.top().second].isVIP)
-                        tableVipRemain++;
-                    usedTables.pop();
-                }
+                if (tables[j].endtime <= players[pla_id].arrive){tb_id = j;break;}
             }
+            if (players[pla_id].isVIP)
+                for (int j = 0; j < m; j++)
+                {
+                    if (tables[j].isVIP && tables[j].endtime <= players[pla_id].arrive){tb_id = j;break;}
+                }
         }
-    }//attention
-    cout << table[0].served;
-    for (int i = 1; i < tableNum; i++)
-        cout << " " << table[i].served;
+        update(pla_id, tb_id);
+        while (i < players.size() && players[i].served)i++;
+    }
+    sort(players.begin(), players.end(), cmp2);
+    for (int i = 0; i < players.size(); i++)
+    {
+        if (players[i].served)
+        {
+            int wait = players[i].start - players[i].arrive;
+            printf("%02d:%02d:%02d %02d:%02d:%02d %d\n", players[i].arrive / 3600, players[i].arrive % 3600 / 60, players[i].arrive % 60,
+                   players[i].start / 3600, players[i].start % 3600 / 60, players[i].start % 60, (int)(1.0 * wait / 60 + 0.5));
+        }
+    }
+    for (int i = 0; i < m; i++)
+        printf("%d%c", tables[i].serve_cnt, i == m - 1 ? '\n' : ' ');
     return 0;
 }

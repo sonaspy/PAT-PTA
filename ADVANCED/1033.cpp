@@ -37,7 +37,7 @@ int main(int argc, char const *argv[])
             if (stas[i].x <= x)continue;//该站已过头
             if (stas[i].price < nowprice)
             {
-                totalPrice += (stas[i].x - x - nowCanDrive) * nowprice / davg;//nowCanDrive(left tank could drive)
+                totalPrice += (stas[i].x - x - nowCanDrive)/davg * nowprice;//nowCanDrive(left tank could drive)
                 nowCanDrive = 0.0;
                 nowprice = stas[i].price;
                 x = stas[i].x;

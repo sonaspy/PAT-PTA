@@ -48,7 +48,7 @@ void DFS(int end) //attention
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+    //test();
     cin >> cmax >> n >> sp >> m;
     cmax /= 2;
     for (int i = 1; i <= n; i++)

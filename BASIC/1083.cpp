@@ -11,7 +11,7 @@ using namespace std;
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+    //test();
     int n, num, d_value;
     map<int, int, greater<int>> mp;
     cin >> n;

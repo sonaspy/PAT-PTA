@@ -14,7 +14,7 @@ struct Node
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+    //test();
     int n, m, map[300][300], maxTotal = 0, count = 0, a1, a2, a3;
     cin >> n >> m;
     for (int i = 0; i < n; i++)

@@ -34,7 +34,7 @@ int solve(int *&a, int root, unordered_map<int, ptrNode> &mp, int level)
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+    //test();
     int n, m, parent, nums, child;
     cin >> n >> m;
     while (n != 0)

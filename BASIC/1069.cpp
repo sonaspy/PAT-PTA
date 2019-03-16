@@ -11,7 +11,7 @@ using namespace std;
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+    //test();
     int m = 0, n = 0, s = 0;
     string str[1001];
     unordered_set<string> st;

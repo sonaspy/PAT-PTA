@@ -35,7 +35,7 @@ void DFS(int i)
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+    //test();
     cin >> n >> d;
     for(int i = 0; i < n; i++)
         {

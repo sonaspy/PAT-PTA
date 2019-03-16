@@ -17,7 +17,7 @@ struct Node
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+    //test();
     int m, n, tol, min, m1, n1, count = 0, pix;
     cin >> m >> n >> tol;
     int image[n + 2][m + 2];

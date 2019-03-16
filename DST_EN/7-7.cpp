@@ -21,7 +21,7 @@ void inOrder(int root)
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+    //test();
     cin >> n;
     for (int i = 0; i < n; i++)
         scanf("%d", &arr[i]);

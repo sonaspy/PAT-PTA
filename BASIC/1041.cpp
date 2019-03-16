@@ -17,7 +17,7 @@ struct Node
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+    //test();
     int n, m, test;
     cin >> n;
     unordered_map<int, Node> mp;

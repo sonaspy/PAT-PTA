@@ -12,7 +12,7 @@ using namespace std;
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+    //test();
     int n, m, id, sum_stu = 0, sum_g = 0;
     unordered_set<int> st;
     cin >> n >> m;

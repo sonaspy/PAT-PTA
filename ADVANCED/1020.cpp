@@ -40,7 +40,7 @@ void solve(int root, int left, int right, int id)
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+    //test();
     int n;
     string s;
     cin >> n;

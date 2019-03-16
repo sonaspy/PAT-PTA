@@ -30,7 +30,7 @@ bool cmp(struct Campus a, struct Campus b)
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+    //test();
     int n;
     unordered_map<string, Campus> mp;
     cin >> n;

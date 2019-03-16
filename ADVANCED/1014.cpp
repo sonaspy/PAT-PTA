@@ -47,7 +47,7 @@ void solve(int value)
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+    //test();
     cin >> n >> m >> k >> q;
     for (int i = 1; i <= k; i++)
         {

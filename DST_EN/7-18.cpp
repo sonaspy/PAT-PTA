@@ -13,7 +13,7 @@ using namespace std;
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+    //test();
     priority_queue<int, vector<int>, greater<int>> pq;
     unordered_map<int, unordered_set<int>> mp;
     unordered_map<int, int> indegree;

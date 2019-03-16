@@ -24,7 +24,7 @@ priority_queue<process> pro_Q;
 int main(int argc, char const *argv[])
 {
     /* code */
-//test();
+    //test();
     int numOfCommands, i;
     process tmp;
     scanf("%d\n", &numOfCommands);

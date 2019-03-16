@@ -10,7 +10,7 @@ using namespace std;
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+    //test();
     int k, e;
     double co;
     queue<pair<int, double>> p1, p2, res;

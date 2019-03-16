@@ -42,7 +42,7 @@ int bfs(int start)
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+    //test();
     int n, m, a, b;
     cin >> n >> m;
     for (int i = 0; i < m; i++)

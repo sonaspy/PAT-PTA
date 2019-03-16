@@ -40,7 +40,7 @@ void resolve(unordered_map<string, int> &mp, string &s)
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+    //test();
     unordered_map<string, int> mp;
     vector<Node> list;
     string s;

@@ -17,7 +17,7 @@ struct Node
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+    //test();
     int n, k, adr, addr_1st, walk;
     unordered_map<int, Node> m;
     vector<Node> l1, l2, l3, res;

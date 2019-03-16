@@ -24,7 +24,7 @@ inline int ReturnMaxPrime(int n)
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+    //test();
     int m, n, num, pos;
     cin >> m >> n;
     m = ReturnMaxPrime(m);

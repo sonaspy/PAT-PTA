@@ -36,7 +36,7 @@ set<int> freeTables;
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+    //test();
     int n, tableNum, tableVipNum, tableVipRemain, a, b, c, p, vip, nowTime = 8 * 3600;
     scanf("%d", &n);
     for (int i = 0; i < n; ++i)

@@ -11,7 +11,7 @@ using namespace std;
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+    //test();
     double a[3],ans = 1;
     string s = "WTL";
     for (int i = 0; i < 3; i++)

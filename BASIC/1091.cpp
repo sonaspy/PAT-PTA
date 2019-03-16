@@ -29,7 +29,7 @@ void solve(int num)
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+    //test();
     int n, num;
     cin >> n;
     for (int i = 0; i < n; i++)

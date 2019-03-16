@@ -45,7 +45,7 @@ void solve(int id)
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+    //test();
     int n, m, id;
     char T[4] = {'A', 'C', 'M', 'E'};
     cin >> n >> m;

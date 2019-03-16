@@ -36,7 +36,7 @@ void update(int pla_id, int tb_id)
 
 int main()
 {
-    test();
+    //test();
     int n, m, k, t_id;
     cin >> n;
     for (int i = 0; i < n; i++)

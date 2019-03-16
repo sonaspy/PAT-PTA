@@ -11,7 +11,7 @@ using namespace std;
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+    //test();
     unordered_set<char> st;
     string s1, s2, s3;
     getline(cin, s1);

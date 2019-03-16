@@ -33,7 +33,7 @@ void solve(int cur){
 
 int main(int argc, char const *argv[]){
     /* code */
-    test();
+    //test();
     cin >> n >> m >> s >> d;
     fill(shortest_dis, shortest_dis + 501, INF);
     for (int i = 0; i < m; i++){

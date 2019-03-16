@@ -10,7 +10,7 @@ using namespace std;
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+    //test();
     int n, m, c1, c2, a1, a2, b, teams[501], map[501][501], w[501], dis[501], num[501];
     bool vis[501];
     cin >> n >> m >> c1 >> c2;

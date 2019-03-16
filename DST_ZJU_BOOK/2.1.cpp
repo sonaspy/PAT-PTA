@@ -26,7 +26,7 @@ int getNum()
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+    //test();
     string s;
     cin >> s;
     for (auto iter : s)

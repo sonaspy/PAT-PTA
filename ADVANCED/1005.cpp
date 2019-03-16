@@ -10,7 +10,7 @@ using namespace std;
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+    //test();
     int sum;
     string nums[10] = {"zero","one","two","three","four","five","six","seven","eight","nine"},
                       s, res, ans;

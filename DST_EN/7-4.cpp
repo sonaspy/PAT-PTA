@@ -18,7 +18,7 @@ struct Node
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+    //test();
     int n, a1, a2, root;
     cin >> n;
     string s1, s2;

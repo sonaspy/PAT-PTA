@@ -12,7 +12,7 @@ using namespace std;
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+    //test();
     int min = 10000000, max = -1, a1, a2, n;
     string first, last, s;
     double distance = 0.0;

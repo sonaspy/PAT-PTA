@@ -32,7 +32,7 @@ bool isTheSame(int *a, int *b)
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+    //test();
     int n, l, num;
     cin >> n;
     while (n != 0)

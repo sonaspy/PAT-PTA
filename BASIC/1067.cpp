@@ -10,7 +10,7 @@ using namespace std;
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+    //test();
     string correct, trypwd;
     int n, count = 1;
     cin >> correct >> n;

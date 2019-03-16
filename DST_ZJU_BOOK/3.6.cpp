@@ -11,7 +11,7 @@ using namespace std;
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+    //test();
     int n, ceof, expr;
     queue<pair<int, int>> Q1, Q2, add;
     vector<pair<int, int>> v1, v2;

@@ -26,7 +26,7 @@ inline bool cmp(Student a, Student b)
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+    //test();
     int N, M, K, a1, a2, a3;
     cin >> N >> K >> M;
     vector<Student> container;

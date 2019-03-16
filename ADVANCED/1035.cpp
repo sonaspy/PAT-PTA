@@ -17,7 +17,7 @@ unordered_map<char,char> mp;
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+    //test();
     int n;
     cin >> n;
     mp['1'] = '@', mp['0'] = '%', mp['l'] = 'L', mp['O'] = 'o';

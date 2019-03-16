@@ -25,7 +25,7 @@ void Post(nodePtr root)
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+    //test();
     string lastop = "Push", curop;
     int id, n, root, lastele;
     cin >> n;

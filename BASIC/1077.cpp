@@ -12,7 +12,7 @@ using namespace std;
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+    //test();
     double g1, g2, g;
     int n, m, num;
     cin >> n >> m;

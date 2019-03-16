@@ -39,7 +39,7 @@ inline int cal(node &n)
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+    //test();
     map<string, Node> mp;
     for (int i = 0; i < 24; i++)
         {

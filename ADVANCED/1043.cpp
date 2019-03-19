@@ -5,76 +5,69 @@
 #include <vector>
 //attention
 #define test() freopen("in", "r", stdin)
-
+const int DATASIZE = 1 << 16;
 using namespace std;
-int num[1111], n;
-vector<int> pre, mirror_pre, post;
-typedef struct Node *pNode;
+int input[DATASIZE], n, f = 0;
+vector<int> pre, pre_m, post_output;
+typedef struct Node* pNode;
 struct Node
 {
-    int data;
-    pNode lchild = NULL, rchild = NULL;
-    Node(int d) { data = d; }
+    int __data;
+    pNode left = nullptr, right = nullptr;
+    Node(int d) { __data = d; }
 };
-void insert(pNode &root, int x)
+void insert(pNode &root, int data)
 {
-    if (!root)
-    {
-        root = new Node(x);
-        return;
-    }
-    if (x >= root->data) insert(root->rchild, x);
-    else insert(root->lchild, x);
+    if (!root){ root = new Node(data); return;}
+    insert((data < root->__data) ? (root->left) : (root->right) , data);
 }
 void preorder(pNode root)
 {
     if (!root) return;
-    pre.push_back(root->data);
-    preorder(root->lchild);
-    preorder(root->rchild);
+    pre.push_back(root->__data);
+    preorder(root->left);
+    preorder(root->right);
 }
-void mirrororder(pNode root)
+void preorder_m(pNode root)
 {
     if (!root) return;
-    mirror_pre.push_back(root->data);
-    mirrororder(root->rchild);
-    mirrororder(root->lchild);
-}
-inline bool issame(const vector<int> &pre)
-{
-    for (int i = 0; i < n; i++)
-        if (pre[i] != num[i])
-            return false;
-    return true;
+    pre_m.push_back(root->__data);
+    preorder_m(root->right);
+    preorder_m(root->left);
 }
 void postorder(pNode root)
 {
     if (!root) return;
-    postorder(root->lchild);
-    postorder(root->rchild);
-    post.push_back(root->data);
+    postorder(root->left);
+    postorder(root->right);
+    post_output.push_back(root->__data);
 }
-void postorder_mirror(pNode root)
+void postorder_m(pNode root)
 {
     if (!root) return;
-    postorder_mirror(root->rchild);
-    postorder_mirror(root->lchild);
-    post.push_back(root->data);
+    postorder_m(root->right);
+    postorder_m(root->left);
+    post_output.push_back(root->__data);
+}
+inline bool isMatched(const vector<int> &pre)
+{
+    for (int i = 0; i < n; i++)
+        if (pre[i] != input[i])
+            return false;
+    return true;
 }
 int main()
 {
-    test();
-    pNode root = NULL;
+    //test();
+    pNode root = nullptr;
     scanf("%d", &n);
-    for (int i = 0; i < n; i++) scanf("%d", &num[i]);
-    for (int i = 0; i < n; i++) insert(root, num[i]);
-    preorder(root);
-    mirrororder(root);
-    bool f = false;
-    if (issame(pre)) {postorder(root); f = true;}
-    else if (issame(mirror_pre)) {postorder_mirror(root); f = true;}
-    if(!f){printf("NO");return 0;}
-    cout << "YES\n" <<post[0];
-    for (int i = 1; i < post.size(); i++) printf(" %d", post[i]);
+    for (int i = 0; i < n; i++) scanf("%d", input+i);
+    for (int i = 0; i < n; i++) insert(root, input[i]);
+    preorder(root), preorder_m(root);
+    if (isMatched(pre)) { postorder(root); f = 1;}
+    else if (isMatched(pre_m)) { postorder_m(root); f = 1;}
+    if(!f){ printf("NO"); return 0;}
+    cout << "YES\n" << post_output[0];
+    for (int i = 1; i < post_output.size(); i++) printf(" %d", post_output[i]);
     return 0;
 }

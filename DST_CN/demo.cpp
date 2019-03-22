@@ -22,7 +22,28 @@
 // }
 
 
+// author - newguo@sonaspy.cn 
+// coding - utf_8 
 
+#include<iostream>
+#include<vector>
+#define test() freopen("in","r",stdin)
+
+using namespace std;
+
+int main(int argc, char const *argv[])
+{
+    /* code */
+    //test();
+
+    vector<int> v;
+    v.resize(10000);
+    cout << v.capacity() <<endl << v.size();
+    v.clear();
+    cout << endl <<v.capacity() << endl << v.size();
+
+    return 0;
+}
 
 
 // #include <algorithm>

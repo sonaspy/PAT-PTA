@@ -15,19 +15,19 @@ int main(int argc, char const *argv[])
     vector<int> prime;
     cin >> n;
     for (int i = 2; i <= n; i++)
+    {
+        bool isprime = true;
+        for (int j = 2; j <= sqrt(i); j++)
         {
-            bool isprime = true;
-            for (int j = 2; j <= sqrt(i); j++)
-                {
-                    if (i % j == 0)
-                        {
-                            isprime = false;
-                            break;
-                        }
-                }
-            if (isprime)
-                prime.push_back(i);
+            if (i % j == 0)
+            {
+                isprime = false;
+                break;
+            }
         }
+        if (isprime)
+            prime.push_back(i);
+    }
     for (int i = 0; i < prime.size() - 1; i++)
         if (prime[i + 1] - prime[i] == 2)
             count++;

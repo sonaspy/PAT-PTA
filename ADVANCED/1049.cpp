@@ -20,12 +20,12 @@ int main(int argc, char const *argv[])
     string s = to_string(n);
     for (int i = 0, bits = s.size() - 1; i < s.size(); i++, bits--)
     {
-        int now = s[i] - '0',
+        int i_num = s[i] - '0',
             high = (i != 0 ? stoi(s.substr(0, i)) : 0),
             low = (i != s.size() - 1 ? stoi(s.substr(i + 1, s.size() - i - 1)) : 0);
-        if (now == 0)
+        if (i_num == 0)
             sum += high * pow(10, bits);
-        else if (now == 1)
+        else if (i_num == 1)
             sum += high * pow(10, bits) + low + 1;
         else
             sum += (high + 1) * pow(10, bits);

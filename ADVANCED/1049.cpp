@@ -31,6 +31,6 @@ int main(int argc, char const *argv[])
             sum += (high + 1) * pow(10, bits);
     }
     cout << sum;
-
+    //attention
     return 0;
 }

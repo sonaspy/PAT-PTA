@@ -1,43 +1,32 @@
-// author -  newguo@sonaspy.cn
-// coding - utf_8
+// author - newguo@sonaspy.cn 
+// coding - utf_8 
 
 #include<iostream>
-typedef int ElementType;
+#include<algorithm>
+#include<vector>
+#include<string>
+#include<unordered_map>
+#include<stack>
+#include<queue>
+#include<numeric>
+
+#define test() freopen("in","r",stdin)
+
 using namespace std;
-#define MAXN 10
-#include<stdio.h>
-
-ElementType Median(ElementType A[], int N);
-
-
+struct Node{
+    int i;
+    bool operator < (const Node b)const{return i < b.i;}
+};
 int main(int argc, char const *argv[])
 {
     /* code */
-    freopen("input.a","r",stdin);
-    ElementType A[MAXN];
-    int N, i;
-    scanf("%d", &N);
-    for (i = 0; i < N; i++)
-        scanf("%d", &A[i]);
-    printf("%d\n", Median(A, N));
+    //test();
+    vector<Node*> nodes(2);
+    nodes[0] = new Node;
+    nodes[1] = new Node;
+    nodes[0]->i = 1;
+    nodes[1]->i = 100;
+    nodes.erase(max_element(nodes.begin(),nodes.end()));
+    cout << nodes.front()->i;
     return 0;
-}
-
-ElementType Median(ElementType A[], int N)
-{
-    int i, j;
-    int t = 0;
-    for (i = N - 1; i > 0; i--)
-        {
-            for (j = 0; j < i; j++)
-                {
-                    if (A[j] > A[j + 1])
-                        {
-                            t = A[j];
-                            A[j] = A[j + 1];
-                            A[j + 1] = t;
-                        }
-                }
-        }
-    return A[N / 2];
 }

@@ -92,4 +92,4 @@ int main(int argc, char const *argv[])
     for (int i = 1; i < n; i++)
         printf(" %d", mp[w[i]]);
     return 0;
-}
+}//attention

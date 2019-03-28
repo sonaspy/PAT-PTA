@@ -4,11 +4,6 @@
 #include <iostream>
 #include <algorithm>
 #include <vector>
-#include <string>
-#include <unordered_map>
-#include <stack>
-#include <queue>
-#include <numeric>
 #include <set>
 
 #define test() freopen("in", "r", stdin)
@@ -38,7 +33,7 @@ int main(int argc, char const *argv[])
     /* code */
     //test();
     char op[15];
-    stack<int> Stack;
+    vector<int> Stack;
     cin >> n;
     for (int i = 0; i < n; i++)
     {
@@ -46,7 +41,7 @@ int main(int argc, char const *argv[])
         if (op[1] == 'u')
         {
             scanf("%d", &key);
-            Stack.push(key);
+            Stack.push_back(key);
             if (key <= mid)
                 _heap_S.insert(key);
             else
@@ -66,8 +61,8 @@ int main(int argc, char const *argv[])
                 printf("Invalid\n");
             else
             {
-                int top = Stack.top();
-                printf("%d\n", top), Stack.pop();
+                int top = Stack.back();
+                printf("%d\n", top), Stack.pop_back();
                 (top > mid)? _heap_L.erase(_heap_L.find(top)) : _heap_S.erase(_heap_S.find(top));
                 reBalance();
             }

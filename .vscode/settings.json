@@ -78,7 +78,8 @@
     "__mutex_base": "cpp",
     "functional": "cpp",
     "regex": "cpp",
-    "queue": "cpp"
+    "queue": "cpp",
+    "rope": "cpp"
 },
 "search.usePCRE2": true
 }

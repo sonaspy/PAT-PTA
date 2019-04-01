@@ -6,52 +6,46 @@
 #define test() freopen("in", "r", stdin)
 
 using namespace std;
-int dp[10010], w[10010];
-bool choice[10010][110];
-int main(int argc, char const *argv[])
+int coin[10001], n, m, vis[10001], found = 0;
+static vector<int> ansPath, tmp;
+inline void dfs(int cur, int coin_sum)
 {
-    /* code */
+    vis[cur] = 1;
+    if (coin_sum == m)
+    {
+        found = 1;
+        ansPath = tmp;
+        return;
+    }
+    for (int i = 1; i <= n; i++)
+        if (!vis[i] && !found && coin_sum + coin[i] <= m)
+        {
+            tmp.push_back(coin[i]);
+            dfs(i, coin_sum + coin[i]);
+            vis[i] = 0;
+            tmp.pop_back();
+        }
+}
+
+int main()
+{
     //test();
-    int n, m;
     scanf("%d%d", &n, &m);
-    for (int i = 1; i <= n; i++)
-        scanf("%d", &w[i]);
-    sort(w + 1, w + n + 1, greater<int>());
+    long sum = 0;
     for (int i = 1; i <= n; i++)
     {
-        for (int j = m; j >= w[i]; j--)
-        {
-            if (dp[j] <= dp[j - w[i]] + w[i])
-            {
-                choice[i][j] = true;
-                dp[j] = dp[j - w[i]] + w[i];
-            }
-        }
+        scanf("%d", &coin[i]);
+        sum += coin[i];
     }
-    if (dp[m] != m)
-        printf("No Solution");
-    else
+    if (sum < m){printf("No Solution"); return 0; }
+    sort(coin + 1, coin + n + 1);
+    dfs(0, 0); // 0 point , 0 sum.
+    if (found)
     {
-        vector<int> arr;
-        int v = m, index = n;
-        while (v > 0)
-        {
-            if (choice[index][v] == true)
-            {
-                arr.push_back(w[index]);
-                v -= w[index];
-            }
-            index--;
-        }
-        for (int i = 0; i < arr.size(); i++)
-        {
-            if (i != 0)
-                printf(" ");
-            printf("%d", arr[i]);
-        }
+        printf("%d", ansPath[0]);
+        for (int i = 1; i < ansPath.size(); i++)
+            printf(" %d", ansPath[i]);
     }
+    else printf("No Solution");
     return 0;
 } //attention
-
-
-

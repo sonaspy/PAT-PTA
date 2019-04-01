@@ -14,27 +14,27 @@ using namespace std;
 vector<int> post, in;
 map<int, int> res;
 
-void solve(int root, int left, int right, int id)
+void solve(int root, int lo, int hi, int id)
 {
-    if (left > right) return;
-    int i = left;
-    while (i < right && in[i] != post[root]) i++;
+    if (hi < lo) return;
+    int i = lo;
+    while (i < hi && in[i] != post[root]) i++;
     res[id] = post[root];
-    solve(root - 1 + i - right, left, i - 1, id * 2 + 1);
-    solve(root - 1, i + 1, right, id * 2 + 2);
+    solve(root - 1 + i - hi, lo, i - 1, id * 2 + 1);
+    solve(root - 1, i + 1, hi, id * 2 + 2);
 }
 
 // pre , in -> level
-// void solve(int root, int left, int right, int id)
+// void solve(int root, int lo, int hi, int id)
 // {
-//     if (left > right)
+//     if (hi < lo)
 //         return;
-//     int i = left;
-//     while (i < right && in[i] != pre[root])
+//     int i = lo;
+//     while (i < hi && in[i] != pre[root])
 //         i++;
 //     res[id] = pre[root];
-//     solve(root + 1, left, i - 1, id * 2 + 1);
-//     solve(root + 1 + i - left, i + 1, right, id * 2 + 2);
+//     solve(root + 1, lo, i - 1, id * 2 + 1);
+//     solve(root + 1 + i - lo, i + 1, hi, id * 2 + 2);
 // }
 
 int main(int argc, char const *argv[])

@@ -14,9 +14,21 @@ struct AVLNode
     AVLNode(int d, int h) : data(d), height(h) {}
 };
 
-int GetHeight(avlptr root) { return root == nullptr ? 0 : root->height; }
-void updateHeight(avlptr root) { root->height = max(GetHeight(root->left), GetHeight(root->right)) + 1; }
-int getFactor(avlptr root) { return GetHeight(root->left) - GetHeight(root->right); }
+inline int GetHeight(avlptr root) { return root == nullptr ? 0 : root->height; }
+inline void updateHeight(avlptr root) { root->height = max(GetHeight(root->left), GetHeight(root->right)) + 1; }
+inline int getFactor(avlptr root) { return GetHeight(root->left) - GetHeight(root->right); }
+// inline avlptr getMax(avlptr root)
+// {
+//     while (root->right)
+//         root = root->right;
+//     return root;
+// }
+// inline avlptr getMin(avlptr root)
+// {
+//     while (root->left)
+//         root = root->left;
+//     return root;
+// }
 
 void LL(avlptr &root)
 {
@@ -77,10 +89,71 @@ void Insert(avlptr &root, int data)
     }
 }
 
+// avlptr Delete(avlptr &root, int data)
+// {
+//     if (!root)
+//         return nullptr;
+//     else if (root->data > data)
+//     {
+//         root->left = Delete(root->left, data);
+//         updateHeight(root);
+//         if (getFactor(root) == -2)
+//         {
+//             if (getFactor(root->right) == -1)
+//                 RR(root);
+//             else
+//             {
+//                 LL(root->right);
+//                 RR(root);
+//             }
+//         }
+//     }
+//     else if (root->data < data)
+//     {
+//         root->right = Delete(root->right, data);
+//         updateHeight(root);
+//		   if (getFactor(root) == 2)
+//         {
+//             if (getFactor(root->left) == 1)
+//                 LL(root);
+//             else
+//             {
+//                 RR(root->left);
+//                 LL(root);
+//             }
+//         }
+//     }
+//     else // find it
+//     {
+//         if (root->right && root->left)
+//         {
+//             if (getFactor(root) > 0)
+//             {
+//                 avlptr tmp = getMax(root->left);
+//                 root->data = tmp->data;
+//                 root->left = Delete(root->left, tmp->data);
+//             }
+//             else
+//             {
+//                 avlptr tmp = getMin(root->right);
+//                 root->data = tmp->data;
+//                 root->right = Delete(root->right, tmp->data);
+//             }
+//         }
+//         else
+//         {
+//             avlptr tmp = root;
+//             root = (root->left == nullptr ? root->right : root->left);
+//             delete tmp;
+//         }
+//     }
+//     return root;
+// }
+
 int main(int argc, char const *argv[])
 {
     /* code */
-    //test();
+    test();
     int n, tmp;
     cin >> n;
     avlptr root = nullptr;
@@ -89,6 +162,5 @@ int main(int argc, char const *argv[])
         scanf("%d", &tmp);
         Insert(root, tmp);
     }
-    cout << root->data;
     return 0;
 }

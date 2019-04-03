@@ -7,7 +7,7 @@
 
 using namespace std;
 
-int n, m, k, ds, d, a1, a2, mp[1025][1025], vis[1025], dis[1025];
+int n, m, k, ds, d, a1, a2, mp[1025][1025], vis[1025];
 string s1, s2;
 struct Node
 {
@@ -20,8 +20,7 @@ vector<Node> v;
 inline void Dij(int id)
 {
     fill(vis, vis + 1025, 0);
-    for (int i = 1; i <= n + m; i++)
-        dis[i] = mp[id][i];
+    vector<int> dis(mp[id], mp[id] + n + m + 1);
     dis[id] = 0;
     for (int i = 1; i <= n + m; i++)
     {
@@ -86,4 +85,4 @@ int main(int argc, char const *argv[])
         Dij(i);
     output();
     return 0;
-}//attention
+} //attention

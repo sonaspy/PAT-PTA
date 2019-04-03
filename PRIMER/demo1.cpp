@@ -1,32 +1,29 @@
-// author - newguo@sonaspy.cn
-// coding - utf_8
+// author - newguo@sonaspy.cn 
+// coding - utf_8 
 
-#include <iostream>
-#include <algorithm>
-#include <vector>
-#include <string>
-#include <unordered_map>
-#include <stack>
-#include <queue>
-#include <numeric>
-#include <set>
-#define test() freopen("in", "r", stdin)
+#include<bits/stdc++.h>
+
+#define test() freopen("in","r",stdin)
 
 using namespace std;
-struct Node
-{
-    int i;
-    bool operator<(const Node b) const { return i < b.i; }
-};
+
 int main(int argc, char const *argv[])
 {
     /* code */
     //test();
-    multiset<int> st;
-    for (int i = 1; i < 10; i++)
-        st.insert(10);
-    cout << st.size();
-    st.erase(10);
-    cout << st.size();
+    int *a = new int[10];
+    int b[10];
+    char s[] = "saaa";
+    s[1]  = '*';
+    cout << s[1] << endl;
+    cout << a <<endl;
+    cout << a + 1 << endl;
+    cout << a + 2 << endl << endl;
+    cout << &a <<endl;
+    cout << &a + 1 << endl;
+    cout << &a + 2 << endl;
+    cout << &a + 3 << endl << endl;
+    cout << b<<endl ;
+    cout << b+1;
     return 0;
 }

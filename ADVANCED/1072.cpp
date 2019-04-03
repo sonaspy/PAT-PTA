@@ -22,6 +22,7 @@ inline void Dij(int id)
     fill(vis, vis + 1025, 0);
     for (int i = 1; i <= n + m; i++)
         dis[i] = mp[id][i];
+    dis[id] = 0;
     for (int i = 1; i <= n + m; i++)
     {
         int min = 1 << 30, k = -1;
@@ -85,4 +86,4 @@ int main(int argc, char const *argv[])
         Dij(i);
     output();
     return 0;
-}
+}//attention

@@ -1,13 +1,8 @@
-// author -  newguo@sonaspy.cn
+// author - newguo@sonaspy.cn
 // coding - utf_8
 
-#include <iostream>
-#include <cmath>
-#include <string>
-#include <queue>
-#include <unordered_map>
-#include <algorithm>
-#include <vector>
+#include <bits/stdc++.h>
+
 #define test() freopen("in", "r", stdin)
 
 using namespace std;
@@ -19,49 +14,43 @@ int n;
 int main(int argc, char const *argv[])
 {
     /* code */
-    //test();
+    test();
     int n, m, total_w = 0;
     char c;
     cin >> n;
     for (int i = 0; i < n; i++)
-        {
-            cin >> c;
-            cin >> freq[c];
-            pq.push(freq[c]);
-        }
+    {
+        cin >> c >> freq[c];
+        pq.push(freq[c]);
+    }
     cin >> m;
-    while (true)
-        {
-            int tp = pq.top();
-            pq.pop();
-            if (pq.empty())
-                break;
-            tp += pq.top();
-            pq.pop();
-            pq.push(tp);
-            total_w += tp;
-        }
+    while (pq.size() > 1)
+    {
+        int tp = pq.top();
+        pq.pop();
+        tp += pq.top();
+        pq.pop();
+        pq.push(tp);
+        total_w += tp;
+    }
     while (m--)
+    {
+        int sum = 0;
+        for (int i = 0; i < n; i++)
         {
-            int sum = 0;
-            for (int i = 0; i < n; i++)
-                {
-                    cin >> c;
-                    cin >> codes[i];
-                    sum += freq[c] * codes[i].size();
-                }
-            bool flag = true;
-            for (int i = 0; i < n; i++)
-                {
-                    string str = codes[i];
-                    for (int j = 0; j < n; j++)
-                        if (i != j && str == codes[j].substr(0, str.length()))
-                            flag = false;
-                }
-            if (sum == total_w && flag)
-                printf("Yes\n");
-            else
-                printf("No\n");
+            cin >> c >> codes[i];
+            sum += freq[c] * codes[i].size();
         }
+        bool ambiguous = false;
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < n; j++)
+                if (i == j)
+                    continue;
+                else if (codes[i] == codes[j].substr(0, codes[i].length()))
+                    ambiguous = true;
+        }
+        (sum == total_w && !ambiguous) ? printf("Yes\n") : printf("No\n");
+    }
     return 0;
 }

@@ -66,7 +66,7 @@ void output()
     {
         sort(v.begin(), v.end());
         printf("G%d\n", v.front().id);
-        printf("%.1f %.1f", v.front().min_, v.front().av_s);
+        cout << setiosflags(ios::fixed) << setprecision(1)<<  v.front().min_ << " " << v.front().av_s;
     }
 }
 int main(int argc, char const *argv[])

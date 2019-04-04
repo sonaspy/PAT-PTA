@@ -11,19 +11,6 @@ int main(int argc, char const *argv[])
 {
     /* code */
     //test();
-    int *a = new int[10];
-    int b[10];
-    char s[] = "saaa";
-    s[1]  = '*';
-    cout << s[1] << endl;
-    cout << a <<endl;
-    cout << a + 1 << endl;
-    cout << a + 2 << endl << endl;
-    cout << &a <<endl;
-    cout << &a + 1 << endl;
-    cout << &a + 2 << endl;
-    cout << &a + 3 << endl << endl;
-    cout << b<<endl ;
-    cout << b+1;
+    string ss("asdf");
     return 0;
 }

@@ -11,6 +11,5 @@ int main(int argc, char const *argv[])
 {
     /* code */
     //test();
-    string ss("asdf");
     return 0;
 }

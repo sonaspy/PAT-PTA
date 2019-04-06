@@ -79,7 +79,8 @@
     "functional": "cpp",
     "regex": "cpp",
     "queue": "cpp",
-    "rope": "cpp"
+    "rope": "cpp",
+    "__hash_table": "cpp"
 },
 "search.usePCRE2": true
 }

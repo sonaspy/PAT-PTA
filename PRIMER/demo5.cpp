@@ -1,47 +1,19 @@
-#include <iostream>
-#include <string>
-#include <sstream>
-#include <stack>
-#include<list>
+// author - newguo@sonaspy.cn 
+// coding - utf_8 
+
+#include<bits/stdc++.h>
+
+#define test() freopen("in","r",stdin)
+
 using namespace std;
-string str, tmp;
-stack<int> s;
-list<int> ls;
-int flag = 0;
-int main()
+
+int main(int argc, char const *argv[])
 {
-    getline(cin, str);
-    istringstream it(str);
-    bool isfirst = true;
-    int idx = str.size() - 2;
-    while (it >> tmp)
-        {
-            if(tmp == ".")flag = 1;
-            s.push(tmp.size());
-        }
-    while (!s.empty())
-        {
-            if (isfirst)
-                {
-                    isfirst = false;
-                    if(flag == 1)
-                        {
-                            s.pop();
-                            ls.push_front(s.top());
-                        }
-                    else
-                        {
-                            ls.push_front(s.top()-1);
-                        }
-                }
-            else
-                ls.push_front(s.top());
-            s.pop();
-        }
-    cout << ls.front();
-    ls.pop_front();
-    list<int>::iterator p ;
-    for( p =ls.begin(); p != ls.end(); p++)
-        cout << " " << *p;
+    /* code */
+    //test();
+    int a[] = {1,2,3,4,5};
+    vector<int> v1(a+3,a+5),v2(a,a+5),v;
+    set_intersection(v1.begin(), v1.end(), v2.begin(), v2.end() , back_inserter(v));
+    for(auto i : v) cout << i << " ";
     return 0;
 }

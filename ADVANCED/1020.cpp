@@ -18,8 +18,8 @@ void solve(int root, int lo, int hi, int id)
 {
     if (hi < lo) return;
     int i = lo;
-    while (i < hi && in[i] != post[root]) i++;
     res[id] = post[root];
+    while (i < hi && in[i] != post[root]) i++;
     solve(root - 1 + i - hi, lo, i - 1, id * 2 + 1);
     solve(root - 1, i + 1, hi, id * 2 + 2);
 }

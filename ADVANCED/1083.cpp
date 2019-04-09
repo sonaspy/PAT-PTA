@@ -11,7 +11,7 @@ struct Student
 {
     string name, id;
     int grade;
-    Student(char n[], char i[], int g) : name(n), id(i), grade(g) {}
+    Student(char *n, char *i, int g) : name(n), id(i), grade(g) {}
 };
 bool cmp(const pstu a, const pstu b)
 {
@@ -20,7 +20,7 @@ bool cmp(const pstu a, const pstu b)
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+    //test();
     int n, g1, g2, g;
     cin >> n;
     vector<pstu> stus, res;

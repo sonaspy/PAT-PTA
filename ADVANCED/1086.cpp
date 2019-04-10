@@ -6,7 +6,7 @@
 #define test() freopen("in", "r", stdin)
 
 using namespace std;
-vector<int> res;
+int first = 1;
 typedef struct Node *ptrNode;
 struct Node
 {
@@ -14,6 +14,7 @@ struct Node
     ptrNode left = nullptr, right = nullptr;
     Node(int d) : data(d) {}
 };
+
 enum operation
 {
     push,
@@ -29,21 +30,22 @@ void post(ptrNode root)
         post(root->left);
     if (root->right)
         post(root->right);
-    res.push_back(root->data);
+    if(!first) cout << " ";
+    cout << root->data;
+    first = 0;
 }
 
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
     int n, id;
     operation lastop = null;
     stack<ptrNode> sk;
     cin >> n;
-    ptrNode lastpop, root, container[n + 1];
+    ptrNode lastpop, root, TreeNodes[n + 1];
     string s;
     for (int i = 1; i <= n; i++)
-        container[i] = new Node(i);
+        TreeNodes[i] = new Node(i);
     for (int i = 0; i < 2 * n; i++)
     {
         cin >> s;
@@ -51,12 +53,12 @@ int main(int argc, char const *argv[])
         {
             cin >> id;
             if (lastop == pop)
-                lastpop->right = container[id];
+                lastpop->right = TreeNodes[id];
             else if (lastop == push)
-                sk.top()->left = container[id];
+                sk.top()->left = TreeNodes[id];
             else
-                root = container[id];
-            sk.push(container[id]);
+                root = TreeNodes[id];
+            sk.push(TreeNodes[id]);
             lastop = push;
         }
         else
@@ -67,10 +69,5 @@ int main(int argc, char const *argv[])
         }
     }
     post(root);
-    for (int i = 0; i < res.size(); i++)
-    {
-        if (i != 0) cout << " ";
-        cout << res[i];
-    }
     return 0;
 }

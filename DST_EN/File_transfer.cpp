@@ -17,10 +17,8 @@ inline int update_get(int a)
 inline void Union(int a, int b)
 {
     int ra = update_get(a), rb = update_get(b);
-    if (ra == rb) return;
-    union_my[rb] = ra;
+    ra == rb ?  ra : union_my[rb] = ra ;
 };
-
 int main(int argc, char const *argv[])
 {
     /* code */

@@ -22,7 +22,7 @@ inline void Dij(int id)
     fill(vis, vis + 1025, 0);
     vector<int> dis(mp[id], mp[id] + n + m + 1);
     dis[id] = 0;
-    for (int i = 1; i <= n + m; i++)
+    while(true)
     {
         int min = 1 << 30, k = -1;
         for (int j = 1; j <= n + m; j++)

@@ -1,96 +1,93 @@
-#include <bits/stdc++.h>
+// author -  newguo@sonaspy.cn
+// coding - utf_8
+
+#include <iostream>
+#include <vector>
 #include <cmath>
-
-#define mem(a, b) memset(a, b, sizeof a)
-#define INF 0x3f3f3f3f
+#define test() freopen("in", "r", stdin)
+#define RADIUS (7.5)
 using namespace std;
-const int maxn = 320;
-
-struct node
+struct Node
 {
-    int x, y;
-} nds[maxn];
+    int x = 0, y = 0, vis = 0;
+} center;
+int n, d, _min_step = 1 << 30, tmp_step = 1;
+vector<Node> croc, firstjump, ansPath, tmpPath;
+bool could = false, resstart = false;
 
-int n, len;
-double D;
-int vis[maxn], dis[maxn], pre[maxn], fst[maxn];
-int g[maxn][maxn];
-
-inline double fdis(node a, node b)
+inline double getDist(Node a, Node b)
 {
     return sqrt(pow(a.x - b.x, 2) + pow(a.y - b.y, 2));
 }
-void dijkstra(int s)
+
+void DFS(Node &i)
 {
-    dis[s] = 0;
-    while (1)
+    if (resstart)
+    {
+        resstart = false;
+        tmpPath.clear();
+        tmp_step = 1;
+    }
+    i.vis = 1;
+    tmp_step++;
+    tmpPath.push_back(i);
+    if (50 - abs(i.x) <= d || 50 - abs(i.y) <= d)
+    {
+        could = true;
+        if (tmp_step < _min_step)
         {
-            int mi = INF;
-            s = -1;
-            for (int i = 0; i < len; i++)
-                if (!vis[i] && mi > dis[i])
-                    mi = dis[i], s = i;
-            if (s == -1)
-                return;
-            vis[s] = 1;
-            for (int i = 0; i < len; i++)
-                if (!vis[i] && mi + g[s][i] < dis[i])
-                    {
-                        dis[i] = mi + g[s][i], pre[i] = s;
-                        if (s != 0)
-                            fst[i] = fst[s];
-                    }
-                else if (!vis[i] && mi + g[s][i] == dis[i] && fst[i] > fst[s])
-                    pre[i] = s, fst[i] = fst[s];
+            _min_step = tmp_step;
+            ansPath = tmpPath;
+        }
+        else if (tmp_step == _min_step && getDist(tmpPath.front(), center) < getDist(ansPath.front(), center))
+            ansPath = tmpPath;
+        return;
+    }
+    for (auto &j : croc)
+        if (!j.vis && getDist(i, j) <= d)
+        {
+            DFS(j);
+            tmp_step--;
+            tmpPath.pop_back();
+            j.vis = 0;
         }
 }
-
-int main()
+int main(int argc, char const *argv[])
 {
-    scanf("%d%lf", &n, &D);
-    n++;
-    nds[0].y = nds[0].x = 0;
-    for (int i = 1; i < n; i++)
-        scanf("%d%d", &nds[i].x, &nds[i].y);
-    if (D + 7.5 >= 50)
+    /* code */
+    //test();
+    cin >> n >> d;
+    for (int i = 0; i < n; i++)
+    {
+        Node tmp;
+        cin >> tmp.x >> tmp.y;
+        croc.push_back(tmp);
+    }
+    if (d + RADIUS >= 50)
+    {
+        cout << 1;
+        return 0;
+    }
+    for (auto &i : croc)
+    {
+        if (getDist(i, center) <= d + RADIUS)
+            firstjump.push_back(i);
+    }
+    for (auto &i : firstjump)
+    {
+        if (!i.vis)
         {
-            puts("1");
-            return 0;
+            resstart = true;
+            DFS(i);
         }
-    len = n;
-    for (int i = 1; i < n; i++)
-        if (50 - abs(nds[i].x) <= D)
-            nds[len].x = nds[i].x >= 0 ? 50 : -50, nds[len++].y = nds[i].y;
-        else if (50 - abs(nds[i].y) <= D)
-            nds[len].y = nds[i].y >= 0 ? 50 : -50, nds[len++].x = nds[i].x;
-    mem(g, INF), mem(vis, 0), mem(dis, INF), mem(pre, -1), mem(fst, INF);
-    double diff;
-    for (int i = 1; i < len; i++)
-        {
-            if ((diff = fdis(nds[0], nds[i]) - 7.5) <= D)
-                g[i][0] = g[0][i] = 1, fst[i] = diff;
-            for (int j = 1; j < len; j++)
-                if (i != j && fdis(nds[i], nds[j]) <= D)
-                    g[i][j] = g[j][i] = 1;
-        }
-    dijkstra(0);
-    int mi = INF, h = -1;
-    for (int i = n; i < len; i++)
-        if (mi > dis[i] || mi == dis[i] && h != -1 && fst[h] > fst[i])
-            mi = dis[i], h = i;
-    if (mi != INF)
-        {
-            printf("%d\n", mi);
-            vector<int> vec;
-            while (h != -1)
-                {
-                    vec.push_back(h);
-                    h = pre[h];
-                }
-            for (int i = vec.size() - 2; i > 0; i--)
-                printf("%d %d\n", nds[vec[i]].x, nds[vec[i]].y);
-        }
-    else
-        puts("0");
+    }
+    if (!could)
+    {
+        cout << 0;
+        return 0;
+    }
+    cout << _min_step << endl;
+    for (auto i : ansPath)
+        cout << i.x << " " << i.y << endl;
     return 0;
 }

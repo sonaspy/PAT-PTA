@@ -94,8 +94,8 @@ int main(int argc, char const *argv[])
     findPath(dst);
     printf("%d %d %d %d\n", r_cnt, dist[dst], f_hap, int(f_ave));
     cout << start;
+    ansPath.pop_front();
     for (auto i : ansPath)
-        if (mp1.count(i))
             cout << "->" << mp1[i];
     return 0;
 }

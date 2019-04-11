@@ -1,31 +1,20 @@
-#include <iostream>
-#include <string>
-#include <sstream>
-#include <stack>
+// author - newguo@sonaspy.cn 
+// coding - utf_8 
+
+#include<bits/stdc++.h>
+
+#define test() freopen("in","r",stdin)
+
 using namespace std;
-string str, tmp;
-stack<string> s;
-int main()
+enum Node{
+    i = 10
+};
+int main(int argc, char const *argv[])
 {
-    getline(cin, str);
-    istringstream it(str);
-    bool isfirst = true;
-    while (it >> tmp)
-        {
-            s.push(tmp);
-        }
-    while (!s.empty())
-        {
-            if (isfirst)
-                {
-                    isfirst = false;
-                    cout << s.top();
-                }
-            else
-                {
-                    cout << " " << s.top();
-                }
-            s.pop();
-        }
+    /* code */
+    //test();
+    Node tmp;
+    Node nodes[10];
+    memcpy(nodes, &tmp, 10);
     return 0;
 }

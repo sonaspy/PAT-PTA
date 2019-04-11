@@ -1,13 +1,13 @@
-6
-Push 1
-Push 2
-Push 3
-Pop
-Pop
-Push 4
-Pop
-Pop
-Push 5
-Push 6
-Pop
-Pop
+6 7 HZH
+ROM 100
+PKN 40
+GDN 55
+PRS 95
+BLN 80
+ROM GDN 1
+BLN ROM 1
+HZH PKN 1
+PRS ROM 2
+BLN HZH 2
+PKN GDN 1
+HZH PRS 1

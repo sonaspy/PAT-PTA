@@ -1,10 +1,8 @@
-// author -  newguo@sonaspy.cn
+// author - newguo@sonaspy.cn
 // coding - utf_8
 
-#include <iostream>
-#include <string>
-#include <sstream>
-#include <unordered_map>
+#include <bits/stdc++.h>
+
 #define test() freopen("in", "r", stdin)
 
 using namespace std;
@@ -16,29 +14,40 @@ int main(int argc, char const *argv[])
     int a1, a2, a3, a4;
     char c;
     scanf("%c", &c);
-    unordered_map<int, unordered_map<int, int>> mp;
+    map<int, map<int, int>> mp;
     while (c != 'E')
+    {
+        if (isalpha(cin.peek()))
         {
-            if (cin.peek() > 'A')
-                {
-                    scanf("%c\n", &c);
-                    continue;
-                }
-            if (c == 'I')
-                {
-                    scanf("%d%d%d\n", &a1, &a2, &a3);
-                    mp[a1][a2] += a3;
-                }
-            if (c == 'Q')
-                {
-                    scanf("%d%d%d%d\n", &a1, &a2, &a3, &a4);
-                    int count = 0;
-                    for (auto i : mp)
-                        for (auto j : i.second)
-                            if (i.first >= a1 && i.first <= a2 && j.first >= a3 && j.first <= a4)
-                                count += j.second;
-                    printf("%d\n", count);
-                }
+            scanf("%c\n", &c);
+            continue;
         }
+        else if (c == 'I')
+        {
+            scanf("%d%d%d\n", &a1, &a2, &a3);
+            mp[a1][a2] += a3;
+        }
+        else if (c == 'Q')
+        {
+            scanf("%d%d%d%d\n", &a1, &a2, &a3, &a4);
+            int count = 0;
+            for (auto i : mp)
+            {
+                if (i.first < a1)
+                    continue;
+                else if (i.first > a2)
+                    break;
+                for (auto j : i.second)
+                {
+                    if (j.first < a3)
+                        continue;
+                    else if (j.first > a4)
+                        break;
+                    count += j.second;
+                }
+            }
+            printf("%d\n", count);
+        }
+    }
     return 0;
 }

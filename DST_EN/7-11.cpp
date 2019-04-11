@@ -13,7 +13,7 @@ struct Node
 } center;
 int n, d, _min_step = 1 << 30, tmp_step = 1;
 vector<Node> croc, firstjump, ansPath, tmpPath;
-bool could = false, resstart = false;
+bool could = false;
 
 inline double getDist(Node a, Node b)
 {
@@ -22,12 +22,6 @@ inline double getDist(Node a, Node b)
 
 void DFS(Node &i)
 {
-    if (resstart)
-    {
-        resstart = false;
-        tmpPath.clear();
-        tmp_step = 1;
-    }
     i.vis = 1;
     tmp_step++;
     tmpPath.push_back(i);
@@ -77,7 +71,8 @@ int main(int argc, char const *argv[])
     {
         if (!i.vis)
         {
-            resstart = true;
+            tmpPath.clear();
+            tmp_step = 1;
             DFS(i);
         }
     }

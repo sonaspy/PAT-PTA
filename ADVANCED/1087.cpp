@@ -96,6 +96,6 @@ int main(int argc, char const *argv[])
     cout << start;
     ansPath.pop_front();
     for (auto i : ansPath)
-            cout << "->" << mp1[i];
+        cout << "->" << mp1[i];
     return 0;
 }

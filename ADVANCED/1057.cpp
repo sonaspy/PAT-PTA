@@ -1,13 +1,8 @@
 // author - newguo@sonaspy.cn
 // coding - utf_8
 
-#include <iostream>
-#include <algorithm>
-#include <vector>
-#include <set>
-
+#include <bits/stdc++.h>
 #define test() freopen("in", "r", stdin)
-#define ISEVEN(x) ((x) % 2 == 0)
 using namespace std;
 int mid, n, key, l_size, r_size;
 multiset<int> right_heap;              // nondecreasing order. storing large key.

@@ -44,7 +44,7 @@ int main(int argc, char const *argv[])
             step *= 2;
             for (i = 0; i < n / step; i++)
                 sort(a + i * step, a + (i + 1) * step);
-            sort(a + n / step * step, a + n);
+            sort(a + i * step, a + n);
         }
     }
     printf("%d", a[0]);

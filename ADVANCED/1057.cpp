@@ -9,23 +9,23 @@
 #define test() freopen("in", "r", stdin)
 #define ISEVEN(x) ((x) % 2 == 0)
 using namespace std;
-int mid, n, key, l_S, l_L;
-multiset<int> _heap_L;               // nondecreasing order. storing large key.
-multiset<int, greater<int>> _heap_S; // nonincreasing order . storing small key.
+int mid, n, key, l_size, r_size;
+multiset<int> right_heap;              // nondecreasing order. storing large key.
+multiset<int, greater<int>> left_heap; // nonincreasing order . storing small key.
 void reBalance()
 {
-    l_S = _heap_S.size(), l_L = _heap_L.size();
-    if (l_S < l_L)
+    l_size = left_heap.size(), r_size = right_heap.size();
+    if (l_size < r_size)
     {
-        _heap_S.insert(*_heap_L.begin());
-        _heap_L.erase(_heap_L.begin());
+        left_heap.insert(*right_heap.begin());
+        right_heap.erase(right_heap.begin());
     }
-    else if (l_L + 1 < l_S)
+    else if (r_size + 1 < l_size)
     {
-        _heap_L.insert(*_heap_S.begin());
-        _heap_S.erase(_heap_S.begin());
+        right_heap.insert(*left_heap.begin());
+        left_heap.erase(left_heap.begin());
     }
-    mid = *_heap_S.begin();// small heap's 1st element will be the midValue all the time.
+    mid = *left_heap.begin(); // small heap's 1st element will be the midValue all the time.
 }
 
 int main(int argc, char const *argv[])
@@ -43,9 +43,9 @@ int main(int argc, char const *argv[])
             scanf("%d", &key);
             Stack.push_back(key);
             if (key <= mid)
-                _heap_S.insert(key);
+                left_heap.insert(key);
             else
-                _heap_L.insert(key);
+                right_heap.insert(key);
             reBalance();
         }
         else if (op[1] == 'e')
@@ -63,10 +63,10 @@ int main(int argc, char const *argv[])
             {
                 int top = Stack.back();
                 printf("%d\n", top), Stack.pop_back();
-                (top > mid)? _heap_L.erase(_heap_L.find(top)) : _heap_S.erase(_heap_S.find(top));
+                (top > mid) ? right_heap.erase(right_heap.find(top)) : left_heap.erase(left_heap.find(top));
                 reBalance();
             }
         }
     }
     return 0;
-}//attention
+} //attention

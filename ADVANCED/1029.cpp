@@ -2,39 +2,47 @@
 // author - newguo@sonaspy.cn
 // coding - utf_8
 
-#include <iostream>
+#include <bits/stdc++.h>
 #define test() freopen("in", "r", stdin)
 using namespace std;
 int main(int argc, char const *argv[])
 {
     /* code */
-    int arr[200005], n, m, temp, current_rank = -1;
+    int a[200005], n, m, b, rank = -1;
     cin >> n;
     for (int i = 0; i < n; i++)
-        scanf("%d", &arr[i]);
-    arr[n] = 1 << 30;
+        scanf("%d", a + i);
+    a[n] = INT_MAX;
+    sort(a, a + n);
     cin >> m;
-    int midpos = (n + m - 1) / 2, arr_cur = 0;
+    int midpos = (n + m - 1) / 2, a_cur = 0;
     for (int j = 0; j < m; j++)
     {
-        scanf("%d", &temp);
-        while (arr[arr_cur] < temp)
+        scanf("%d", &b);
+        for (; a[a_cur] < b; a_cur++)
         {
-            current_rank++;
-            if (current_rank == midpos)
-                cout << arr[arr_cur];
-            arr_cur++;
+            rank++;
+            if (rank == midpos)
+            {
+                cout << a[a_cur];
+                return 0;
+            }
         }
-        current_rank++;
-        if (current_rank == midpos)
-            cout << temp;
+        rank++;
+        if (rank == midpos)
+        {
+            cout << b;
+            return 0;
+        }
     }
-    while (arr_cur < n)
+    for (; a_cur < n; a_cur++)
     {
-        current_rank++;
-        if (current_rank == midpos)
-            cout << arr[arr_cur];
-        arr_cur++;
+        rank++;
+        if (rank == midpos)
+        {
+            cout << a[a_cur];
+            return 0;
+        }
     }
     return 0;
-}
+} //attention

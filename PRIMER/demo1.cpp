@@ -6,25 +6,21 @@
 #define test() freopen("in", "r", stdin)
 
 using namespace std;
-void knuth(int n, int m)
+struct country
 {
-    srand((unsigned int)time(0));
-    for (int i = 0; i < n; i++)
-    {
-        int num = rand() % (n - i);
-        if (num < m)
-        {
-            cout << i << endl;
-            (m--);
-        }
-    }
-}
+    double gold, medal, g_p, m_p;
+    int rank[5];
+};
 int main(int argc, char const *argv[])
 {
     /* code */
     //test();
-    int *p1 = new int[10];
-    int *p2 = new int[10]();
-    knuth(1000, 10);
+    country cons[10];
+    int id = 1;
+    int i = 10;
+    cons[1].medal = 10;
+    cons[1].gold = 1;
+    int  offset = offsetof(country, medal);
+    cout << (*((double *)&cons[1] + id - 1) == *((double *)&cons[2] + id - 1));
     return 0;
 }

@@ -2,10 +2,11 @@
 // coding - utf_8
 
 #include <bits/stdc++.h>
-
+#define EQUAL !strcmp
 #define test() freopen("in", "r", stdin)
 using namespace std;
 const int MAX_N = 10010;
+typedef struct Car *pCar;
 struct Car
 {
     char id[8], status[4];
@@ -18,9 +19,9 @@ bool cmp(const Car &a, const Car &b) { return strcmp(a.id, b.id) ? strcmp(a.id, 
 
 struct CMP
 {
-    bool operator()(const Car &a, const Car &b) const { return a.Time > b.Time; }
+    bool operator()(const pCar &a, const pCar &b) const { return a->Time > b->Time; }
 };
-priority_queue<Car, vector<Car>, CMP> pq;
+priority_queue<pCar, vector<pCar>, CMP> pq;
 int main()
 {
     //test();
@@ -35,9 +36,9 @@ int main()
     int maxTime = -1;
     for (int i = 0; i < n - 1; i++)
     {
-        if (!strcmp(all_record[i].id, all_record[i + 1].id) && !strcmp(all_record[i].status, "in") && !strcmp(all_record[i + 1].status, "out"))
+        if (EQUAL(all_record[i].id, all_record[i + 1].id) && EQUAL(all_record[i].status, "in") && EQUAL(all_record[i + 1].status, "out"))
         {
-            pq.push(all_record[i]), pq.push(all_record[i + 1]);
+            pq.push(&all_record[i]), pq.push(&all_record[i + 1]);
             parkTime[all_record[i].id] += all_record[i + 1].Time - all_record[i].Time;
             maxTime = max(maxTime, parkTime[all_record[i].id]);
         }
@@ -47,9 +48,9 @@ int main()
     {
         scanf("%d:%d:%d", &hh, &mm, &ss);
         Time = convert(hh, mm, ss);
-        while (pq.size() && pq.top().Time <= Time)
+        while (pq.size() && pq.top()->Time <= Time)
         {
-            !strcmp(pq.top().status, "in") ? numCar++ : numCar--;
+            EQUAL(pq.top()->status, "in") ? numCar++ : numCar--;
             pq.pop();
         }
         printf("%d\n", numCar);

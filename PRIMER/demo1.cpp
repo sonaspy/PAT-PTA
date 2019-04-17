@@ -11,7 +11,7 @@ int main(int argc, char const *argv[])
 {
     /* code */
     //test();
-    int x= 1;
+    int x = 1;
     cout << (x == (int)(float)x);
     return 0;
 }

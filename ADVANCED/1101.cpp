@@ -34,4 +34,4 @@ int main(int argc, char const *argv[])
     else
         cout << 0;
     return 0;
-}
+}//attention

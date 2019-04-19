@@ -48,7 +48,7 @@ int main()
             if (res[i] >= prime[i])
             {
                 res[i] -= prime[i];
-                res[i + 1] += 1;
+                res[i + 1]++;
                 if (i == len - 1)
                     len++;
             }

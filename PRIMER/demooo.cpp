@@ -9,8 +9,9 @@ using namespace std;
 typedef struct Node *ptrn;
 struct Node
 {
-    int flag = -1;
+    int flag = -1, data;
     int left = -1, right = -1;
+    ptrn l, r;
 };
 vector<ptrn> tree(20);
 
@@ -26,14 +27,18 @@ inline void inOrder(int r)
     if (tree[r]->left != -1)
         inOrder(tree[r]->left);
 }
+ptrn ROOT = new Node;
 inline void level()
 {
-    queue<int> q;
+    queue<pair<int, ptrn>> q;
+    ROOT->data = root;
     int walk;
-    q.push(root);
+    ptrn v;
+    q.push(make_pair(root, ROOT));
     while (q.size())
     {
-        walk = q.front();
+        walk = q.front().first;
+        v = q.front().second;
         q.pop();
         if (c)
             cout << " ";
@@ -41,10 +46,27 @@ inline void level()
             c = 1;
         cout << walk;
         if (tree[walk]->right != -1)
-            q.push(tree[walk]->right);
+        {
+            v->l = new Node;
+            v->l->data = tree[walk]->right;
+            q.push(make_pair(tree[walk]->right, v->l));
+        }
         if (tree[walk]->left != -1)
-            q.push(tree[walk]->left);
+        {
+            v->r = new Node;
+            v->r->data = tree[walk]->left;
+            q.push(make_pair(tree[walk]->left, v->r));
+        }
     }
+}
+
+void order(ptrn r)
+{
+    if (r->l)
+        order(r->l);
+    cout << r->data << " ";
+    if (r->r)
+        order(r->r);
 }
 
 int main(int argc, char const *argv[])
@@ -82,5 +104,6 @@ int main(int argc, char const *argv[])
     cout << endl;
     c = 0;
     inOrder(root);
+    cout << endl;
     return 0;
 }

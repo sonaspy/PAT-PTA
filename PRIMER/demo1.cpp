@@ -6,12 +6,19 @@
 #define test() freopen("in", "r", stdin)
 
 using namespace std;
-
+static inline int seq(int &idx, int range)
+{
+    if (idx % 2 == 0)
+        return idx / 2;
+    return range - idx / 2;
+}
 int main(int argc, char const *argv[])
 {
     /* code */
     //test();
-    int x = 1;
-    cout << (x == (int)(float)x);
+
+    
+
+
     return 0;
 }

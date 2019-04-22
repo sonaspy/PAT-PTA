@@ -1,5 +1,12 @@
-// author - newguo@sonaspy.cn
-// coding - utf_8
+# 1 "demo.c"
+# 1 "<built-in>" 1
+# 1 "<built-in>" 3
+# 332 "<built-in>" 3
+# 1 "<command line>" 1
+# 1 "<built-in>" 2
+# 1 "demo.c" 2
+
+
 
 extern int buf[];
 int *bufp0 = &buf[0];

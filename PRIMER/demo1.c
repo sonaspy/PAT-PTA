@@ -1,15 +1,11 @@
 // author - newguo@sonaspy.cn
 // coding - utf_8
 
-#include <bits/stdc++.h>
-
-using namespace std;
+int buf[2] = {1, 2};
 
 int main(int argc, char const *argv[])
 {
     /* code */
-
-
-
+    swap();
     return 0;
 }

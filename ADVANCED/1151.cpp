@@ -6,78 +6,65 @@
 #define test() freopen("in", "r", stdin)
 
 using namespace std;
-int pre[1001], in[1001];
-
-typedef struct Node *ptrn;
-struct Node
+struct TreeNode
 {
-    int data;
-    ptrn parent, left, right;
-    Node(int d) : data(d) {}
+    int val, depth;
+    TreeNode *left, *right, *parent;
+    TreeNode(int v = 0) : val(v), depth(1),left(nullptr), right(nullptr), parent(nullptr) {}
 };
-unordered_map<int, ptrn> mp;
-
-ptrn solve(int root, int left, int right, ptrn p)
+int in[10000], pre[10000];
+unordered_map<int, TreeNode *> mp;
+inline int getDepth(TreeNode *root){return root == nullptr? 0 : root->depth;}
+TreeNode *Construct(int root, int lo, int hi, TreeNode* par)
 {
-    if (left > right) return nullptr;
-    int i = left;
-    mp[pre[root]] = new Node(pre[root]);
-    mp[pre[root]]->parent = p;
-    while (i < right && in[i] != pre[root])
-        i++;
-    mp[pre[root]]->left = solve(root + 1, left, i - 1, mp[pre[root]]);
-    mp[pre[root]]->right = solve(root + 1 + i - left, i + 1, right, mp[pre[root]]);
-    return mp[pre[root]];
-}
-void func(vector<int> &vec, ptrn node)
-{
-    while (node != nullptr)
-    {
-        vec.push_back(node->data);
-        node = node->parent;
-    }
+    if (hi < lo) return nullptr;
+    int i;
+    for (i = lo;i < hi && in[i] != pre[root]; ++i);
+    TreeNode *ROOT = new TreeNode(pre[root]);
+    ROOT->parent = par;
+    ROOT->depth = getDepth(ROOT->parent) + 1;
+    ROOT->left = Construct(root + 1, lo, i - 1, ROOT);
+    ROOT->right = Construct(root + 1 + i - lo, i + 1, hi, ROOT);
+    mp[pre[root]] = ROOT;
+    return ROOT;
 }
 
-int main(int argc, char const *argv[])
+TreeNode *LCA(TreeNode *p, TreeNode *q)
 {
-    /* code */
+    while (p->depth > q->depth)
+        p = p->parent;
+    while (q->depth > p->depth)
+        q = q->parent;
+    while (p != q) p = p->parent, q = q->parent;
+    return p;
+}
+int main()
+{
     //test();
-    int m, n, a1, a2;
-    cin >> m >> n;
-    for (int i = 0; i < n; i++)
+    int m, n;
+    scanf("%d %d", &m, &n);
+    for (int i = 0; i < n; ++i)
         scanf("%d", in + i);
-    for (int i = 0; i < n; i++)
+    for (int i = 0; i < n; ++i)
         scanf("%d", pre + i);
-    ptrn root = solve(0, 0, n - 1, nullptr);
-    for (int i = 0; i < m; i++)
+    TreeNode *root = Construct(0, 0, n - 1, nullptr);
+    while (m--)
     {
-        scanf("%d%d", &a1, &a2);
-        if (!mp.count(a1) || !mp.count(a2))
-        {
-            printf("Error: ");
-            if (!mp.count(a1) && !mp.count(a2))
-                printf("%d and %d are not found\n", a1, a2);
-            else if (!mp.count(a1))
-                printf("%d is not found\n", a1);
-            else
-                printf("%d is not found\n", a2);
-        }
+        int x1, x2;
+        scanf("%d %d", &x1, &x2);
+        TreeNode *p = mp.count(x1) ? mp[x1] : nullptr, *q = mp.count(x2) ? mp[x2] : nullptr;
+        if (!p && !q)
+            printf("ERROR: %d and %d are not found.\n", x1, x2);
+        else if (!p || !q)
+            printf("ERROR: %d is not found.\n", p != nullptr ? x2 : x1);
         else
         {
-
-            int l, i, j;
-            vector<int> v1, v2;
-            func(v1, mp[a1]), func(v2, mp[a2]);
-            for (i = v1.size() - 1, j = v2.size() - 1; i > -1 && j > -1 && v1[i] == v2[j]; i--, j--)
-                ;
-            l = v1[i + 1];
-            if (l != a1 && l != a2)
-                printf("LCA of %d and %d is %d.\n", a1, a2, l);
-            else if (l == a1)
-                printf("%d is an ancestor of %d.\n", a1, a2);
+            TreeNode *ances = LCA(p, q);
+            if (ances != p && ances != q)
+                printf("LCA of %d and %d is %d.\n", x1, x2, ances->val);
             else
-                printf("%d is an ancestor of %d.\n", a2, a1);
+                printf("%d is an ancestor of %d.\n", ances == p ? x1 : x2, ances == p ? x2 : x1);
         }
     }
     return 0;
-}
+}//attention

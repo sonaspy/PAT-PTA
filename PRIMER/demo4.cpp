@@ -12,6 +12,8 @@ int main(int argc, char const *argv[])
     /* code */
     //test();
 
-
+    bool z= false;
+    z = ~z;
+    cout << z;
     return 0;
 }

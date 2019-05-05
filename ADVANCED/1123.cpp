@@ -79,7 +79,7 @@ int main(int argc, char const *argv[])
     /* code */
     //test();
     int n, t, iscpt = 1;
-    vector<int> st;
+    vector<int> levelseq;
     ptrn ROOT = nullptr , v = nullptr;
     cin >> n;
     for (int i = 0; i < n; i++)
@@ -93,7 +93,7 @@ int main(int argc, char const *argv[])
     {
         v = q.front();
         q.pop();
-        st.push_back(v->id);
+        levelseq.push_back(v->id);
         cout << v->data;
         if (v->left)
         {
@@ -107,9 +107,9 @@ int main(int argc, char const *argv[])
         }
         cout << (q.empty() ? "\n" : " ");
     }
-    for (int i = 0; i < st.size(); i++)
+    for (int i = 0; i < levelseq.size(); i++)
     {
-        if (st[i] != i)
+        if (levelseq[i] != i)
         {
             iscpt = 0;
             break;

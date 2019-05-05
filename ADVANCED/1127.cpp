@@ -14,7 +14,7 @@ struct node
 } * ROOT, *v;
 vector<node *> res;
 int n, post[100], in[100];
-node *solve(int root, int lo, int hi)
+node *Construct(int root, int lo, int hi)
 {
     if (hi < lo)
         return nullptr;
@@ -22,8 +22,8 @@ node *solve(int root, int lo, int hi)
     for (; i < hi && in[i] != post[root]; i++)
         ;
     node *tmp = new node(post[root]);
-    tmp->left = solve(root - 1 + i - hi, lo, i - 1);
-    tmp->right = solve(root - 1, i + 1, hi);
+    tmp->left = Construct(root - 1 + i - hi, lo, i - 1);
+    tmp->right = Construct(root - 1, i + 1, hi);
     return tmp;
 }
 int main(int argc, char const *argv[])
@@ -36,7 +36,7 @@ int main(int argc, char const *argv[])
         scanf("%d", in + i);
     for (int i = 0; i < n; i++)
         scanf("%d", post + i);
-    ROOT = solve(n - 1, 0, n - 1);
+    ROOT = Construct(n - 1, 0, n - 1);
     deque<node *> q, nex_q;
     q.push_back(ROOT);
     while (q.size())

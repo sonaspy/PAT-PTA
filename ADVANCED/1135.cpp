@@ -19,7 +19,7 @@ struct node
     node(int d, COLOR c) : data(d), color_(c) {}
 };
 int pre[100], in[100], k, n, flag;
-unordered_map<int, COLOR> mp;
+unordered_map<int, COLOR> itsColor;
 node *construct(int root, int lo, int hi)
 {
     if (hi < lo)
@@ -27,38 +27,31 @@ node *construct(int root, int lo, int hi)
     int i = lo;
     for (; i < hi && in[i] != pre[root]; i++)
         ;
-    node *tmp = new node(pre[root], mp[pre[root]]);
-    tmp->left = construct(root + 1, lo, i - 1);
-    tmp->right = construct(root + 1 + i - lo, i + 1, hi);
-    if (tmp->color_ == RED && !(tmp->left->color_ == BLK && tmp->right->color_ == BLK))
+    node *titsColor = new node(pre[root], itsColor[pre[root]]);
+    titsColor->left = construct(root + 1, lo, i - 1);
+    titsColor->right = construct(root + 1 + i - lo, i + 1, hi);
+    if (titsColor->color_ == RED && !(titsColor->left->color_ == BLK && titsColor->right->color_ == BLK))
         flag = 0;
-    return tmp;
+    return titsColor;
 }
 
 int postorder(node *root)
 {
-    int n1 = 0, n2 = 0;
-    if (root->left)
-        n1 = postorder(root->left);
-    if (root->right)
-        n2 = postorder(root->right);
+    if(!root || !flag)return 0;
+    int n1 = postorder(root->left);
+    int n2 = postorder(root->right);
     if (n1 != n2)
     {
         flag = 0;
-        return max(n1, n2);
+        return 0;
     }
-    else
-        return root->color_ == BLK ? n1 + 1 : n1;
+    return root->color_ == BLK ? n1 + 1 : n1;
 }
-
-bool judge(node *root)
+inline bool judge(node *root)
 {
     postorder(root);
-    if (root->color_ == RED || !flag)
-        return false;
-    return true;
+    return (root->color_ == RED || !flag) ? false: true;
 }
-
 int main(int argc, char const *argv[])
 {
     /* code */
@@ -68,17 +61,16 @@ int main(int argc, char const *argv[])
     {
         cin >> n;
         flag = 1;
-        mp.clear();
+        itsColor.clear();
         for (int i = 0; i < n; i++)
         {
             cin >> pre[i];
             if (pre[i] < 0)
             {
                 pre[i] = -pre[i];
-                mp[pre[i]] = RED;
+                itsColor[pre[i]] = RED;
             }
-            else
-                mp[pre[i]] = BLK;
+            else itsColor[pre[i]] = BLK;
             in[i] = pre[i];
         }
         sort(in, in + n);

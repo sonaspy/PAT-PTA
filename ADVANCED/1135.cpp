@@ -27,12 +27,12 @@ node *construct(int root, int lo, int hi)
     int i = lo;
     for (; i < hi && in[i] != pre[root]; i++)
         ;
-    node *titsColor = new node(pre[root], itsColor[pre[root]]);
-    titsColor->left = construct(root + 1, lo, i - 1);
-    titsColor->right = construct(root + 1 + i - lo, i + 1, hi);
-    if (titsColor->color_ == RED && !(titsColor->left->color_ == BLK && titsColor->right->color_ == BLK))
+    node *cur = new node(pre[root], itsColor[pre[root]]);
+    cur->left = construct(root + 1, lo, i - 1);
+    cur->right = construct(root + 1 + i - lo, i + 1, hi);
+    if (cur->color_ == RED && !(cur->left->color_ == BLK && cur->right->color_ == BLK))
         flag = 0;
-    return titsColor;
+    return cur;
 }
 
 int postorder(node *root)

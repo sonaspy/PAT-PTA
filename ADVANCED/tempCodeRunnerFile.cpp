@@ -1,8 +1,15 @@
-vis[v] = 1;
-            // for (auto i : MAP[v])
-            //     if (!vis[i])
-            //     {
-            //         nex_q.push(i);
-            //         if (lel == 2)
-            //             tmpres.push_back(make_pair(v, i));
-            //     }
+// author - newguo@sonaspy.cn 
+// coding - utf_8 
+
+#include<bits/stdc++.h>
+
+#define test() freopen("in","r",stdin)
+
+using namespace std;
+
+int main(int argc, char const *argv[])
+{
+    /* code */
+    //test();
+    return 0;
+}

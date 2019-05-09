@@ -6,19 +6,18 @@
 #define test() freopen("in", "r", stdin)
 
 using namespace std;
-int indegree[1001] = {0}, cnt = 0, resorder[1001] = {0}, n, m, k, a1, a2;
-vector<int> MAP[1001], res;
-
-inline bool Judge()
+int indegree[1001] = {0}, nonfirst = 0, topOrder[1001] = {0}, n, m, k, a1, a2;
+vector<int> MAP[1001];
+bool Judge()
 {
-    vector<int> In(indegree, indegree + n + 1);
+    vector<int> indgr(indegree, indegree + 1001);
     for (int i = 0; i < n; i++)
     {
-        int V = resorder[i];
-        if (In[V])
+        int V = topOrder[i];
+        if (indgr[V])
             return false;
         for (auto w : MAP[V])
-            In[w]--;
+            indgr[w]--;
     }
     return true;
 }
@@ -37,13 +36,13 @@ int main(int argc, char const *argv[])
     for (int i = 0; i < k; i++)
     {
         for (int j = 0; j < n; j++)
-            scanf("%d", &resorder[j]);
+            scanf("%d", &topOrder[j]);
         if (!Judge())
         {
-            if (cnt != 0)
+            if (nonfirst)
                 cout << " ";
             cout << i;
-            cnt++;
+            nonfirst = 1;
         }
     }
 

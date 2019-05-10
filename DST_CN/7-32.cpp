@@ -1,44 +1,43 @@
-// author - newguo@sonaspy.cn
-// coding - utf_8
 
-#include <iostream>
-#define MAX 1001
-#define test() freopen("in", "r", stdin)
+#include <stdio.h>
+int map[1002], degree[1002] = {0}; //记录每个点的度数
+int n, m;
 
-using namespace std;
-
-#define MAX 1001
-int point[MAX][MAX];
-int visited[MAX] = {0}, cnt[MAX] = {0}, n, m, flag = 1;
-;
-void dfs(int i)
+int findroot(int x)
 {
-    visited[i] = 1;
-    for (int j = 1; j <= n; j++)
-    {
-        if (point[i][j] && !visited[j])
-            dfs(j);
-    }
+    return map[x] == -1 ? x : map[x] = findroot(map[x]);
 }
-int main(int argc, char const *argv[])
+void Union(int x, int y)
 {
-    /* code */
-    //test();
+    int fx = findroot(x), fy = findroot(y);
+    if (fx != fy)
+        map[fy] = fx;
+}
+inline bool iserlur()
+{
+    int i, cnt = 0;
+    for (i = 1; i <= n; i++)
+        cnt += map[i] == -1 ? 1 : 0;
+    if (cnt != 1) return false;
+    for (i = 1; i <= n; i++)
+        if (degree[i] & 1) return false;
+    return true;
+}
+int main()
+{
+    int i, x, y;
+    for (i = 0; i < 1002; i++)
+        map[i] = -1;
     scanf("%d%d", &n, &m);
-    for (int i = 0; i < m; i++)
+    for (i = 1; i <= m; i++)
     {
-        int p1, p2;
-        scanf("%d%d", &p1, &p2);
-        point[p1][p2] = 1, point[p2][p1] = 1, cnt[p1]++, cnt[p2]++;
+        scanf("%d%d", &x, &y);
+        Union(x, y);
+        degree[x]++, degree[y]++;
     }
-    dfs(1);
-    for (int i = 1; i <= n; i++)
-    {
-        if (!visited[i] || cnt[i] % 2 == 1)
-        {
-            flag = 0;
-            break;
-        }
-    }
-    printf("%d\n", flag);
+    if (iserlur())
+        printf("1\n");
+    else
+        printf("0\n");
+    return 0;
 }

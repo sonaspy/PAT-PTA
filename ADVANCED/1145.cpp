@@ -6,7 +6,7 @@
 #define test() freopen("in", "r", stdin)
 
 using namespace std;
-
+#define EMPTY 0
 bool isprime(int n)
 {
     for (int i = 2; i * i <= n; i++)
@@ -19,39 +19,39 @@ int main(int argc, char const *argv[])
 {
     /* code */
     //test();
-    int msize, n, m, a, ans = 0, pos, flag, i, step;
+    int msize, n, m, key, sums = 0, pos, flag, i, step;
     scanf("%d %d %d", &msize, &n, &m);
     while (!isprime(msize))
         msize++;
     vector<int> table(msize, 0);
     for (i = 0; i < n; i++)
     {
-        scanf("%d", &a);
+        scanf("%d", &key);
         flag = 0;
         for (step = 0; step <= msize; step++)
         {
-            pos = (a + step * step) % msize;
+            pos = (key + step * step) % msize;
             if (table[pos] == 0)
             {
-                table[pos] = a;
+                table[pos] = key;
                 flag = 1;
                 break;
             }
         }
         if (!flag)
-            printf("%d cannot be inserted.\n", a);
+            printf("%d cannot be inserted.\n", key);
     }
     for (i = 0; i < m; i++)
     {
-        scanf("%d", &a);
+        scanf("%d", &key);
         for (step = 0; step <= msize; step++)
         {
-            ans++;
-            pos = (a + step * step) % msize;
-            if (table[pos] == a || table[pos] == 0)
+            sums++;
+            pos = (key + step * step) % msize;
+            if (table[pos] == key || table[pos] == EMPTY)
                 break;
         }
     }
-    printf("%.1lf\n", ans * 1.0 / m);
+    printf("%.1lf\n", sums * 1.0 / m);
     return 0;
 } //attention

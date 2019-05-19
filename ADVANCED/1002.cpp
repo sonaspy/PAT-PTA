@@ -1,66 +1,60 @@
-// author -  newguo@sonaspy.cn
+// author - newguo@sonaspy.cn
 // coding - utf_8
 
 #include <iostream>
-#include <queue>
+#include <deque>
 #define test() freopen("in", "r", stdin)
 
 using namespace std;
-
+deque<pair<int, double>> p1, p2, res;
+inline void solve(deque<pair<int, double>> &p)
+{
+    while (p.size())
+    {
+        res.push_back(p.front());
+        p.pop_front();
+    }
+}
 int main(int argc, char const *argv[])
 {
     /* code */
     //test();
     int k, e;
-    double co;
-    queue<pair<int, double>> p1, p2, res;
+    double cof;
     cin >> k;
     for (int i = 0; i < k; i++)
-        {
-            scanf("%d%lf", &e, &co);
-            p1.push(make_pair(e, co));
-        }
+    {
+        scanf("%d%lf", &e, &cof);
+        p1.push_back(make_pair(e, cof));
+    }
     cin >> k;
     for (int i = 0; i < k; i++)
-        {
-            scanf("%d%lf", &e, &co);
-            p2.push(make_pair(e, co));
-        }
+    {
+        scanf("%d%lf", &e, &cof);
+        p2.push_back(make_pair(e, cof));
+    }
     while (p1.size() && p2.size())
+    {
+        if (p1.front().first > p2.front().first)
         {
-            if (p1.front().first > p2.front().first)
-                {
-                    res.push(p1.front());
-                    p1.pop();
-                }
-            else if (p1.front().first < p2.front().first)
-                {
-                    res.push(p2.front());
-                    p2.pop();
-                }
-            else
-                {
-                    double x = p1.front().second + p2.front().second;
-                    if (x)
-                        res.push(make_pair(p1.front().first, x));
-                    p1.pop(), p2.pop();
-                }
+            res.push_back(p1.front());
+            p1.pop_front();
         }
-    while (p1.size())
+        else if (p1.front().first < p2.front().first)
         {
-            res.push(p1.front());
-            p1.pop();
+            res.push_back(p2.front());
+            p2.pop_front();
         }
-    while (p2.size())
+        else
         {
-            res.push(p2.front());
-            p2.pop();
+            double x = p1.front().second + p2.front().second;
+            if (x) res.push_back(make_pair(p1.front().first, x));
+            p1.pop_front(), p2.pop_front();
         }
+    }
+    solve(p1), solve(p2);
     cout << res.size();
-    while (res.size())
-        {
-            printf(" %d %.1f", res.front().first, res.front().second);
-            res.pop();
-        }
+    for (auto i : res)
+        printf(" %d %.1f", i.first, i.second);
     return 0;
 }

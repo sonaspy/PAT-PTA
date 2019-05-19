@@ -7,7 +7,7 @@
 
 using namespace std;
 deque<pair<int, double>> p1, p2, res;
-inline void solve(deque<pair<int, double>> &p)
+inline void remain_solve(deque<pair<int, double>> &p)
 {
     while (p.size())
     {
@@ -52,7 +52,7 @@ int main(int argc, char const *argv[])
             p1.pop_front(), p2.pop_front();
         }
     }
-    solve(p1), solve(p2);
+    remain_solve(p1), remain_solve(p2);
     cout << res.size();
     for (auto i : res)
         printf(" %d %.1f", i.first, i.second);

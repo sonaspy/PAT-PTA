@@ -5,16 +5,15 @@
 
 using namespace std;
 
-int func()
-{
-    srand(time(NULL));
-    return rand() % 100;
-}
-
 int main(int argc, char const *argv[])
 {
     /* code */
-    cout << func();
-    
+    string abc = "abcdefghijklmnopqrstuvwxyz", replace = "mnbvcxzasdfghjklpoiuytrewq", a = "rmij'u uamu xyj";
+    for (auto &i : a)
+    {
+        if (isalpha(i))
+            i = abc[find(replace.begin(), replace.end(), i) - replace.begin()];
+    }
+    cout << a;
     return 0;
 }

@@ -4,61 +4,58 @@
 #include <iostream>
 #include <algorithm>
 #define test() freopen("in", "r", stdin)
-#define INF 9999999
+#define INF 1 << 30
 using namespace std;
 // attention
 int main(int argc, char const *argv[])
 {
     /* code */
     //test();
-    int n, m, c1, c2, a1, a2, b, teams[501], map[501][501], w[501], dis[501], num[501];
+    int n, m, c1, c2, a1, a2, b, teams[501], map[501][501], W[501], dis[501], pathnum[501];
     bool vis[501];
     cin >> n >> m >> c1 >> c2;
     for (int i = 0; i < n; i++)
         scanf("%d", &teams[i]);
-    fill(map[0], map[0] + 501 * 501, INF);
-    fill(dis, dis + 501, INF);
-    fill(vis, vis + 501, false);
+    fill(map[0], map[0] + 501 * 501, INF), fill(dis, dis + 501, INF), fill(vis, vis + 501, false);
     for (int i = 0; i < m; i++)
     {
         scanf("%d%d%d", &a1, &a2, &b);
-        map[a1][a2] = b;
-        map[a2][a1] = b;
+        map[a1][a2] = map[a2][a1] = b;
     }
-    dis[c1] = 0, w[c1] = teams[c1], num[c1] = 1;
-    while(true)
+    dis[c1] = 0, W[c1] = teams[c1], pathnum[c1] = 1;
+    while (true)
     {
-        int u = -1, _min = INF;
+        int k = -1, _min = INF;
         for (int j = 0; j < n; j++)
         {
             if (!vis[j] && dis[j] < _min)
             {
-                u = j;
+                k = j;
                 _min = dis[j];
             }
         }
-        if (u == -1)
+        if (k == -1)
             break;
-        vis[u] = true;
+        vis[k] = true;
         for (int v = 0; v < n; v++)
         {
-            if (!vis[v] && map[u][v] < INF)
+            if (!vis[v] && map[k][v] < INF)
             {
-                if (dis[u] + map[u][v] < dis[v])
+                if (dis[k] + map[k][v] < dis[v])
                 {
-                    dis[v] = dis[u] + map[u][v];
-                    num[v] = num[u];
-                    w[v] = w[u] + teams[v];
+                    dis[v] = dis[k] + map[k][v];
+                    pathnum[v] = pathnum[k];
+                    W[v] = W[k] + teams[v];
                 }
-                else if (dis[u] + map[u][v] == dis[v])
+                else if (dis[k] + map[k][v] == dis[v])
                 {
-                    num[v] += num[u];
-                    if (w[v] < w[u] + teams[v])
-                        w[v] = w[u] + teams[v];
+                    pathnum[v] += pathnum[k];
+                    if (W[v] < W[k] + teams[v])
+                        W[v] = W[k] + teams[v];
                 }
             }
         }
     } //dijkstra
-    printf("%d %d", num[c2], w[c2]);
+    printf("%d %d", pathnum[c2], W[c2]);
     return 0;
 }

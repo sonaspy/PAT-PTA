@@ -1,66 +1,50 @@
-// author -  newguo@sonaspy.cn
+// author - newguo@sonaspy.cn
 // coding - utf_8
 
-#include <iostream>
-#include <vector>
-#include <unordered_map>
-#include <algorithm>
+#include <bits/stdc++.h>
 
 #define test() freopen("in", "r", stdin)
 
 using namespace std;
-// attention
-typedef struct Node *ptrNode;
-struct Node
-{
-    int id, level = 0;
-    vector<ptrNode> childs;
-};
-int solve(int *&leaf, int root, unordered_map<int, ptrNode> &mp, int level)
-{
-    int maxLevel = 0, tmp;
-    if (!mp.count(root))
-        {
-            leaf[level]++;
-            return level;
-        }
-    for (auto iter : mp[root]->childs)
-        {
-            tmp = solve(leaf, iter->id, mp, level+1);
-            maxLevel = max(maxLevel, tmp);
-        }
-    return maxLevel;
-}
+
 int main(int argc, char const *argv[])
 {
     /* code */
     //test();
-    int n, m, k, p, c, level;
-    int *leaf = new int[100];
-    unordered_map<int, ptrNode> mp;
-    fill(leaf, leaf + 100, 0);
+    int n, m, k, p, c, leafcnt, v;
+    vector<int> tree[111];
     cin >> n >> m;
     if (n == 1)
-        {
-            cout << 1;
-            return 0;
-        }
+    {
+        cout << 1;
+        return 0;
+    }
     for (int i = 0; i < m; i++)
+    {
+        cin >> p >> k;
+        for (int j = 0; j < k; j++)
         {
-            cin >> p >> k;
-            ptrNode tParent = new Node;
-            tParent->id = p;
-            for (int j = 0; j < k; j++)
-                {
-                    cin >> c;
-                    ptrNode tChild = new Node;
-                    tChild->id = c;
-                    tParent->childs.push_back(tChild);
-                }
-            mp[p] = tParent;
+            cin >> c;
+            tree[p].push_back(c);
         }
-    level = solve(leaf, 1, mp, 0);
-    for (int i = 0; i <= level; i++)
-        cout << (i == 0 ? "" : " ") << leaf[i];
+    }
+    queue<int> q, nexq;
+    for (auto i : tree[1])
+        q.push(i);
+    cout << 0;
+    while (q.size())
+    {
+        leafcnt = 0;
+        while (q.size())
+        {
+            v = q.front(), q.pop();
+            if (tree[v].empty())
+                leafcnt++;
+            for (auto i : tree[v])
+                nexq.push(i);
+        }
+        swap(q, nexq);
+        printf(" %d", leafcnt);
+    }
     return 0;
 }

@@ -1,60 +1,48 @@
-// author -  newguo@sonaspy.cn
+// author - newguo@sonaspy.cn
 // coding - utf_8
 
-#include <iostream>
-#include <string>
-#include <cmath>
-#include <algorithm>
+#include <bits/stdc++.h>
+
 #define test() freopen("in", "r", stdin)
 
 using namespace std;
-typedef long long ll;
 
-ll stonum(string s, int radix)
+int64_t stonum(string s, int radix)
 {
-    ll sum = 0, d;
+    int64_t sum = 0;
     for (int i = s.size() - 1, c = 0; i > -1; i--, c++)
-        {
-            d = isdigit(s[i]) ? s[i] - '0' : s[i] - 'a' + 10;
-            sum += d * pow(radix, c);
-        }
+        sum += (isdigit(s[i]) ? s[i] - '0' : s[i] - 'a' + 10) * pow(radix, c);
     return sum;
 }
-int return_radix(string s, ll num)
+int return_radix(string s, int64_t num)
 {
     int res = -1;
     char it = *max_element(s.begin(), s.end());
-    ll low = isdigit(it) ? it - '0' : it - 'a' + 10;
-    low++;
-    ll high = max(num, low);
-    while (low <= high)
-        {
-            ll mid = (low + high) / 2;
-            ll tmp = stonum(s, mid);
-            if (tmp < 0 || tmp > num)
-                high = mid - 1;
-            else if (tmp < num)
-                low = mid + 1;
-            else
-                {
-                    res = mid;
-                    break;
-                }
-        }
+    int64_t lo = isdigit(it) ? it - '0' + 1 : it - 'a' + 11;
+    int64_t hi = max(num, lo), mid, tmp;
+    while (lo <= hi)
+    {
+        mid = (lo + hi) / 2;
+        tmp = stonum(s, mid);
+        if (tmp == num)
+            return mid;
+        else if (0 < tmp && tmp < num)
+            lo = mid + 1;
+        else
+            hi = mid - 1;
+    }
     return res;
 }
 int main(int argc, char const *argv[])
 {
-    /* code *///attention
+    /* code */
     //test();
     int tag, radix, res;
     string s1, s2;
     cin >> s1 >> s2 >> tag >> radix;
-    ll known = tag == 1 ? stonum(s1, radix) : stonum(s2, radix);
+    int64_t known = tag == 1 ? stonum(s1, radix) : stonum(s2, radix);
     res = return_radix((tag == 1 ? s2 : s1), known);
-    if (res == -1)
-        cout << "Impossible";
-    else
-        cout << res;
+    cout << (res == -1 ? "Impossible" : to_string(res));
     return 0;
 }
+//attention

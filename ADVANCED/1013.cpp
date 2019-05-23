@@ -18,7 +18,6 @@ int main(int argc, char const *argv[])
 {
     /* code */
     //test();
-    //attention
     cin >> n >> m >> k;
     for (int i = 0; i < m; i++)
     {

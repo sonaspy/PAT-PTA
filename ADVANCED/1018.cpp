@@ -49,7 +49,7 @@ int main(int argc, char const *argv[])
         scanf("%d %d %d", &c1, &c2, &c3);
         MAP[c1][c2] = MAP[c2][c1] = c3;
     }
-    dis[0] = 0;
+    dis[PBMC] = 0;
     while (true)
     {
         int k = -1, min = INF;

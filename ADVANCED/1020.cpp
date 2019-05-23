@@ -6,7 +6,6 @@
 #define test() freopen("in","r",stdin)
 
 using namespace std;
-//attention
 vector<int> post, in;
 map<int, int> res;
 

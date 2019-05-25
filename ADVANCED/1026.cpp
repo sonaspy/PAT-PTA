@@ -3,9 +3,7 @@
 // coding - utf_8
 
 #include <bits/stdc++.h>
-
 #define test() freopen("in", "r", stdin)
-
 using namespace std;
 
 struct Player

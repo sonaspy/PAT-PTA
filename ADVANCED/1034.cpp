@@ -1,34 +1,27 @@
 // author - newguo@sonaspy.cn
 // coding - utf_8
 
-#include <iostream>
-#include <regex>
-#include <string>
-#include <unordered_map>
-#include <unordered_set>
-#include <map>
-#include <vector>
+#include <bits/stdc++.h>
+
 #define test() freopen("in", "r", stdin)
 
 using namespace std;
-typedef pair<unordered_set<string>, int> mypair;
+
+typedef pair<unordered_set<string>, int> Gang;
 int n, k, t;
 unordered_map<string, vector<string>> mp;
 unordered_map<string, int> mp1;
 unordered_map<string, bool> vis;
-vector<mypair> gangs;
 map<string, int> res;
 //attention
-void DFS(const string &s, mypair& p)
+void DFS(const string &s, Gang &p)
 {
     vis[s] = true;
     p.first.insert(s);
     p.second += mp1[s];
-    for (auto i : mp[s])
-    {
+    for (auto &i : mp[s])
         if (!vis[i])
             DFS(i, p);
-    }
 }
 
 int main(int argc, char const *argv[])
@@ -43,30 +36,28 @@ int main(int argc, char const *argv[])
         mp[s1].push_back(s2), mp[s2].push_back(s1);
         mp1[s1] += t, mp1[s2] += t;
     }
-    for (auto i : mp)
+    for (auto &i : mp)
     {
         if (!vis[i.first])
         {
-            mypair myp;
-            myp.second = 0;
-            DFS(i.first, myp);
-            gangs.push_back(myp);
+            Gang myGang;
+            myGang.second = 0;
+            DFS(i.first, myGang);
+            if (myGang.first.size() < 3 || myGang.second <= k * 2)
+                continue;
+            int max_t = 0;
+            string head;
+            for (auto &j : myGang.first)
+                if (mp1[j] > max_t)
+                {
+                    max_t = mp1[j];
+                    head = j;
+                }
+            res[head] = myGang.first.size();
         }
     }
-    for (auto i : gangs)
-    {
-        if (i.first.size() < 3 || i.second / 2 <= k)continue;
-        int max = 0;
-        string head;
-        for (auto j : i.first)
-            if (mp1[j] > max)
-            {
-                max = mp1[j];
-                head = j;
-            }
-        res[head] = i.first.size();
-    }
     cout << res.size() << endl;
-    for(auto i : res)cout << i.first << " " <<i.second <<endl;
+    for (auto &i : res)
+        cout << i.first << " " << i.second << endl;
     return 0;
 }

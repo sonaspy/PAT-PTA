@@ -1,37 +1,34 @@
 // author - newguo@sonaspy.cn
 // coding - utf_8
 
-#include <iostream>
-#include <vector>
-#include <algorithm>
+#include <bits/stdc++.h>
+
 #define test() freopen("in", "r", stdin)
 
 using namespace std;
-typedef long long ll;
 int main(int argc, char const *argv[])
 {
     /* code */
     //test();
-    ll n, m, sum = 0, tmp;
-    vector<ll> c_1, c_2, p_1, p_2;
+    int64_t n, m, sum = 0, tmp;
+    vector<int64_t> positive_c, negative_c, positive_p, negative_p;
     cin >> n;
-    for (ll i = 0; i < n; i++)
+    for (int64_t i = 0; i < n; i++)
     {
         scanf("%lld", &tmp);
-        tmp < 0? c_2.push_back(tmp) : c_1.push_back(tmp);
+        tmp < 0 ? negative_c.push_back(tmp) : positive_c.push_back(tmp);
     }
     cin >> m;
-    for (ll i = 0; i < m; i++)
+    for (int64_t i = 0; i < m; i++)
     {
         scanf("%lld", &tmp);
-        tmp < 0 ? p_2.push_back(tmp) : p_1.push_back(tmp);
+        tmp < 0 ? negative_p.push_back(tmp) : positive_p.push_back(tmp);
     }
-    sort(c_2.begin(), c_2.end()), sort(p_2.begin(),p_2.end());
-    sort(c_1.begin(), c_1.end(), greater<ll>()), sort(p_1.begin(), p_1.end(),greater<ll>());
-    for(int i = 0; i < c_1.size() && i < p_1.size();i++)
-        sum += c_1[i] * p_1[i];
-    for (int i = 0; i < c_2.size() && i < p_2.size(); i++)
-        sum += c_2[i] * p_2[i];
+    sort(negative_c.begin(), negative_c.end()), sort(negative_p.begin(), negative_p.end()), sort(positive_c.begin(), positive_c.end(), greater<int64_t>()), sort(positive_p.begin(), positive_p.end(), greater<int64_t>());
+    for (int i = 0; i < positive_c.size() && i < positive_p.size(); i++)
+        sum += positive_c[i] * positive_p[i];
+    for (int i = 0; i < negative_c.size() && i < negative_p.size(); i++)
+        sum += negative_c[i] * negative_p[i];
     cout << sum;
     return 0;
 }

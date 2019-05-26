@@ -9,10 +9,10 @@ using namespace std;
 
 struct Node
 {
-    string user, pwd;
+    string user_id, password;
     bool isMod;
 };
-vector<Node> usrList;
+vector<Node> userlist;
 unordered_map<char, char> mp;
 int main(int argc, char const *argv[])
 {
@@ -25,28 +25,28 @@ int main(int argc, char const *argv[])
     {
         string s, s1;
         cin >> s >> s1;
-        usrList.push_back({s, s1, false});
+        userlist.push_back({s, s1, false});
     }
     int isMod = 0;
-    for (int i = 0; i < usrList.size(); i++)
+    for (int i = 0; i < userlist.size(); i++)
     {
-        for (int j = 0; j < usrList[i].pwd.size(); j++)
+        for (int j = 0; j < userlist[i].password.size(); j++)
         {
-            if (mp.count(usrList[i].pwd[j]))
+            if (mp.count(userlist[i].password[j]))
             {
-                usrList[i].isMod = true;
-                usrList[i].pwd[j] = mp[usrList[i].pwd[j]];
+                userlist[i].isMod = true;
+                userlist[i].password[j] = mp[userlist[i].password[j]];
             }
         }
-        if (usrList[i].isMod)
+        if (userlist[i].isMod)
             isMod++;
     }
     if (isMod)
     {
         cout << isMod << endl;
-        for (auto i : usrList)
+        for (auto i : userlist)
             if (i.isMod)
-                printf("%s %s\n", i.user.c_str(), i.pwd.c_str());
+                printf("%s %s\n", i.user_id.c_str(), i.password.c_str());
     }
     else
         cout << "There " << (n > 1 ? "are " : "is ") << n << " account" << (n > 1 ? "s" : "") << " and no account is modified";

@@ -1,10 +1,8 @@
 // author - newguo@sonaspy.cn
 // coding - utf_8
 
-#include <iostream>
-#include <string>
-#include <vector>
-#include <algorithm>
+#include <bits/stdc++.h>
+
 #define test() freopen("in", "r", stdin)
 
 using namespace std;
@@ -18,11 +16,16 @@ int main(int argc, char const *argv[])
     cin >> n;
     string s, res;
     vector<string> lis(n);
-    for (int i = 0; i < n; i++) cin >> lis[i];
+    for (int i = 0; i < n; i++)
+        cin >> lis[i];
     sort(lis.begin(), lis.end(), cmp);
-    for (auto i : lis) res += i;
-    while (res[++j] == '0');
-    if (j == res.size())cout << 0;
-    else cout << res.substr(j, res.size() - j);
+    for (auto i : lis)
+        res += i;
+    while (res[++j] == '0')
+        ;
+    if (j == res.size())
+        cout << 0;
+    else
+        cout << res.substr(j, res.size() - j);
     return 0;
-}
+} //attention

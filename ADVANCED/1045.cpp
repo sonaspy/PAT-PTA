@@ -5,7 +5,8 @@
 
 using namespace std;
 #define test() freopen("in", "r", stdin)
-int tmp, n, colorn, strip[10001], colorRank[201];
+int tmp, n, colorn, colorRank[201] = {0};
+vector<int> strip;
 static int length = 0, maxlen = 0;
 void DFS(int start, int curRank)
 {
@@ -34,7 +35,12 @@ int main(int argc, char const *argv[])
     }
     cin >> n;
     for (int i = 0; i < n; i++)
-        scanf("%d", &strip[i]);
+    {
+        scanf("%d", &tmp);
+        if (colorRank[tmp])
+            strip.push_back(tmp);
+    }
+    n = strip.size();
     DFS(0, 1);
     cout << maxlen;
     return 0;

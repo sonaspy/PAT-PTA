@@ -1,73 +1,85 @@
 // author - newguo@sonaspy.cn
 // coding - utf_8
 
-#include <iostream>
-#include <vector>
+#include <bits/stdc++.h>
 //attention
 #define test() freopen("in", "r", stdin)
-const int DATASIZE = 1 << 16;
 using namespace std;
-int input[DATASIZE], n, f = 0;
-vector<int> pre, pre_m, post_output;
-typedef struct Node* pNode;
-struct Node
+int input[2222], n, f = 0, c = 0;
+vector<int> post_output;
+struct TreeNode
 {
-    int __data;
-    pNode left = nullptr, right = nullptr;
-    Node(int d) { __data = d; }
+    int val;
+    TreeNode *left = nullptr, *right = nullptr;
+    TreeNode(int d) : val(d) {}
 };
-void insert(pNode &root, int data)
+void insert(TreeNode *&root, int val)
 {
-    if (!root){ root = new Node(data); return;}
-    insert((data < root->__data) ? (root->left) : (root->right) , data);
+    if (!root)
+    {
+        root = new TreeNode(val);
+        return;
+    }
+    insert(val < root->val ? (root->left) : (root->right), val);
 }
-void preorder(pNode root)
+bool preorder(TreeNode *root)
 {
-    if (!root) return;
-    pre.push_back(root->__data);
-    preorder(root->left);
-    preorder(root->right);
+    if (!root) return true;
+    bool f1 = root->val == input[c++];
+    bool f2 = preorder(root->left);
+    bool f3 = preorder(root->right);
+    return f1 && f2 && f3;
 }
-void preorder_m(pNode root)
+bool preorder_mirror(TreeNode *root)
 {
-    if (!root) return;
-    pre_m.push_back(root->__data);
-    preorder_m(root->right);
-    preorder_m(root->left);
+    if (!root) return true;
+    bool f1 = root->val == input[c++];
+    bool f2 = preorder_mirror(root->right);
+    bool f3 = preorder_mirror(root->left);
+    return f1 && f2 && f3;
 }
-void postorder(pNode root)
+void postorder(TreeNode *root)
 {
     if (!root) return;
     postorder(root->left);
     postorder(root->right);
-    post_output.push_back(root->__data);
+    post_output.push_back(root->val);
 }
-void postorder_m(pNode root)
+void postorder_mirror(TreeNode *root)
 {
-    if (!root) return;
-    postorder_m(root->right);
-    postorder_m(root->left);
-    post_output.push_back(root->__data);
+    if (!root)
+        return;
+    postorder_mirror(root->right);
+    postorder_mirror(root->left);
+    post_output.push_back(root->val);
 }
-inline bool isMatched(const vector<int> &pre)
-{
-    for (int i = 0; i < n; i++)
-        if (pre[i] != input[i])
-            return false;
-    return true;
-}
+
 int main()
 {
     //test();
-    pNode root = nullptr;
+    TreeNode *root = nullptr;
     scanf("%d", &n);
-    for (int i = 0; i < n; i++) scanf("%d", input+i);
-    for (int i = 0; i < n; i++) insert(root, input[i]);
-    preorder(root), preorder_m(root);
-    if (isMatched(pre)) { postorder(root); f = 1;}
-    else if (isMatched(pre_m)) { postorder_m(root); f = 1;}
-    if(!f){ printf("NO"); return 0;}
-    cout << "YES\n" << post_output[0];
-    for (int i = 1; i < post_output.size(); i++) printf(" %d", post_output[i]);
+    for (int i = 0; i < n; i++)
+        scanf("%d", input + i);
+    for (int i = 0; i < n; i++)
+        insert(root, input[i]);
+    if (c = 0, preorder(root))
+    {
+        postorder(root);
+        f = 1;
+    }
+    else if (c = 0, preorder_mirror(root))
+    {
+        postorder_mirror(root);
+        f = 1;
+    }
+    if (!f)
+        printf("NO");
+    else
+    {
+        cout << "YES\n" << post_output[0];
+        for (int i = 1; i < post_output.size(); i++)
+            printf(" %d", post_output[i]);
+    }
     return 0;
 }

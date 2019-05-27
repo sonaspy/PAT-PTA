@@ -11,15 +11,15 @@ int main(int argc, char const *argv[])
 {
     /* code */
     //test();
-    int num[10001], n, tmp, input[100000];
+    int exist[10001], n, tmp, input[100000];
     cin >> n;
     for (int i = 0; i < n; i++)
     {
         scanf("%d", &tmp);
-        input[i] = tmp, num[tmp]++;
+        input[i] = tmp, exist[tmp]++;
     }
     for (int i = 0; i < n; i++)
-        if (num[input[i]] == 1)
+        if (exist[input[i]] == 1)
         {
             cout << input[i];
             return 0;

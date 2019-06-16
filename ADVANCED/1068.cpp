@@ -6,24 +6,23 @@
 #define test() freopen("in", "r", stdin)
 
 using namespace std;
-int coin[10001], n, target, vis[10001], solved = 0;
-static vector<int> ansPath, tmp;
+int coin[10001], n, target;
+static vector<int> path;
 inline void dfs(int cur, int coin_sum)
 {
-    vis[cur] = 1;
     if (coin_sum == target)
     {
-        solved = 1;
-        ansPath = tmp;
-        return;
+        printf("%d", path[0]);
+        for (int i = 1; i < path.size(); i++)
+            printf(" %d", path[i]);
+        exit(0);
     }
-    for (int i = 1; i <= n; i++)
-        if (!vis[i] && !solved && coin_sum + coin[i] <= target)
+    for (int i = cur + 1; i <= n; i++)
+        if (coin_sum + coin[i] <= target)
         {
-            tmp.push_back(coin[i]);
+            path.push_back(coin[i]);
             dfs(i, coin_sum + coin[i]);
-            vis[i] = 0;
-            tmp.pop_back();
+            path.pop_back();
         }
 }
 
@@ -34,18 +33,14 @@ int main()
     long sum = 0;
     for (int i = 1; i <= n; i++)
     {
-        scanf("%d", &coin[i]);
+        scanf("%d", coin + i);
         sum += coin[i];
     }
-    if (sum < target){printf("No Solution"); return 0; }
+    if (sum < target)
+        goto end;
     sort(coin + 1, coin + n + 1);
     dfs(0, 0); // 0 point , 0 sum.
-    if (solved)
-    {
-        printf("%d", ansPath[0]);
-        for (int i = 1; i < ansPath.size(); i++)
-            printf(" %d", ansPath[i]);
-    }
-    else printf("No Solution");
+end:
+    printf("No Solution");
     return 0;
 } //attention

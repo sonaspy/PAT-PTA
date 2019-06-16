@@ -5,8 +5,8 @@
 
 #define test() freopen("in", "r", stdin)
 using namespace std;
-vector<int> strip, dp(11111, 1), colorRank(222, 0);
-int n, m, l, x, res = 0, i, j;
+vector<int> strip, f(11111, 1), colorRank(222, 0);
+int n, m, l, x, res = 0, i, k;
 int main()
 {
     cin >> n >> m;
@@ -22,13 +22,12 @@ int main()
         if (colorRank[x])
             strip.push_back(x);
     }
-    for (i = 0; i < strip.size(); ++i)
+    for (i = 1; i < strip.size(); ++i)
     {
-        for (j = 0; j < i; ++j)
-            if (colorRank[strip[j]] <= colorRank[strip[i]])
-                dp[i] = max(dp[i], dp[j] + 1);
-        res = max(res, dp[i]);
+        for (k = 0; k < i; ++k)
+            if (colorRank[strip[k]] <= colorRank[strip[i]])
+                f[i] = max(f[i], f[k] + 1);
     }
-    cout << res;
+    cout << *max_element(f.begin(), f.end());
     return 0;
 } //attention

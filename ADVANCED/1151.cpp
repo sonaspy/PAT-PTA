@@ -4,38 +4,41 @@
 #include <bits/stdc++.h>
 
 #define test() freopen("in", "r", stdin)
-
+#define MSIZE 10001
 using namespace std;
 struct TreeNode
 {
     int val, depth;
     TreeNode *left, *right, *parent;
-    TreeNode(int v = 0) : val(v), depth(1),left(nullptr), right(nullptr), parent(nullptr) {}
+    TreeNode(int v = 0) : val(v), depth(1), left(nullptr), right(nullptr), parent(nullptr) {}
 };
-int in[10000], pre[10000];
+int in[MSIZE], pre[MSIZE];
 unordered_map<int, TreeNode *> mp;
-inline int getDepth(TreeNode *root){return root == nullptr? 0 : root->depth;}
-TreeNode *Construct(int root, int lo, int hi, TreeNode* par)
+inline int getDepth(TreeNode *root) { return root == nullptr ? 0 : root->depth; }
+TreeNode *Construct(int root, int lo, int hi, TreeNode *thisParent)
 {
-    if (hi < lo) return nullptr;
+    if (hi < lo)
+        return nullptr;
     int i;
-    for (i = lo;i < hi && in[i] != pre[root]; ++i);
-    TreeNode *ROOT = new TreeNode(pre[root]);
-    ROOT->parent = par;
-    ROOT->depth = getDepth(ROOT->parent) + 1;
-    ROOT->left = Construct(root + 1, lo, i - 1, ROOT);
-    ROOT->right = Construct(root + 1 + i - lo, i + 1, hi, ROOT);
-    mp[pre[root]] = ROOT;
-    return ROOT;
+    for (i = lo; i < hi && in[i] != pre[root]; ++i)
+        ;
+    TreeNode *thisNode = new TreeNode(pre[root]);
+    thisNode->parent = thisParent;
+    thisNode->depth = getDepth(thisNode->parent) + 1;
+    thisNode->left = Construct(root + 1, lo, i - 1, thisNode);
+    thisNode->right = Construct(root + 1 + i - lo, i + 1, hi, thisNode);
+    mp[thisNode->val] = thisNode;
+    return thisNode;
 }
 
-TreeNode *LCA(TreeNode *p, TreeNode *q)
+TreeNode *getLCA(TreeNode *p, TreeNode *q)
 {
     while (p->depth > q->depth)
         p = p->parent;
     while (q->depth > p->depth)
         q = q->parent;
-    while (p != q) p = p->parent, q = q->parent;
+    while (p != q)
+        p = p->parent, q = q->parent;
     return p;
 }
 int main()
@@ -56,15 +59,15 @@ int main()
         if (!p && !q)
             printf("ERROR: %d and %d are not found.\n", x1, x2);
         else if (!p || !q)
-            printf("ERROR: %d is not found.\n", p != nullptr ? x2 : x1);
+            printf("ERROR: %d is not found.\n", !p ? x1 : x2);
         else
         {
-            TreeNode *ances = LCA(p, q);
-            if (ances != p && ances != q)
-                printf("LCA of %d and %d is %d.\n", x1, x2, ances->val);
+            TreeNode *thisLCA = getLCA(p, q);
+            if (thisLCA != p && thisLCA != q)
+                printf("LCA of %d and %d is %d.\n", x1, x2, thisLCA->val);
             else
-                printf("%d is an ancestor of %d.\n", ances == p ? x1 : x2, ances == p ? x2 : x1);
+                printf("%d is an ancestor of %d.\n", thisLCA == p ? x1 : x2, thisLCA == p ? x2 : x1);
         }
     }
     return 0;
-}//attention
+} //attention

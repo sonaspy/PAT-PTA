@@ -1,27 +1,19 @@
 #include <stdio.h>
 
-struct node
+struct stu
 {
-    struct node *next;
-    int d;
+    char *ss;
+    int i;
 };
-typedef struct aa
-{
-    int n;
-    double m;
-} ABC;
-struct student
-{
-    int num;
-    char name[30];
-    float score;
-} stud1;
-int main(int argc, char **argv)
-{
-    int x = '\2';
-    double b = 1e-1;
-    long int c;
 
-    printf("%lu", sizeof stud1);
+int main(int argc, char const *argv[])
+{
+    /* code */
+    //test();
+    struct stu a, *p = &a;
+    a.ss = "123";
+    char *z;
+    z = p->ss++;
+    printf("%s", p->ss);
     return 0;
 }

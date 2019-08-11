@@ -9,64 +9,71 @@ using namespace std;
 typedef struct Node *ptrn;
 struct Node
 {
-    int flag = -1;
-    int left = -1, right = -1;
+    int val, flag;
+    ptrn left, right;
+    Node(int x) : val(x), flag(-1), left(nullptr), right(nullptr) {}
 };
 vector<ptrn> tree(20);
-
-int n, root, c = 0;
-inline void inOrder(int r)
+vector<int> res;
+int n, root;
+void inOrder(ptrn root)
 {
-    if (tree[r]->right != -1)
-        inOrder(tree[r]->right);
-    if (c)
-        cout << " ";
-    cout << r;
-    c = 1;
-    if (tree[r]->left != -1)
-        inOrder(tree[r]->left);
+    if (!root)
+        return;
+    inOrder(root->left);
+    res.push_back(root->val);
+    inOrder(root->right);
 }
-inline void level()
+void level(ptrn root)
 {
-    queue<int> q;
-    int walk;
+    queue<ptrn> q;
     q.push(root);
+    ptrn v;
     while (q.size())
     {
-        walk = q.front();
-        q.pop();
-        if (c)
-            cout << " ";
-        else
-            c = 1;
-        cout << walk;
-        if (tree[walk]->right != -1)
-            q.push(tree[walk]->right);
-        if (tree[walk]->left != -1)
-            q.push(tree[walk]->left);
+        v = q.front(), q.pop();
+        res.push_back(v->val);
+        if (v->left)
+            q.push(v->left);
+        if (v->right)
+            q.push(v->right);
     }
 }
-
+ptrn invert(ptrn root)
+{
+    if (!root)
+        return nullptr;
+    ptrn tmp = invert(root->right);
+    root->right = invert(root->left);
+    root->left = tmp;
+    return root;
+}
+void output()
+{
+    cout << res.front();
+    for (int i = 1; i < res.size(); i++)
+        cout << " " << res[i];
+}
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+    //test();
     cin >> n;
     char c1, c2;
     for (int i = 0; i < 20; i++)
-        tree[i] = new Node();
+        tree[i] = new Node(i);
     for (int i = 0; i < n; i++)
     {
         getchar();
         scanf("%c %c", &c1, &c2);
         if (c1 != '-')
         {
-            tree[i]->left = c1 - '0';
+            tree[i]->left = tree[c1 - '0'];
             tree[c1 - '0']->flag = 1;
         }
         if (c2 != '-')
         {
-            tree[i]->right = c2 - '0';
+            tree[i]->right = tree[c2 - '0'];
             tree[c2 - '0']->flag = 1;
         }
     }
@@ -78,9 +85,12 @@ int main(int argc, char const *argv[])
             break;
         }
     }
-    level();
+    invert(tree[root]);
+    level(tree[root]);
+    output();
     cout << endl;
-    c = 0;
-    inOrder(root);
+    res.clear();
+    inOrder(tree[root]);
+    output();
     return 0;
 }

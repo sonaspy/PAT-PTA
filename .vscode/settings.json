@@ -80,7 +80,17 @@
     "regex": "cpp",
     "queue": "cpp",
     "rope": "cpp",
-    "__hash_table": "cpp"
+    "__hash_table": "cpp",
+    "__debug": "cpp",
+    "__functional_base": "cpp",
+    "__locale": "cpp",
+    "__split_buffer": "cpp",
+    "__string": "cpp",
+    "__threading_support": "cpp",
+    "__tuple": "cpp",
+    "locale": "cpp",
+    "stack": "cpp",
+    "climits": "cpp"
 },
 "search.usePCRE2": true
 }

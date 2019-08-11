@@ -10,14 +10,14 @@ using namespace std;
 int *inorder = new int[1001];
 int *levelorder = new int[1001];
 int n, cur = 0;
-static void Traversal(int id)
+static void inTra(int id)
 {
-    if (n - 1 < id) return;
-    Traversal(id * 2 + 1);
+    if (n - 1 < id)
+        return;
+    inTra(id * 2 + 1);
     levelorder[id] = inorder[cur++];
-    Traversal(id * 2 + 2);
+    inTra(id * 2 + 2);
 }
-
 int main(int argc, char const *argv[])
 {
     /* code */
@@ -26,7 +26,7 @@ int main(int argc, char const *argv[])
     for (int i = 0; i < n; ++i)
         scanf("%d", inorder + i);
     sort(inorder, inorder + n);
-    Traversal(0);
+    inTra(0);
     printf("%d", levelorder[0]);
     for (int i = 1; i < n; i++)
         printf(" %d", levelorder[i]);

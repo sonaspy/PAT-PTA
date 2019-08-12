@@ -90,7 +90,9 @@
     "__tuple": "cpp",
     "locale": "cpp",
     "stack": "cpp",
-    "climits": "cpp"
+    "climits": "cpp",
+    "stdio.h": "c",
+    "stdlib.h": "c"
 },
 "search.usePCRE2": true
 }

@@ -1,77 +1,66 @@
-// author -  newguo@sonaspy.cn
+// author - newguo@sonaspy.cn
 // coding - utf_8
 
-#include<iostream>
+#include <bits/stdc++.h>
 
-#define OK 1
-#define ERROR 0
-#define MaxTree 10
-#define Null -1
+#define test() freopen("in", "r", stdin)
+
 using namespace std;
-typedef char ElementType;
-typedef struct TreeNode
-{
-    ElementType data;
-    int left;
-    int right;
-} Tree;
-Tree T1[MaxTree], T2[MaxTree];
 
-int BulidTree(Tree T[])
+struct TreeNode
 {
-    int N, check[MaxTree], root = Null;
+    char data;
+    TreeNode *left = nullptr, *right = nullptr;
+    TreeNode(char x) : data(x) {}
+};
+typedef vector<TreeNode *> Tree;
+TreeNode *BulidTree(Tree &T)
+{
+    int N, check[20] = {0};
     char cl, cr;
     cin >> N;
-    if (N)
+    for (int i = 0; i < N; i++)
+        T[i] = new TreeNode('-');
+    for (int i = 0; i < N; i++)
+    {
+        cin >> T[i]->data >> cl >> cr;
+        if (cl != '-')
         {
-            for (int i = 0; i < N; i++)
-                check[i] = 0;
-            for (int i = 0; i < N; i++)
-                {
-                    cin >> T[i].data >> cl >> cr;
-                    if (cl != '-')
-                        {
-                            T[i].left = cl - '0';
-                            check[T[i].left] = 1;
-                        }
-                    else
-                        T[i].left = Null;
-                    if (cr != '-')
-                        {
-                            T[i].right = cr - '0';
-                            check[T[i].right] = 1;
-                        }
-                    else
-                        T[i].right = Null;
-                }
-            for (int i = 0; i < N; i++)
-                if (!check[i])
-                    {
-                        root = i;
-                        break;
-                    }
+            T[i]->left = T[cl - '0'];
+            check[cl - '0'] = 1;
         }
-    return root;
+        if (cr != '-')
+        {
+            T[i]->right = T[cr - '0'];
+            check[cr - '0'] = 1;
+        }
+    }
+    for (int i = 0; i < N; i++)
+        if (!check[i])
+            return T[i];
+    return nullptr;
 }
-int Isomprphic(int root1, int root2)
+
+int Isomprphic(TreeNode *root1, TreeNode *root2)
 {
-    if((root1 == Null) && (root2 == Null))
-        return  OK;
-    if (((root1 == Null) && (root2 != Null)) || ((root2 == Null) && (root1 != Null)))
-        return ERROR;
-    if( T1[root1].data != T2[root2].data)
-        return ERROR;
-    if ((T1[root1].left == Null) && (T2[root2].left == Null))
-        return Isomprphic(T1[root1].right, T2[root2].right);
-    if ((T1[root1].left != Null) && (T2[root2].left != Null )&&
-            (T1[T1[root1].left].data == T2[T2[root2].left].data))
-        return (Isomprphic(T1[root1].left, T2[root2].left) && Isomprphic(T1[root1].right, T2[root2].right));
+    if (!root1 && !root2)
+        return 1;
+    if ((!root1 && root2) || (!root2 && root1))
+        return 0;
+    if (root1->data != root2->data)
+        return 0;
+    if (!root1->left && !root2->left)
+        return Isomprphic(root1->right, root2->right);
+    if (root1->left && root2->left && root1->left->data == root2->left->data)
+        return (Isomprphic(root1->left, root2->left) && Isomprphic(root1->right, root2->right));
     else
-        return(Isomprphic(T1[root1].left, T2[root2].right) && Isomprphic(T1[root1].right, T2[root2].left));
+        return (Isomprphic(root1->left, root2->right) && Isomprphic(root1->right, root2->left));
 }
 int main()
 {
-    int root1, root2;
+    //test();
+    TreeNode *root1, *root2;
+    Tree T1(20), T2(20);
     root1 = BulidTree(T1);
     root2 = BulidTree(T2);
     if (Isomprphic(root1, root2))

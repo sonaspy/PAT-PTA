@@ -106,8 +106,5 @@ int main(int argc, char const *argv[])
 {
     /* code */
     //test();
-    queue<int> q;
-    q.push(100), q.push(1), q.push(1), q.push(1), q.push(1), q.push(10);
-    cout << q.front();
     return 0;
 }

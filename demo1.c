@@ -6,6 +6,5 @@ int main(int argc, char const *argv[])
 {
     /* code */
     //test();
-    printf("%d", b);
     return 0;
 }

@@ -10,13 +10,13 @@ using namespace std;
 int *inorder = new int[1001];
 int *levelorder = new int[1001];
 int n, cur = 0;
-static void inTra(int id)
+static void Travel(int id)
 {
     if (n - 1 < id)
         return;
-    inTra(id * 2 + 1);
+    Travel(id * 2 + 1);
     levelorder[id] = inorder[cur++];
-    inTra(id * 2 + 2);
+    Travel(id * 2 + 2);
 }
 int main(int argc, char const *argv[])
 {
@@ -26,7 +26,7 @@ int main(int argc, char const *argv[])
     for (int i = 0; i < n; ++i)
         scanf("%d", inorder + i);
     sort(inorder, inorder + n);
-    inTra(0);
+    Travel(0);
     printf("%d", levelorder[0]);
     for (int i = 1; i < n; i++)
         printf(" %d", levelorder[i]);

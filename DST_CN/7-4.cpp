@@ -1,91 +1,68 @@
-// author -  newguo@sonaspy.cn
+// author - newguo@sonaspy.cn
 // coding - utf_8
-#include <iostream>
+
+#include <bits/stdc++.h>
+
+#define test() freopen("in", "r", stdin)
+
 using namespace std;
+
 struct TreeNode
 {
-    int data;
-    TreeNode *left;
-    TreeNode *right;
-    TreeNode()
-    {
-        data = 0;
-        left = right = NULL;
-    }
+    int data = 0;
+    TreeNode *left = nullptr;
+    TreeNode *right = nullptr;
+    TreeNode(int v) : data(v) {}
 };
-struct Tree
+void insert(TreeNode *&root, int v)
 {
-    TreeNode* root;
-    int cnt, travel[15];
-    void initial()
+    if (!root)
     {
-        root = new TreeNode;
-        cnt = 0;
+        root = new TreeNode(v);
+        return;
     }
-    void insert(int info)
-    {
-        TreeNode *walk = root, *prewalk;
-        while(walk)
-            {
-                prewalk = walk;
-                if(info < walk->data)
-                    walk = walk->left;
-                else
-                    walk = walk->right;
-            }
-        walk = new TreeNode;
-        walk->data = info;
-        if(info < prewalk->data)
-            prewalk->left = walk;
-        else  prewalk->right = walk;
-    }
-    void pathOutput(TreeNode * t)
-    {
-        if(!t)return;
-        travel[cnt++] = t->data;
-        pathOutput(t->left);
-        pathOutput(t->right);
-    }
-} tmp, tree;
-
+    root->data < v ? insert(root->right, v) : insert(root->left, v);
+}
+bool TreeSimilar(TreeNode *T1, TreeNode *T2)
+{
+    bool f1, f2;
+    if (!T1 && !T2)
+        return 1;
+    if (!T1 || !T2 || T2->data != T1->data)
+        return 0;
+    f1 = TreeSimilar(T1->left, T2->left);
+    f2 = TreeSimilar(T1->right, T2->right);
+    return f1 && f2;
+}
 int main(int argc, char const *argv[])
 {
     /* code */
-    //freopen("in","r",stdin);
+    //test();
     int N, L, var;
     cin >> N;
-    while(N)
+    while (N)
+    {
+        TreeNode *root = nullptr;
+        cin >> L;
+        for (int i = 0; i < N; i++)
         {
-            cin >> L;
-            tree.initial();
-            for(int i = 0; i < N; i++)
-                {
-                    cin >> var;
-                    tree.insert(var);
-                }
-            tree.pathOutput(tree.root);
-            while(L--)
-                {
-                    tmp.initial();
-                    for(int i = 0; i < N; i++)
-                        {
-                            cin >> var;
-                            tmp.insert(var);
-                        }
-                    tmp.pathOutput(tmp.root);
-                    bool flag = true;
-                    for(int j = 0; j < N; j++)
-                        {
-                            if(tree.travel[j] != tmp.travel[j])
-                                {
-                                    flag = false;
-                                    break;
-                                }
-                        }
-                    if(flag)  cout << "Yes\n";
-                    else  cout << "No\n";
-                }
-            cin >> N;
+            cin >> var;
+            insert(root, var);
         }
+        for (int i = 0; i < L; i++)
+        {
+            TreeNode *croot = nullptr;
+            for (int j = 0; j < N; j++)
+            {
+                cin >> var;
+                insert(croot, var);
+            }
+            if (TreeSimilar(croot, root))
+                cout << "Yes\n";
+            else
+                cout << "No\n";
+        }
+        cin >> N;
+    }
     return 0;
 }

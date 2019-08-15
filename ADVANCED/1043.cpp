@@ -24,34 +24,29 @@ void insert(TreeNode *&root, int val)
 }
 bool preorder(TreeNode *root)
 {
-    if (!root) return true;
+    if (!root)
+        return true;
     bool f1 = root->val == input[c++];
     bool f2 = preorder(root->left);
     bool f3 = preorder(root->right);
     return f1 && f2 && f3;
 }
-bool preorder_mirror(TreeNode *root)
-{
-    if (!root) return true;
-    bool f1 = root->val == input[c++];
-    bool f2 = preorder_mirror(root->right);
-    bool f3 = preorder_mirror(root->left);
-    return f1 && f2 && f3;
-}
 void postorder(TreeNode *root)
 {
-    if (!root) return;
+    if (!root)
+        return;
     postorder(root->left);
     postorder(root->right);
     post_output.push_back(root->val);
 }
-void postorder_mirror(TreeNode *root)
+TreeNode *invert(TreeNode *root)
 {
     if (!root)
-        return;
-    postorder_mirror(root->right);
-    postorder_mirror(root->left);
-    post_output.push_back(root->val);
+        return nullptr;
+    TreeNode *tmp = invert(root->right);
+    root->right = invert(root->left);
+    root->left = tmp;
+    return root;
 }
 
 int main()
@@ -63,18 +58,22 @@ int main()
         scanf("%d", input + i);
     for (int i = 0; i < n; i++)
         insert(root, input[i]);
-    if (c = 0, preorder(root))
+    if (preorder(root))
     {
         postorder(root);
         f = 1;
     }
-    else if (c = 0, preorder_mirror(root))
+    else
     {
-        postorder_mirror(root);
-        f = 1;
+        c = 0;
+        invert(root);
+        if (preorder(root))
+        {
+            f = 1;
+            postorder(root);
+        }
     }
-    if (!f)
-        printf("NO");
+    if (!f) printf("NO");
     else
     {
         cout << "YES\n" << post_output[0];

@@ -1,54 +1,55 @@
-// author -  newguo@sonaspy.cn
+// author - newguo@sonaspy.cn
 // coding - utf_8
 
-#include <iostream>
-#include <algorithm>
-#include <cstdio>
-#include <vector>
-#include <stack>
-#include <cmath>
+#include <bits/stdc++.h>
+
+#define test() freopen("in", "r", stdin)
+
 using namespace std;
-const int maxn = 10001;
-vector<int> Root(maxn, -1);
-int getRoot(int n)
+char c;
+int union_my[100000];
+inline int update_get(int a)
 {
-    if (Root[n] == -1)
-        return n;
-    return (Root[n] = getRoot(Root[n]));
+    return union_my[a] == -1 ? a : union_my[a] = update_get(union_my[a]);
 }
-void uni(int a, int b)
+
+inline void Union(int a, int b)
 {
-    int fa = getRoot(a);
-    int fb = getRoot(b);
-    if (fa != fb)
-        Root[fa] = fb;
-}
-void check(int a, int b)
+    int ra = update_get(a), rb = update_get(b);
+    if (ra == rb)
+        return;
+    union_my[rb] = ra;
+};
+
+int main(int argc, char const *argv[])
 {
-    if (getRoot(a) == getRoot(b))
-        cout << "yes" << endl;
-    else
-        cout << "no" << endl;
-}
-int main()
-{
-    int n, cnt = 0;
+    /* code */
+    //test();
+    fill(union_my, union_my + 100000, -1);
+    int n, a1, a2, sum = 0;
     cin >> n;
-    char s;
-    cin >> s;
-    while (s != 'S')
+    while (true)
+    {
+        cin >> c;
+        if (c == 'S')
+            break;
+        scanf("%d%d", &a1, &a2);
+        if (c == 'C')
+            (update_get(a1) == update_get(a2)) ? printf("yes\n") : printf("no\n");
+        else
         {
-            int a, b;
-            cin >> a >> b;
-            if (s == 'C')
-                check(a, b);
-            else if (s == 'I')
-                uni(a, b);
-            cin >> s;
+            Union(a1, a2);
+            update_get(a1), update_get(a2);
         }
+    }
     for (int i = 1; i <= n; i++)
-        if (Root[i] == -1)
-            cnt++;
-    (cnt == 1) ? cout << "The network is connected." << endl : cout << "There are " << cnt << " components." << endl;
+    {
+        if (union_my[i] == -1)
+            sum++;
+    }
+    if (sum == 1)
+        (cout << "The network is connected.");
+    else
+        printf("There are %d components.", sum);
     return 0;
 }

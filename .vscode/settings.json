@@ -92,7 +92,9 @@
     "stack": "cpp",
     "climits": "cpp",
     "stdio.h": "c",
-    "stdlib.h": "c"
+    "stdlib.h": "c",
+    "string.h": "c",
+    "cdefs.h": "c"
 },
 "search.usePCRE2": true
 }

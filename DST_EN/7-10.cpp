@@ -14,22 +14,19 @@ struct Node
 int n, d;
 vector<Node> croc, firstjump;
 
-inline double getDist(Node a, Node b)
-{
-    return sqrt(pow(a.x - b.x, 2) + pow(a.y - b.y, 2));
-}
+inline double getDist(Node a, Node b) { return sqrt(pow(a.x - b.x, 2) + pow(a.y - b.y, 2)); }
 
-void DFS(Node &i)
+void DFS(Node &id)
 {
-    i.vis = 1;
-    if (50 - abs(i.x) <= d || 50 - abs(i.y) <= d)
+    id.vis = 1;
+    if (50 <= d + abs(id.x) || 50 <= d + abs(id.y))
     {
         printf("Yes");
         exit(0);
     }
-    for (auto &j : croc)
-        if (!j.vis && getDist(i, j) <= d)
-            DFS(j);
+    for (auto &w : croc)
+        if (!w.vis && getDist(id, w) <= d)
+            DFS(w);
 }
 int main(int argc, char const *argv[])
 {
@@ -37,23 +34,21 @@ int main(int argc, char const *argv[])
     //test();
     cin >> n >> d;
     croc.resize(n);
-    for (int i = 0; i < n; i++)
-    {
-        cin >> croc[i].x >> croc[i].y;
-    }
+    for (int id = 0; id < n; id++)
+        cin >> croc[id].x >> croc[id].y;
     if (d + RADIUS >= 50)
     {
         printf("Yes\n");
         return 0;
     }
-    for (auto &i : croc)
+    for (auto &id : croc)
     {
-        if (getDist(i, center) <= d + RADIUS)
-            firstjump.push_back(i);
+        if (getDist(id, center) <= d + RADIUS)
+            firstjump.push_back(id);
     }
-    for (auto &i : firstjump)
-        if (!i.vis)
-            DFS(i);
+    for (auto &id : firstjump)
+        if (!id.vis)
+            DFS(id);
     printf("No");
     return 0;
 }

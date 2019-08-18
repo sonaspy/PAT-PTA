@@ -7,33 +7,33 @@
 
 using namespace std;
 
-int n, m, x, y, cnt, vis[10001] = {0}, level, last, tail;
-vector<int> MAP[10001];
-void BFS(int walk)
+int n, m, x, y, cnt, level, v;
+vector<int> MAP[10001], vis(10001, 0);
+void BFS(int id)
 {
-    deque<int> dq;
-    cnt = 1, level = 0, last = walk;
-    dq.push_back(walk);
-    vis[walk] = 1;
-    while (dq.size() && level < 6)
+    queue<int> q, nex_q;
+    cnt = 1, level = 0;
+    q.push(id);
+    vis[id] = 1;
+    while (q.size())
     {
-        int t = dq.front();
-        dq.pop_front();
-        for (auto i : MAP[t])
+        while (q.size())
         {
-            if (!vis[i])
+            v = q.front(), q.pop();
+            for (auto i : MAP[v])
             {
-                vis[i] = 1;
-                cnt++;
-                dq.push_back(i);
-                tail = i;
+                if (!vis[i])
+                {
+                    vis[i] = 1;
+                    cnt++;
+                    nex_q.push(i);
+                }
             }
         }
-        if (t == last)
-        {
-            level++;
-            last = tail;
-        }
+        swap(nex_q, q);
+        level++;
+        if (level == 6)
+            break;
     }
 }
 int main(int argc, char const *argv[])
@@ -44,15 +44,13 @@ int main(int argc, char const *argv[])
     for (int i = 0; i < m; i++)
     {
         scanf("%d%d", &x, &y);
-        MAP[x].push_back(y);
-        MAP[y].push_back(x);
+        MAP[x].push_back(y), MAP[y].push_back(x);
     }
     for (int i = 1; i <= n; i++)
     {
-        fill(vis, vis + n + 1, 0);
+        fill(vis.begin(), vis.end(), 0);
         BFS(i);
         printf("%d: %.2f%%\n", i, cnt * 100.0 / n);
     }
-
     return 0;
 }

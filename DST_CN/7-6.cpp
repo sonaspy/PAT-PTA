@@ -1,76 +1,71 @@
 // author -  newguo@sonaspy.cn
 // coding - utf_8
 
-#include<iostream>
-#include<set>
-#include<queue>
+#include <iostream>
+#include <set>
+#include <queue>
 
 using namespace std;
 
-queue<int> Q;
-set<int> graph[10];
-int N, E, v1, v2;
+int N, E, v1, v2, v;
+vector<int> vis(500, 0);
+set<int> mp[500];
 
-void ReadInput()
+void DFS(int id)
 {
-    cin >> N >> E;
-    while(E--)
-        {
-            cin >> v1;
-            cin >> v2;
-            graph[v1].insert(v2);
-            graph[v2].insert(v1);
-        }
+    vis[id] = 1;
+    cout << " " << id;
+    for (auto i : mp[id])
+    {
+        if (!vis[i])
+            DFS(i);
+    }
 }
 
-int visit[11] = {0};
-void DFS(int i)
+void BFS(int id)
 {
-    visit[i] = 1;
-    set<int>::iterator p;
-    cout << " " << i;
-    for(p = graph[i].begin(); p != graph[i].end(); p++)
-        if(!visit[*p]) DFS(*p);
-}
-
-int reached[11]= {0};
-void BFS(int i)
-{
-    int v, j;
-    reached[i] = 1;
-    Q.push(i);
-    while(!Q.empty())
+    queue<int> q;
+    q.push(id);
+    vis[id] = 1;
+    while (q.size())
+    {
+        v = q.front(), q.pop();
+        cout << " " << v;
+        for (auto i : mp[v])
         {
-            v = Q.front();
-            Q.pop();
-            cout << " " << v;
-            for(j = 0; j < N; j++)
-                if(!reached[j] && graph[v].count(j))
-                    {
-                        reached[j] = 1;
-                        Q.push(j);
-                    }
+            if (!vis[i])
+            {
+                vis[i] = 1;
+                q.push(i);
+            }
         }
+    }
 }
 
 int main(int argc, char const *argv[])
 {
     /* code */
-    freopen("in","r",stdin);
-    ReadInput();
-    for(int i = 0; i < N; i++)
-        if(!visit[i])
-            {
-                cout << "{" ;
-                DFS(i);
-                cout << " }\n";
-            }
-    for(int i = 0; i < N; i++)
-        if(!reached[i])
-            {
-                cout << "{";
-                BFS(i);
-                cout << " }\n";
-            }
+    freopen("in", "r", stdin);
+    cin >> N >> E;
+    while (E--)
+    {
+        cin >> v1 >> v2;
+        mp[v1].insert(v2), mp[v2].insert(v1);
+    }
+    for (int i = 0; i < N; i++)
+        if (!vis[i])
+        {
+            cout << "{";
+            DFS(i);
+            cout << " }\n";
+        }
+    fill(vis.begin(), vis.end(), 0);
+    for (int i = 0; i < N; i++)
+        if (!vis[i])
+        {
+            cout << "{";
+            BFS(i);
+            cout << " }\n";
+        }
     return 0;
 }

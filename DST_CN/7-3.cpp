@@ -45,7 +45,7 @@ int Isomprphic(TreeNode *root1, TreeNode *root2)
 {
     if (!root1 && !root2)
         return 1;
-    if ((!root1 && root2) || (!root2 && root1))
+    if (!root1 || !root2)
         return 0;
     if (root1->data != root2->data)
         return 0;

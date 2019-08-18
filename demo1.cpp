@@ -20,8 +20,6 @@ int main(int argc, char const *argv[])
 {
     /* code */
     //test();
-    int a = 10, b = 100;
-    SWAP(a, b);
-    cout << a << b;
+    cout << (1 < 0 < 5);
     return 0;
 }

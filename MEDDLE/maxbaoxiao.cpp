@@ -56,4 +56,4 @@ int main()
         printf("%.2f\n", max_sum);
     }
     return 0;
-} // attention
+}

@@ -6,12 +6,11 @@
 #define test() freopen("in", "r", stdin)
 #define INF 1 << 30
 using namespace std;
-// attention
 int main(int argc, char const *argv[])
 {
     /* code */
     //test();
-    int n, m, c1, c2, a1, a2, b, team[501], map[501][501], sumTeam[501], dis[501], pathnum[501];
+    int n, m, c1, c2, a1, a2, b, team[501], map[501][501], sOfTeam[501], dis[501], nOfPath[501];
     bool vis[501];
     cin >> n >> m >> c1 >> c2;
     for (int i = 0; i < n; i++)
@@ -22,40 +21,40 @@ int main(int argc, char const *argv[])
         scanf("%d%d%d", &a1, &a2, &b);
         map[a1][a2] = map[a2][a1] = b;
     }
-    dis[c1] = 0, sumTeam[c1] = team[c1], pathnum[c1] = 1;
+    dis[c1] = 0, sOfTeam[c1] = team[c1], nOfPath[c1] = 1;
     while (true)
     {
-        int k = -1, _min = INF;
+        int v = -1, _min = INF;
         for (int j = 0; j < n; j++)
         {
             if (!vis[j] && dis[j] < _min)
             {
-                k = j;
+                v = j;
                 _min = dis[j];
             }
         }
-        if (k == -1)
+        if (v == -1)
             break;
-        vis[k] = true;
-        for (int v = 0; v < n; v++)
+        vis[v] = true;
+        for (int i = 0; i < n; i++)
         {
-            if (!vis[v] && map[k][v] < INF)
+            if (!vis[i] && map[v][i] < INF)
             {
-                if (dis[k] + map[k][v] < dis[v])
+                if (dis[v] + map[v][i] < dis[i])
                 {
-                    dis[v] = dis[k] + map[k][v];
-                    pathnum[v] = pathnum[k];
-                    sumTeam[v] = sumTeam[k] + team[v];
+                    dis[i] = dis[v] + map[v][i];
+                    nOfPath[i] = nOfPath[v];
+                    sOfTeam[i] = sOfTeam[v] + team[i];
                 }
-                else if (dis[k] + map[k][v] == dis[v])
+                else if (dis[v] + map[v][i] == dis[i])
                 {
-                    pathnum[v] += pathnum[k];
-                    if (sumTeam[v] < sumTeam[k] + team[v])
-                        sumTeam[v] = sumTeam[k] + team[v];
+                    nOfPath[i] += nOfPath[v];
+                    if (sOfTeam[i] < sOfTeam[v] + team[i])
+                        sOfTeam[i] = sOfTeam[v] + team[i];
                 }
             }
         }
     } //dijkstra
-    printf("%d %d", pathnum[c2], sumTeam[c2]);
+    printf("%d %d", nOfPath[c2], sOfTeam[c2]);
     return 0;
 }

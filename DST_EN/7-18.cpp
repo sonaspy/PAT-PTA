@@ -1,11 +1,8 @@
-// author -  newguo@sonaspy.cn
+// author - newguo@sonaspy.cn
 // coding - utf_8
 
-#include <iostream>
-#include <queue>
-#include <unordered_map>
-#include <unordered_set>
-#include <vector>
+#include <bits/stdc++.h>
+
 #define test() freopen("in", "r", stdin)
 
 using namespace std;
@@ -15,46 +12,42 @@ int main(int argc, char const *argv[])
     /* code */
     //test();
     priority_queue<int, vector<int>, greater<int>> pq;
-    unordered_map<int, unordered_set<int>> mp;
+    unordered_map<int, vector<int>> post;
     unordered_map<int, int> indegree;
     vector<int> ans;
-    int n, num[1000];
+    int n, table[1000], v;
     cin >> n;
     for (int i = 0; i < n; i++)
-        scanf("%d", &num[i]);
+        scanf("%d", table + i);
     for (int i = 0; i < n; i++)
+    {
+        if (table[i] >= 0)
         {
-            if (num[i] < 0)
-                continue;
-            int remain = num[i] % n;
-            if (remain == i)
-                indegree[num[i]] = 0;
+            int suppose = table[i] % n;
+            if (suppose == i)
+                indegree[table[i]] = 0;
             else
-                for (int j = remain; j != i; j = (j + 1) % n)
-                    {
-                        if (num[j] < 0)
-                            continue;
-                        mp[num[j]].insert(num[i]);
-                        indegree[num[i]]++;
-                    }
+                for (int j = suppose; j != i; j = (j + 1) % n)
+                {
+                    post[table[j]].push_back(table[i]);
+                    indegree[table[i]]++;
+                }
         }
+    }
     for (auto i : indegree)
-        if (i.second == 0)
-            pq.push(i.first);
+        if (!i.second) pq.push(i.first);
     while (pq.size())
-        {
-            int v = pq.top();
-            ans.push_back(v);
-            pq.pop();
-            for (auto i : mp[v])
-                if (--indegree[i] == 0)
-                    pq.push(i);
-        }
+    {
+        v = pq.top(), pq.pop();
+        ans.push_back(v);
+        for (auto i : post[v])
+            if (--indegree[i] == 0)
+                pq.push(i);
+    }
     for (int i = 0; i < ans.size(); i++)
-        {
-            if (i != 0)
-                printf(" ");
-            printf("%d", ans[i]);
-        }
+    {
+        if (i) printf(" ");
+        printf("%d", ans[i]);
+    }
     return 0;
 }

@@ -1,45 +1,40 @@
-// author -  newguo@sonaspy.cn
+// author - newguo@sonaspy.cn
 // coding - utf_8
 
-#include<iostream>
-#include<map>
-#define test() freopen("in","r",stdin)
+#include <bits/stdc++.h>
+
+#define test() freopen("in", "r", stdin)
 
 using namespace std;
-
-map<long, int> mp;
-map<long, int>::iterator it;
-multimap<int, long, greater<int> > mp_;
-multimap<int, long, greater<int> >::iterator p;
-
+typedef pair<uint64_t, uint64_t> pa;
+unordered_map<uint64_t, uint64_t> mp;
+vector<pa> v;
+inline bool cmp(const pa &a, const pa &b)
+{
+    return a.second == b.second ? a.first < b.first : a.second > b.second;
+}
 int main(int argc, char const *argv[])
 {
     /* code */
     //test();
     int N;
-    long  c1, c2;
+    long c1, c2;
     cin >> N;
-    for(int i = 0; i < N; i++)
-        {
-            scanf("%ld%ld",&c1,&c2);
-            if(!mp.count(c1))
-                mp.insert(make_pair(c1,1));
-            else
-                mp[c1] += 1;
-            if(!mp.count(c2))
-                mp.insert(make_pair(c2,1));
-            else
-                mp[c2] += 1;
-        }
-    for(it = mp.begin(); it != mp.end(); it++)
-        mp_.insert(make_pair((*it).second, (*it).first));
-    p = mp_.begin();
-    int n = mp_.count((*p).first);
-    if( n > 1)
-        {
-            cout << (*p).second << " " << (*p).first << " " << n;
-        }
-    else
-        cout << (*p).second << " " << (*p).first;
+    for (int i = 0; i < N; i++)
+    {
+        scanf("%ld%ld", &c1, &c2);
+        mp[c1]++, mp[c2]++;
+    }
+    for (auto rec : mp)
+    {
+        v.push_back(make_pair(rec.first, rec.second));
+    }
+    sort(v.begin(), v.end(), cmp);
+    int cnt = 0, val = v.front().second;
+    for (; v[cnt].second == val; cnt++)
+        ;
+    cout << v.front().first << " " << val;
+    if (cnt > 1)
+        cout << " " << cnt;
     return 0;
 }

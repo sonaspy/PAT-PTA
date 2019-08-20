@@ -1,53 +1,47 @@
-// author -  newguo@sonaspy.cn
+// author - newguo@sonaspy.cn
 // coding - utf_8
 
-#include <iostream>
-#include <cmath>
-#include <string.h>
+#include <bits/stdc++.h>
+using namespace std;
 #define test() freopen("in", "r", stdin)
 
-using namespace std;
-
-inline bool isPrime(long long n)
+inline bool isPrime(uint64_t n)
 {
-    for (long long i = 2; i <= int(sqrt(n)); i++)
+    if (n < 2)
+        return false;
+    for (uint64_t i = 2; i <= int(sqrt(n)); i++)
         if (n % i == 0)
             return false;
     return true;
 }
-inline int ReturnMaxPrime(int n)
-{
-    if(n <= 2) return 2;
-    while(!isPrime(n))n++;
-    return n;
-}
+
 int main(int argc, char const *argv[])
 {
     /* code */
     //test();
-    int m, n, num, pos;
+    int m, n, key, pos, step, f;
     cin >> m >> n;
-    m = ReturnMaxPrime(m);
-    bool table[m];
-    memset(table, false, sizeof table);
+    while (!isPrime(m))
+        m++;
+    vector<bool> table(m, false);
     for (int i = 0; i < n; i++)
+    {
+        if (i > 0)
+            printf(" ");
+        f = 0;
+        scanf("%d", &key);
+        for (step = 0; step <= m; step++)
         {
-            if(i > 0) printf(" ");
-            scanf("%d", &num);
-            int step = 0;
-            do
-                {
-                    pos = (num+step*step) % m;
-                    step++;
-                }
-            while(table[pos] && step < m);
-            if(step == m)
-                printf("-");
-            else
-                {
-                    table[pos] = true;
-                    printf("%d",pos);
-                }
+            pos = (key + step * step) % m;
+            if (!table[pos])
+            {
+                table[pos] = 1;
+                printf("%d", pos);
+                f = 1;
+                break;
+            }
         }
+        if (!f) printf("-");
+    }
     return 0;
 }

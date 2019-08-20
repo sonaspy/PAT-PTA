@@ -19,8 +19,8 @@ int main(int argc, char const *argv[])
 {
     /* code */
     //test();
-    int msize, n, m, key, sums = 0, pos, flag, i, step;
-    scanf("%d %d %d", &msize, &n, &m);
+    int msize, n, search_n, key, ssl = 0, pos, flag, i, step;
+    scanf("%d %d %d", &msize, &n, &search_n);
     while (!isprime(msize))
         msize++;
     vector<int> table(msize, 0);
@@ -31,7 +31,7 @@ int main(int argc, char const *argv[])
         for (step = 0; step <= msize; step++)
         {
             pos = (key + step * step) % msize;
-            if (table[pos] == 0)
+            if (table[pos] == EMPTY)
             {
                 table[pos] = key;
                 flag = 1;
@@ -41,17 +41,17 @@ int main(int argc, char const *argv[])
         if (!flag)
             printf("%d cannot be inserted.\n", key);
     }
-    for (i = 0; i < m; i++)
+    for (i = 0; i < search_n; i++)
     {
         scanf("%d", &key);
         for (step = 0; step <= msize; step++)
         {
-            sums++;
+            ssl++;
             pos = (key + step * step) % msize;
             if (table[pos] == key || table[pos] == EMPTY)
                 break;
         }
     }
-    printf("%.1lf\n", sums * 1.0 / m);
+    printf("%.1lf\n", ssl * 1.0 / search_n);
     return 0;
-} //attention
+}

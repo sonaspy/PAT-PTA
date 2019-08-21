@@ -64,23 +64,6 @@ int main(int argc, char const *argv[])
 {
     /* code */
     //test();
-    std::list<int> mylist1, mylist2;
-    std::list<int>::iterator it;
-
-    // set some initial values:
-    for (int i = 1; i <= 4; ++i)
-        mylist1.push_back(i); // mylist1: 1 2 3 4
-
-    for (int i = 1; i <= 10; ++i)
-        mylist2.push_back(i * 10); // mylist2: 10 20 30
-
-    it = mylist2.begin();
-    ++it,++it; // points to 2
-
-    mylist2.splice(mylist2.begin(), mylist2, it);
-
-    for (it = mylist2.begin(); it != mylist2.end(); ++it)
-        std::cout << ' ' << *it;
-    std::cout << '\n';
+    
     return 0;
 }

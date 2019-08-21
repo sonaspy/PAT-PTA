@@ -29,9 +29,8 @@ int main(int argc, char const *argv[])
     else
     {
         cout << "Heap Sort\n";
-        for (j = n - 1; j > 0 && b[j - 1] <= b[j]; --j)
+        for (j = n - 1; j && b[j - 1] <= b[j]; --j)
             ;
-        make_heap(b, b + j + 1);
         pop_heap(b, b + j + 1);
     }
     printf("%d", b[0]);

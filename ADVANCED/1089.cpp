@@ -11,7 +11,7 @@ int main(int argc, char const *argv[])
 {
     /* code */
     //test();
-    int n, i, j, a[105], b[105];
+    int n, i, j, a[105], b[105], block;
     cin >> n;
     for (int i = 0; i < n; i++)
         scanf("%d", a + i);
@@ -29,22 +29,18 @@ int main(int argc, char const *argv[])
     else
     {
         cout << "Merge Sort\n";
-        int step = 1, find_step = 0;
-        while (!find_step)
+        int len = 2, gotcha = 0;
+        for (; !gotcha; len *= 2)
         {
-            find_step = 1;
+            gotcha = 1;
             for (i = 0; i < n; i++)
             {
                 if (a[i] != b[i])
-                {
-                    find_step = 0;
-                    break;
-                }
+                    gotcha = 0;
             }
-            step *= 2;
-            for (i = 0; i < n / step; i++)
-                sort(a + i * step, a + (i + 1) * step);
-            sort(a + i * step, a + n);
+            for (block = 0; block < n / len; block++)
+                sort(a + block * len, a + block * len + len);
+            sort(a + block * len, a + n);
         }
     }
     printf("%d", a[0]);

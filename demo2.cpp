@@ -64,6 +64,7 @@ int main(int argc, char const *argv[])
     /* code */
     //test();
     int a[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-    copy_backward(a, a + 9, a + 9);
+    for_each(a, a + 10, [](int &c) { c = -c; });
+    cout << a[0];
     return 0;
 }

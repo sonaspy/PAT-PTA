@@ -175,21 +175,52 @@ static void quickSort(T *start, T *end)
     }
 }
 
+template <typename T>
+static void tableSort(T *a, T *b)
+{
+    int n = b - a;
+    vector<int> table(n);
+    for (int i = 0; i < n; i++)
+        table[i] = i;
+    for (int i = 1; i < n; i++)
+    {
+        int t = table[i];
+        int j;
+        for (j = i; 1 <= j && a[t] < a[table[j - 1]]; j -= 1)
+            table[j] = table[j - 1];
+        table[j] = t;
+    }
+    for (int i = 0; i < n; i++)
+    {
+        T val = a[i];
+        int j = i, last = i, next;
+        for (; table[j] != j; j = next)
+        {
+            last = j;
+            next = table[j];
+            a[j] = a[table[j]];
+            table[j] = j;
+        }
+        a[last] = val;
+    }
+}
+
 int main(int argc, char const *argv[])
 {
     /* code */
     //test();
+    srand(time(NULL));
     int b[SIZE];
     generate(b, b + SIZE, []() { return rand() % SIZE; });
     clock_t startTime, endTime;
 
     startTime = clock();
 
-    quickSort(b, b + SIZE);
+    sort(b, b + SIZE);
 
     endTime = clock();
 
     cout << is_sorted(b, b + SIZE) << endl;
-    cout << "The run time is: " << (double)(endTime - startTime) / CLOCKS_PER_SEC << "s" << endl;
+    cout << "The run time is: " << (double)(endTime - startTime) / 1000 << "ms" << endl;
     return 0;
 }

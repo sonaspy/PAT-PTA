@@ -10,33 +10,30 @@ using namespace std;
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
-    int n, t, cnt = 0, T[10001];
+    //test();
+    int n, t, cnt = 0, table[100001];
     cin >> n;
     for (int i = 0; i < n; i++)
     {
         scanf("%d", &t);
-        T[t] = i;
+        table[t] = i;
     }
     for (int i = 0; i < n; i++)
     {
-        if (T[i] != i)
+        if (table[i] != i)
         {
-            while (T[0] != 0)
+            while (table[0] != 0)
             {
-                swap(T[0], T[T[0]]);
+                swap(table[0], table[table[0]]);
                 cnt++;
-                cout << i << ":op1\n";
             }
-            if (T[i] != i)
+            if (i != table[i])
             {
-                swap(T[0], T[i]);
+                swap(table[0], table[i]);
                 cnt++;
-                cout << i << ":op2\n";
             }
         }
     }
     cout << cnt;
     return 0;
 }
-//attention

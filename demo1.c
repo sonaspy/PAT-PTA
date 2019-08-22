@@ -6,9 +6,13 @@
 int main(int argc, char const *argv[])
 {
     /* code */
-    int (*pa)[10];
-    int a[10][10];
-    pa = a + 1;
-    int i = pa[1][1];
+    int m;
+    char ss[10] = "12345", *s = ss;
+    for (m = 10; m != 0; m--)
+        ;
+    printf("%d", m);
+    while (*s++)
+        putchar(*++s);
+
     return 0;
 }

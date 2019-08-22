@@ -59,11 +59,11 @@ inline double dichotomy(string s)
     }
     return mid;
 }
-
 int main(int argc, char const *argv[])
 {
     /* code */
     //test();
-    
+    int a[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    copy_backward(a, a + 9, a + 9);
     return 0;
 }

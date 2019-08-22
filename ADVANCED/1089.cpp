@@ -32,12 +32,7 @@ int main(int argc, char const *argv[])
         int len = 2, gotcha = 0;
         for (; !gotcha; len *= 2)
         {
-            gotcha = 1;
-            for (i = 0; i < n; i++)
-            {
-                if (a[i] != b[i])
-                    gotcha = 0;
-            }
+            gotcha = equal(a, a + n, b);
             for (block = 0; block < n / len; block++)
                 sort(a + block * len, a + block * len + len);
             sort(a + block * len, a + n);

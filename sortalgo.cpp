@@ -4,7 +4,7 @@
 #include <bits/stdc++.h>
 
 #define test() freopen("in", "r", stdin)
-#define SIZE 30000
+#define SIZE 50000
 using namespace std;
 
 template <class T>
@@ -67,7 +67,7 @@ void selectionSort(T *lo, T *hi)
 }
 
 template <class T>
-static void linear_insert(T *lo, T *hi)
+static inline void linear_insert(T *lo, T *hi)
 { // [lo, hi]
     T val = *hi;
     if (val > *(hi - 1))
@@ -152,7 +152,7 @@ static void mergeSort_(T *arr, T *b)
     }
 }
 
-#define CUTOFF 100
+#define CUTOFF 50
 template <typename T>
 static inline T __median3(T *lo, T *hi)
 {
@@ -190,6 +190,11 @@ static void quickSort(T *lo, T *hi)
 {
     if (lo < hi)
     {
+        if (hi - lo < CUTOFF)
+        {
+            insertionSort(lo, hi + 1);
+            return;
+        }
         T *pivot = __partition(lo, hi);
         quickSort(lo, pivot - 1);
         quickSort(pivot + 1, hi);
@@ -225,10 +230,10 @@ static void tableSort(T *a, T *b)
         a[last] = val;
     }
 }
-
-int findKthMin(int *lo, int *hi, int k)
+template <typename T>
+T findKthMin(T *lo, T *hi, int k)
 {
-    int *p = __partition(lo, hi);
+    T *p = __partition(lo, hi);
     int len = p - lo;
     if (len == k)
         return *p;
@@ -246,10 +251,9 @@ int main(int argc, char const *argv[])
     int b[SIZE];
     generate(b, b + SIZE, []() { return rand() % SIZE; });
     clock_t startTime, endTime;
-
     startTime = clock();
 
-    cout << findKthMin(b, b + SIZE, 200) << endl;
+    quickSort(b, b + SIZE);
 
     endTime = clock();
 

@@ -35,8 +35,10 @@ void convert(string &s)
             string hh = s.substr(0, 3), ll = s.substr(4, 3);
             for (int i = 1; i < 13; i++)
             {
-                if (hh == high[i]) number += i * 13;
-                if (ll == low[i]) number += i;
+                if (hh == high[i])
+                    number += i * 13;
+                if (ll == low[i])
+                    number += i;
             }
             cout << number;
         }
@@ -44,8 +46,10 @@ void convert(string &s)
         {
             for (int i = 1; i < 13; i++)
             {
-                if (s == high[i]) cout << i * 13;
-                if (s == low[i]) cout << i;
+                if (s == high[i])
+                    cout << i * 13;
+                if (s == low[i])
+                    cout << i;
             }
         }
     }
@@ -66,4 +70,4 @@ int main(int argc, char const *argv[])
         cout << endl;
     }
     return 0;
-}// details attention
+} // details attention

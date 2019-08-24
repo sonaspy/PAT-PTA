@@ -11,7 +11,7 @@ int main(int argc, char const *argv[])
 {
     /* code */
     //test();
-    int n, a[100011], premax = 0;
+    int n, a[100011], premax = INT_MIN;
     cin >> n;
     for (int i = 0; i < n; i++)
         scanf("%d", a + i);
@@ -24,14 +24,13 @@ int main(int argc, char const *argv[])
         if (b[i] > premax)
             premax = b[i];
     }
+    cout << pivots.size() << endl;
     if (pivots.size())
     {
-        cout << pivots.size() << endl;
         printf("%d", pivots[0]);
         for (int i = 1; i < pivots.size(); i++)
             printf(" %d", pivots[i]);
     }
-    else
-        cout << 0;
+    cout << endl;
     return 0;
-}//attention
+} //attention

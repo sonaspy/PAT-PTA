@@ -8,39 +8,61 @@
 using namespace std;
 
 template <class T>
-inline void HeapSort(T *a, T *b)
+inline void HeapSort(T *lo, T *hi)
 {
-    int n = b - a;
-    make_heap(a, a + n);
-    for (int i = n; i > 1; --i)
-        pop_heap(a, a + i);
+    make_heap(lo, hi);
+    sort_heap(lo, hi);
+    // for (int i = n; i > 1; --i)
+    //     pop_heap(a, a + i);
 }
 
 template <class T>
-void bubbleSort(T *a, T *b)
-{ // Bubble largest element in a[0:n-1] to right.
-    int n = b - a;
-    for (int k = n - 1; k > 0; k--)
+void bubbleSort(T *lo, T *hi)
+{ // Bubble largest element in a[0:n-1] to hi.
+    T *i, *k;
+    for (k = hi - 1; k > lo; k--)
     {
         bool swapped = 0;
-        for (int i = 0; i < k; i++)
-            if (a[i] > a[i + 1])
+        for (i = lo; i < k; i++)
+            if (*i > *(i + 1))
             {
-                swap(a[i], a[i + 1]);
+                swap(*i, *(i + 1));
                 swapped = 1;
             }
         if (!swapped)
             break;
     }
 }
+
 template <class T>
-void selectionSort(T *a, T *b)
-{ // Sort the n elements a[0:n-1].
-    int n = b - a;
-    for (int i = n; i > 1; i--)
+void double_bubbleSort(T *lo, T *hi)
+{ // Bubble largest element in a[0:n-1] to hi.
+    bool flag = true;
+    hi--;
+    T *i;
+    while (lo < hi && flag)
     {
-        int j = max_element(a, a + i) - a;
-        swap(a[j], a[i - 1]);
+        flag = false;
+        for (i = lo; i < hi; ++i)
+            if (*i > *(i + 1))
+                swap(*i, *(i + 1)), flag = true;
+        hi--;
+        for (i = hi; i > lo; --i)
+            if (*i < *(i - 1))
+                swap(*i, *(i - 1)), flag = true;
+        lo++;
+    }
+}
+
+template <class T>
+void selectionSort(T *lo, T *hi)
+{ // Sort the n elements a[0:n-1].
+
+    T *i, *j;
+    for (T *i = hi; i > lo + 1; i--)
+    {
+        j = max_element(lo, i);
+        swap(*j, *(i - 1));
     }
 }
 
@@ -76,56 +98,55 @@ static void shellSort(T *a, T *b)
         {
             T t = a[i];
             for (j = i; step <= j && t < a[j - step]; j -= step)
-                a *j = a[j - step];
-            a *j = t;
+                a[j] = a[j - step];
+            a[j] = t;
         }
 }
 
 template <typename T>
-static void __merge(T *list, int left, int mid, int right)
+static void __merge(T *lo, T *mid, T *hi)
 {
     // a temporary array to store merged result
-    T merged[right - left + 1];
-    int currIter = 0, leftIter = left, rightIter = mid + 1;
+    T merged[hi - lo + 1], *i = lo, *j = mid + 1;
+    int cur = 0;
 
-    while (leftIter <= mid && rightIter <= right)
-        merged[currIter++] = list[leftIter] < list[rightIter] ? list[leftIter++] : list[rightIter++];
+    while (i <= mid && j <= hi)
+        merged[cur++] = *i < *j ? *(i++) : *(j++);
 
-    while (leftIter <= mid)
-        merged[currIter++] = list[leftIter++];
+    while (i <= mid)
+        merged[cur++] = *(i++);
 
-    while (rightIter <= right)
-        merged[currIter++] = list[rightIter++];
+    while (j <= hi)
+        merged[cur++] = *(j++);
 
     //copying the entire merged array back
-    for (int i = 0; i < currIter; ++i)
-        list[i + left] = merged[i];
+    for (int i = 0; i < cur; ++i)
+        *(lo++) = merged[i];
 }
-//[start, end]
+//[lo, hi]
 template <typename T>
-static void mergeSort(T *list, int start, int end)
+static void mergeSort(T *lo, T *hi)
 {
-    if (start < end)
+    if (lo < hi)
     {
-        int mid = (start + end) / 2;
-        mergeSort(list, start, mid);
-        mergeSort(list, mid + 1, end);
-        __merge(list, start, mid, end);
+        T *mid = lo + (hi - lo) / 2;
+        mergeSort(lo, mid);
+        mergeSort(mid + 1, hi);
+        __merge(lo, mid, hi);
     }
 }
 
 template <typename T>
-static void mergeSort_(T *list, T *b)
+static void mergeSort_(T *arr, T *b)
 {
-    int len = 1;
-    int n = b - list;
+    int len = 1, n = b - arr;
     while (len <= n)
     {
         for (int i = 0; i + len <= n; i += len * 2)
         {
             int lo = i, mid = i + len - 1, hi = i + 2 * len - 1;
             hi = hi > n - 1 ? n - 1 : hi;
-            __merge(list, lo, mid, hi);
+            __merge(arr + lo, arr + mid, arr + hi);
         }
         len *= 2;
     }
@@ -133,45 +154,45 @@ static void mergeSort_(T *list, T *b)
 
 #define CUTOFF 100
 template <typename T>
-static inline T __median3(T *left, T *right)
+static inline T __median3(T *lo, T *hi)
 {
-    T *cent = left + (right - left) / 2;
-    if (*left > *cent)
-        swap(*left, *cent);
-    if (*left > *right)
-        swap(*left, *right);
-    if (*cent > *right)
-        swap(*cent, *right);
-    swap(*left, *cent);
-    return *left;
+    T *mid = lo + (hi - lo) / 2;
+    if (*lo > *mid)
+        swap(*lo, *mid);
+    if (*lo > *hi)
+        swap(*lo, *hi);
+    if (*mid > *hi)
+        swap(*mid, *hi);
+    swap(*lo, *mid);
+    return *lo;
 }
 //Partition routine for quicksort
 template <typename T>
-static T *__partition(T *start, T *end)
+static T *__partition(T *lo, T *hi)
 {
-    T pivot = __median3(start, end);
-    T *i = start + 1, *j = end;
-    while (i <= j)
+    T pivot = __median3(lo, hi);
+    T *i = lo, *j = hi;
+    while (i < j)
     {
-        while (i <= end && *i <= pivot)
-            ++i;
-        while (j >= start && *j > pivot)
-            --j;
-        if (i < j)
-            swap(*i, *j);
+        while (i < j && *j >= pivot)
+            j--;
+        *i = i < j ? *j : *i;
+        while (i < j && *i <= pivot)
+            i++;
+        *j = i < j ? *i : *j;
     }
-    swap(*start, *j);
-    return j;
+    *i = pivot;
+    return i;
 }
 //quickSort Routine
 template <typename T>
-static void quickSort(T *start, T *end)
+static void quickSort(T *lo, T *hi)
 {
-    if (start < end)
+    if (lo < hi)
     {
-        T *pivot = __partition(start, end);
-        quickSort(start, pivot - 1);
-        quickSort(pivot + 1, end);
+        T *pivot = __partition(lo, hi);
+        quickSort(lo, pivot - 1);
+        quickSort(pivot + 1, hi);
     }
 }
 
@@ -205,6 +226,18 @@ static void tableSort(T *a, T *b)
     }
 }
 
+int findKthMin(int *lo, int *hi, int k)
+{
+    int *p = __partition(lo, hi);
+    int len = p - lo;
+    if (len == k)
+        return *p;
+    else if (len > k)
+        return findKthMin(lo, p - 1, k);
+    else
+        return findKthMin(p + 1, hi, k - len - 1);
+}
+
 int main(int argc, char const *argv[])
 {
     /* code */
@@ -216,8 +249,8 @@ int main(int argc, char const *argv[])
 
     startTime = clock();
 
-    sort(b, b + SIZE);
-
+    cout << findKthMin(b, b + SIZE, 200) << endl;
+    
     endTime = clock();
 
     cout << is_sorted(b, b + SIZE) << endl;

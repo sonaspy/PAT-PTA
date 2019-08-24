@@ -2,20 +2,39 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-static char sub[20];
-char *cut(char *ss, int m, int n)
+
+int fun(int x)
 {
-    int i;
-    for (i = 0; i < n; i++)
-        sub[i] = ss[m + i];
-    sub[i] = '\0';
-    return sub;
+    int countx = 0;
+    while (x)
+    {
+        countx++;
+        x = x & (x - 1);
+    }
+    return countx;
+}
+int sub_count(char *s, char *sub)
+{
+    char *p2 = sub, *p1;
+    int sum = 0;
+    while (*s)
+    {
+        p1 = s, p2 = sub;
+        while (*p1 == *p2 && *p1 && *p2)
+        {
+            p1++;
+            p2++;
+        }
+        if (*p2 == '\0')
+            sum++;
+        s++;
+    }
+    return sum;
 }
 int main(int argc, char const *argv[])
 {
     /* code */
-    static char s[] = "goodmorning";
-    char *p = cut(s, 3, 4);
-    printf("%s\n", p);
+    char *s = "sadsadsadssssad", *ss = "sad";
+    printf("%d", sub_count(s, ss));
     return 0;
 }

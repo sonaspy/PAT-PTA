@@ -250,7 +250,7 @@ int main(int argc, char const *argv[])
     startTime = clock();
 
     cout << findKthMin(b, b + SIZE, 200) << endl;
-    
+
     endTime = clock();
 
     cout << is_sorted(b, b + SIZE) << endl;

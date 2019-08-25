@@ -8,44 +8,48 @@
 using namespace std;
 int n, pre[35], post[35], c = 0, is_unique = 1;
 
-struct tnode
+struct TreeNode
 {
     int val;
-    tnode *left, *right;
-    tnode(int x) : val(x), left(nullptr), right(nullptr) {}
+    TreeNode *left, *right;
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
 };
 
-tnode *Construct(int _pre, int pre_, int _post, int post_)
+TreeNode *Construct(int leftOfpre, int rightOfpre, int leftOfpost, int rightOfpost)
 {
-    if (_pre > pre_ || _post > post_)
+    if (leftOfpre > rightOfpre || leftOfpost > rightOfpost)
         return nullptr;
-    tnode *root = new tnode(pre[_pre]);
-    if (_pre == pre_)
+    TreeNode *root = new TreeNode(pre[leftOfpre]);
+    if (leftOfpre == rightOfpre)
         return root;
-    int l_val = pre[_pre + 1], po_i, sub_cnt;
-    for (po_i = _post; po_i < post_ && post[po_i] != l_val; po_i++)
+    int leftSubVal = pre[leftOfpre + 1], i, sub_cnt;
+    for (i = leftOfpost; i < rightOfpost && post[i] != leftSubVal; i++)
         ;
-    sub_cnt = po_i - _post;
-    if (po_i + 1 < post_) // 2 child
+    sub_cnt = i - leftOfpost;
+    if (i + 1 < rightOfpost) // 2 child
     {
-        root->left = Construct(_pre + 1, _pre + sub_cnt + 1, _post, po_i);
-        root->right = Construct(_pre + sub_cnt + 2, pre_, po_i + 1, post_ - 1);
+        root->left = Construct(leftOfpre + 1, leftOfpre + sub_cnt + 1, leftOfpost, i);
+        root->right = Construct(leftOfpre + sub_cnt + 2, rightOfpre, i + 1, rightOfpost - 1);
     }
     else
     {
-        root->left = Construct(_pre + 1, pre_, _post, post_ - 1); // only ont child, default choose left
+        root->left = Construct(leftOfpre + 1, rightOfpre, leftOfpost, rightOfpost - 1); // only one child, default choose left
         is_unique = 0;
     }
     return root;
 }
 
-void order(tnode *root)
+void order(TreeNode *root)
 {
-    if (root->left) order(root->left);
-    if (c) printf(" ");
-    else c = 1;
+    if (root->left)
+        order(root->left);
+    if (c)
+        printf(" ");
+    else
+        c = 1;
     printf("%d", root->val);
-    if (root->right) order(root->right);
+    if (root->right)
+        order(root->right);
 }
 
 int main(int argc, char const *argv[])
@@ -57,8 +61,8 @@ int main(int argc, char const *argv[])
         scanf("%d", &pre[i]);
     for (int i = 0; i < n; i++)
         scanf("%d", &post[i]);
-    tnode *ROOT = Construct(0, n - 1, 0, n - 1);
+    TreeNode *ROOT = Construct(0, n - 1, 0, n - 1);
     cout << (is_unique ? "Yes" : "No") << endl;
     order(ROOT), printf("\n");
     return 0;
-}//attention
+}

@@ -6,57 +6,55 @@
 #define test() freopen("in", "r", stdin)
 
 using namespace std;
-int num, k, p, maxFacsum = -1;
-vector<int> fac_p, res, tmpRes;
-inline void ini()
+int target, k, p, maxFacSum = -1;
+vector<int> potentials(1, 0), res, tmpRes;
+inline void init()
 {
-    int c = 1, tmp = 0;
-    while (tmp <= num)
+    int c = 1, n = 1;
+    while (n <= target)
     {
-        fac_p.push_back(tmp);
-        tmp = pow(c, p);
-        c++;
+        potentials.push_back(n);
+        n = pow(++c, p); // potentials [0......] -> [,1,2,3,4,....]
     }
 }
-inline void DFS(int factor)
+inline void dfs(int this_fac)
 {
-    static int nowNum = 0, facSum = 0;
+    static int thisSum = 0, facSum = 0;
     if (tmpRes.size() == k)
     {
-        if (nowNum == num && facSum > maxFacsum)
+        if (thisSum == target && facSum > maxFacSum)
         {
-            maxFacsum = facSum;
+            maxFacSum = facSum;
             res = tmpRes;
         }
         return;
     }
-    for (; 0 < factor; factor--)
+    for (; this_fac; this_fac--)
     {
-        if (nowNum + fac_p[factor] <= num)
+        if (thisSum + potentials[this_fac] <= target)
         {
-            tmpRes.push_back(factor);
-            nowNum += fac_p[factor];
-            facSum += factor;
-            DFS(factor);
+            facSum += this_fac;
+            tmpRes.push_back(this_fac);
+            thisSum += potentials[this_fac];
+            dfs(this_fac);
+            thisSum -= potentials[this_fac];
             tmpRes.pop_back();
-            nowNum -= fac_p[factor];
-            facSum -= factor;
+            facSum -= this_fac;
         }
     }
-}//attention
-
+}
 int main(int argc, char const *argv[])
 {
     /* code */
     //test();
-    cin >> num >> k >> p;
-    ini();
-    DFS(fac_p.size() - 1);
-    if (maxFacsum == -1)
-        cout << "Impossible";
+    cin >> target >> k >> p;
+    init();
+    dfs(potentials.size() - 1);
+    if (maxFacSum == -1)
+        cout << "Impossible\n";
     else
     {
-        cout << num;
+        cout << target;
         for (int i = 0; i < res.size(); i++)
         {
             if (i == 0)

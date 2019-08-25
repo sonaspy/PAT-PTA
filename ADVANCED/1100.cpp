@@ -48,7 +48,7 @@ void convert(string &s)
             {
                 if (s == high[i])
                     cout << i * 13;
-                if (s == low[i])
+                else if (s == low[i])
                     cout << i;
             }
         }
@@ -70,4 +70,4 @@ int main(int argc, char const *argv[])
         cout << endl;
     }
     return 0;
-} // details attention
+}

@@ -11,18 +11,18 @@ int main(int argc, char const *argv[])
 {
     /* code */
     //test();
-    int n, a[100011], premax = INT_MIN;
+    int n, ori[100011], premax = INT_MIN;
     cin >> n;
     for (int i = 0; i < n; i++)
-        scanf("%d", a + i);
-    vector<int> pivots, b(a, a + n);
-    sort(a, a + n);
+        scanf("%d", ori + i);
+    vector<int> pivots, res(ori, ori + n);
+    sort(res.begin(), res.end());
     for (int i = 0; i < n; i++)
     {
-        if (b[i] == a[i] && b[i] > premax)
-            pivots.push_back(b[i]);
-        if (b[i] > premax)
-            premax = b[i];
+        if (res[i] == ori[i] && ori[i] > premax)
+            pivots.push_back(res[i]);
+        if (ori[i] > premax)
+            premax = ori[i];
     }
     cout << pivots.size() << endl;
     if (pivots.size())
@@ -33,4 +33,4 @@ int main(int argc, char const *argv[])
     }
     cout << endl;
     return 0;
-} //attention
+}

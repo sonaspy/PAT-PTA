@@ -4,45 +4,87 @@
 #include <bits/stdc++.h>
 
 #define test() freopen("in", "r", stdin)
-#define OVER_B (t > N - 1)
 using namespace std;
-int func(int N)
+inline int func(int N)
 {
     int n = sqrt(N);
-    while (n > 0)
+    for (; n; n--)
     {
         if (N % n == 0)
             return n;
-        n--;
     }
     return 1;
 }
 int main(int argc, char const *argv[])
 {
     /* code */
-    //test();
-    int N, m, n, t = 0;
+    test();
+    int N, m, n;
     cin >> N;
     n = func(N);
     m = N / n;
     int b[m][n], a[N];
     for (int i = 0; i < N; i++)
-        scanf("%d", &a[i]);
+        scanf("%d", a + i);
     sort(a, a + N, greater<int>());
-    // m->row  n->column
-    int level = (m + 1) / 2, i, j;
-    for (i = 0; i < level; i++)
+    int i, j, left = 0, right = n - 1, up = 0, down = m - 1, x = 0, row = 0, col = 0, d = 1, done;
+    while (x < N)
     {
-        for (j = i; j < n - i && !OVER_B; j++)
-            b[i][j] = a[t++];
-        for (j = i + 1; j < m - 1 - i && !OVER_B; j++)
-            b[j][n - 1 - i] = a[t++];
-        for (j = n - 1 - i; i < j + 1 && !OVER_B; j--)
-            b[m - 1 - i][j] = a[t++];
-        for (j = m - 2 - i; i < j && !OVER_B; j--)
-            b[j][i] = a[t++];
+        b[row][col] = a[x++];
+        done = 0;
+        do
+        {
+            switch (d)
+            {
+            case 1:
+                if (++col > right)
+                {
+                    col = right, d = 2;
+                    continue;
+                }
+                else
+                {
+                    done = 1;
+                    break;
+                }
+            case 2:
+                if (++row > down)
+                {
+                    row = down, d = 3;
+                    continue;
+                }
+                else
+                {
+                    done = 1;
+                    break;
+                }
+            case 3:
+                if (--col < left)
+                {
+                    col = left, d = 4;
+                    continue;
+                }
+                else
+                {
+                    done = 1;
+                    break;
+                }
+            case 4:
+                if (--row == up)
+                {
+                    down--, left++, up++, right--;
+                    row = up;
+                    d = 1;
+                    continue;
+                }
+                else
+                {
+                    done = 1;
+                    break;
+                }
+            }
+        } while (!done);
     }
-
     for (i = 0; i < m; i++)
     {
         for (j = 0; j < n; j++)
@@ -55,4 +97,3 @@ int main(int argc, char const *argv[])
     }
     return 0;
 }
-//attention

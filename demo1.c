@@ -2,39 +2,86 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-
-int fun(int x)
-{
-    int countx = 0;
-    while (x)
-    {
-        countx++;
-        x = x & (x - 1);
-    }
-    return countx;
-}
-int sub_count(char *s, char *sub)
-{
-    char *p2 = sub, *p1;
-    int sum = 0;
-    while (*s)
-    {
-        p1 = s, p2 = sub;
-        while (*p1 == *p2 && *p1 && *p2)
-        {
-            p1++;
-            p2++;
-        }
-        if (*p2 == '\0')
-            sum++;
-        s++;
-    }
-    return sum;
-}
+#define N 10
 int main(int argc, char const *argv[])
 {
     /* code */
-    char *s = "sadsadsadssssad", *ss = "sad";
-    printf("%d", sub_count(s, ss));
+    static int a[N][N], i, j;
+    int left = 0, right = N - 1, up = 0, down = N - 1;
+    int x = 1, row = right, col = down, d = 1, done;
+    while (x <= N * N)
+    {
+        a[row][col] = x;
+        x++;
+        done = 0;
+        do
+        {
+            if (d == 1)
+            {
+
+                col--;
+                if (col < left)
+                {
+                    col = left;
+                    d = 2;
+                    continue;
+                }
+                else
+                {
+                    done = 1;
+                    break;
+                }
+            }
+            else if (d == 2)
+            {
+                row--;
+                if (row < up)
+                {
+                    row = up;
+                    d = 3;
+                    continue;
+                }
+                else
+                {
+                    done = 1;
+                    break;
+                }
+            }
+            else if (d == 3)
+            {
+                col++;
+                if (col > right)
+                {
+                    col = right;
+                    d = 4;
+                    continue;
+                }
+                else
+                {
+                    done = 1;
+                    break;
+                }
+            }
+            else if (d == 4)
+            {
+                row++;
+                if (row == down)
+                {
+                    down--;
+                    left++;
+                    up++;
+                    right--;
+                    row = down;
+                    d = 1;
+                    continue;
+                }
+                else
+                {
+                    done = 1;
+                    break;
+                }
+            }
+        } while (!done);
+    }
     return 0;
 }

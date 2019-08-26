@@ -11,7 +11,7 @@ int main(int argc, char const *argv[])
 {
     /* code */
     //test();
-    int n, m, cnt, k, a[210][210] = {0}, i;
+    int n, m, cnt, k, a[210][210] = {0}, i, flag;
     cin >> n >> m;
     for (i = 0; i < m; i++)
     {
@@ -25,19 +25,17 @@ int main(int argc, char const *argv[])
         cin >> k;
         vector<int> v(k);
         unordered_set<int> s;
+        flag = 1;
         for (i = 0; i < k; i++)
         {
             scanf("%d", &v[i]);
+            if (i > 0 && !a[v[i - 1]][v[i]])
+                flag = 0;
             s.insert(v[i]);
         }
         if (s.size() < n || k - 1 != n || v.front() != v.back())
-        {
-            printf("NO\n");
-            continue;
-        }
-        for (i = 0; i < k - 1 && a[v[i]][v[i + 1]]; i++)
-            ;
-        printf("%s\n", i == k - 1 ? "YES" : "NO");
+            flag = 0;
+        printf("%s\n", flag ? "YES" : "NO");
     }
     return 0;
-}//attention
+}

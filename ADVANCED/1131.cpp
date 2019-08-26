@@ -6,49 +6,41 @@
 #define test() freopen("in", "r", stdin)
 
 using namespace std;
-vector<int> v[10000];
-int visit[10000], minLen, mintrans, src, dst;
-unordered_map<int, int> mpLine;
-vector<int> ansPath, tempPath;
-inline int getTransferT(vector<int> &a)
+vector<int> mp[10000];
+int vis[10000], minStops, mintrans, src, dst, stops;
+unordered_map<int, int> whichLine;
+vector<int> ansPath, tPath;
+int get_trans_t(vector<int> &a)
 {
-    int len = -1, preLine = 0, curline;
+    int T = 0, lastLine = 0, curline;
     for (int i = 1; i < a.size(); i++)
     {
-        curline = mpLine[a[i - 1] * 10000 + a[i]];
-        if (curline != preLine)
-            len++;
-        preLine = curline;
+        curline = whichLine[a[i - 1] * 10000 + a[i]];
+        if (curline != lastLine)
+            T++;
+        lastLine = curline;
     }
-    return len;
+    return T;
 }
-void dfs(int node, int len)
+void dfs(int station)
 {
-    if (node == dst)
+    if (station == dst)
     {
-        if (len < minLen || (len == minLen && getTransferT(tempPath) < mintrans))
-        {
-            minLen = len;
-            mintrans = getTransferT(tempPath);
-            ansPath = tempPath;
-        }
+        int trans = get_trans_t(tPath);
+        if (stops < minStops || (stops == minStops && trans < mintrans))
+            minStops = stops, mintrans = trans, ansPath = tPath;
         return;
     }
-    for (auto i : v[node])
-    {
-        if (!visit[i])
+    for (auto i : mp[station])
+        if (!vis[i])
         {
-            tempPath.push_back(i);
-            visit[i] = 1;
-            dfs(i, len + 1);
-            visit[i] = 0;
-            tempPath.pop_back();
+            tPath.push_back(i), vis[i] = 1, stops++;
+            dfs(i);
+            vis[i] = 0, tPath.pop_back(), stops--;
         }
-    }
 }
-int main()
+int main(int argc, char const *argv[])
 {
-    //   test();
     int n, m, k, pre, temp;
     cin >> n;
     for (int i = 0; i < n; i++)
@@ -57,8 +49,8 @@ int main()
         for (int j = 1; j < m; j++)
         {
             scanf("%d", &temp);
-            v[pre].push_back(temp), v[temp].push_back(pre);
-            mpLine[pre * 10000 + temp] = mpLine[temp * 10000 + pre] = i + 1;
+            mp[pre].push_back(temp), mp[temp].push_back(pre);
+            whichLine[pre * 10000 + temp] = whichLine[temp * 10000 + pre] = i + 1;
             pre = temp;
         }
     }
@@ -66,25 +58,23 @@ int main()
     for (int i = 0; i < k; i++)
     {
         scanf("%d%d", &src, &dst);
-        minLen = 1 << 30, mintrans = 1 << 30;
-        tempPath.clear(), tempPath.push_back(src);
-        visit[src] = 1;
-        dfs(src, 0);
-        visit[src] = 0;
-        printf("%d\n", minLen);
-        int preLine = 0, precur = src, curline;
+        minStops = 1 << 30, mintrans = 1 << 30;
+        tPath.clear(), tPath.push_back(src), stops = 0;
+        vis[src] = 1, dfs(src), vis[src] = 0;
+        printf("%d\n", minStops);
+        int lastLine = 0, start, curline;
         for (int j = 1; j < ansPath.size(); j++)
         {
-            curline = mpLine[ansPath[j - 1] * 10000 + ansPath[j]];
-            if (curline != preLine)
+            curline = whichLine[ansPath[j - 1] * 10000 + ansPath[j]];
+            if (curline != lastLine)
             {
-                if (preLine != 0)
-                    printf("Take Line#%d from %04d to %04d.\n", preLine, precur, ansPath[j - 1]);
-                preLine = curline;
-                precur = ansPath[j - 1];
+                if (lastLine)
+                    printf("Take Line#%d from %04d to %04d.\n", lastLine, start, ansPath[j - 1]);
+                lastLine = curline;
+                start = ansPath[j - 1];
             }
         }
-        printf("Take Line#%d from %04d to %04d.\n", preLine, precur, dst);
+        printf("Take Line#%d from %04d to %04d.\n", lastLine, start, dst);
     }
     return 0;
-}//attention
+}

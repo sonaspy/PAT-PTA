@@ -35,9 +35,10 @@ public:
         {
             if (down < size && data[down] < data[down + 1])
                 ++down;
-            if (data[down] <= val)
+            if (data[down] > val)
+                data[up] = data[down];
+            else
                 break;
-            data[up] = data[down];
         }
         data[up] = val;
     }
@@ -62,6 +63,9 @@ int main(int argc, char const *argv[])
 {
     /* code */
     //test();
-
+    srand(time(NULL));
+    Heap h;
+    h.buildHeap();
+    cout << is_heap(h.data.begin() + 1, h.data.end());
     return 0;
 }

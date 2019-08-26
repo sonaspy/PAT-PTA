@@ -63,12 +63,47 @@ bool isParlin(string s)
                 return false;
     return true;
 }
+long int Pow(long int X, unsigned int N)
+{
+    if (N == 0)
+        return 1;
+    if (N == 1)
+        return X;
+    if (N % 2 == 0)
+        return Pow(X, N / 2) * Pow(X, N / 2);
+    else
+        return Pow(X * X, N / 2) * X;
+}
+double myPow(double x, int n)
+{
+    long long N = n;
+    if (N < 0)
+    {
+        x = 1 / x;
+        N = -N;
+    }
+    double ans = 1;
+    double cur = x;
+    for (long long i = N; i; i /= 2)
+    {
+        if ((i % 2) == 1)
+            ans *= cur;
+        cur *= cur;
+    }
+    return ans;
+}
 
 int main(int argc, char const *argv[])
 {
     /* code */
     //test();
-    string ss = "121";
-    cout << isParlin(ss);
+    clock_t startTime, endTime;
+    startTime = clock();
+
+    Pow(2, 999999999);
+
+    endTime = clock();
+
+    cout << "The run time is: " << (double)(endTime - startTime) / 1000 << "ms" << endl;
     return 0;
 }

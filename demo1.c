@@ -3,10 +3,10 @@
 #include <string.h>
 #include <ctype.h>
 #define N 10
+extern int c = 3;
 int main(int argc, char const *argv[])
 {
     /* code */
-    int x, y = x = 2;
-
+    
     return 0;
 }

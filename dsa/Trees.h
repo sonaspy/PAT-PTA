@@ -1,10 +1,3 @@
-// author - newguo@sonaspy.cn
-// coding - utf_8
-
-#include <bits/stdc++.h>
-
-#define test() freopen("in", "right", stdin)
-
 using namespace std;
 vector<int> arr(1000, -1);
 inline int find_root(int id)
@@ -542,64 +535,3 @@ public:
             percDown(i);
     }
 };
-
-int main(int argc, char const *argv[])
-{
-    /* code */
-    //test();
-    for (int i = 1; i <= 10; i++)
-    {
-        printf("%-4d", arr[i]);
-    }
-    cout << endl;
-    Union__(1, 2);
-    for (int i = 1; i <= 10; i++)
-    {
-        printf("%-4d", arr[i]);
-    }
-    cout << endl;
-    Union__(3, 4);
-    for (int i = 1; i <= 10; i++)
-    {
-        printf("%-4d", arr[i]);
-    }
-    cout << endl;
-    Union__(1, 3);
-    for (int i = 1; i <= 10; i++)
-    {
-        printf("%-4d", arr[i]);
-    }
-    cout << endl;
-    Union__(3, 5);
-    for (int i = 1; i <= 10; i++)
-    {
-        printf("%-4d", arr[i]);
-    }
-    cout << endl;
-    Union__(6, 7);
-    for (int i = 1; i <= 10; i++)
-    {
-        printf("%-4d", arr[i]);
-    }
-    cout << endl;
-    Union__(1, 7);
-    for (int i = 1; i <= 10; i++)
-    {
-        printf("%-4d", arr[i]);
-    }
-    cout << endl;
-    Union__(7, 8);
-    for (int i = 1; i <= 10; i++)
-    {
-        printf("%-4d", arr[i]);
-    }
-    cout << endl;
-    Union__(8, 10);
-    for (int i = 1; i <= 10; i++)
-    {
-        printf("%-4d", arr[i]);
-    }
-    cout << endl;
-
-    return 0;
-}

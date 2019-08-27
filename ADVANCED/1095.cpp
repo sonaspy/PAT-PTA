@@ -6,12 +6,12 @@
 #define test() freopen("in", "r", stdin)
 using namespace std;
 const int MAX_N = 10010;
-typedef struct Car *pCar;
+typedef struct Car *ptrOfCar;
 struct Car
 {
     char id[8], status[4];
     int Time;
-} all_record[MAX_N];
+} AllRecords[MAX_N];
 int f_num = 0;
 map<string, int> parkTime;
 inline int convert(int hh, int mm, int ss) { return hh * 3600 + mm * 60 + ss; }
@@ -19,9 +19,9 @@ bool cmp(const Car &a, const Car &b) { return strcmp(a.id, b.id) ? strcmp(a.id, 
 
 struct CMP
 {
-    bool operator()(const pCar &a, const pCar &b) const { return a->Time > b->Time; }
+    bool operator()(const ptrOfCar &a, const ptrOfCar &b) const { return a->Time > b->Time; }
 };
-priority_queue<pCar, vector<pCar>, CMP> pq;
+priority_queue<ptrOfCar, vector<ptrOfCar>, CMP> pq;
 int main()
 {
     //test();
@@ -29,18 +29,18 @@ int main()
     scanf("%d%d", &n, &k);
     for (int i = 0; i < n; i++)
     {
-        scanf("%s %d:%d:%d %s", all_record[i].id, &hh, &mm, &ss, all_record[i].status);
-        all_record[i].Time = convert(hh, mm, ss);
+        scanf("%s %d:%d:%d %s", AllRecords[i].id, &hh, &mm, &ss, AllRecords[i].status);
+        AllRecords[i].Time = convert(hh, mm, ss);
     }
-    sort(all_record, all_record + n, cmp);
-    int maxTime = -1;
+    sort(AllRecords, AllRecords + n, cmp);
+    int maxParkTime = -1;
     for (int i = 0; i < n - 1; i++)
     {
-        if (EQUAL(all_record[i].id, all_record[i + 1].id) && EQUAL(all_record[i].status, "in") && EQUAL(all_record[i + 1].status, "out"))
+        if (EQUAL(AllRecords[i].id, AllRecords[i + 1].id) && EQUAL(AllRecords[i].status, "in") && EQUAL(AllRecords[i + 1].status, "out"))
         {
-            pq.push(&all_record[i]), pq.push(&all_record[i + 1]);
-            parkTime[all_record[i].id] += all_record[i + 1].Time - all_record[i].Time;
-            maxTime = max(maxTime, parkTime[all_record[i].id]);
+            pq.push(AllRecords + i), pq.push(AllRecords + i + 1);
+            parkTime[AllRecords[i].id] += AllRecords[i + 1].Time - AllRecords[i].Time;
+            maxParkTime = max(maxParkTime, parkTime[AllRecords[i].id]);
         }
     }
     int numCar = 0, Time;
@@ -57,9 +57,9 @@ int main()
     }
     for (auto it : parkTime)
     {
-        if (it.second == maxTime)
+        if (it.second == maxParkTime)
             printf("%s ", it.first.c_str());
     }
-    printf("%02d:%02d:%02d\n", maxTime / 3600, maxTime % 3600 / 60, maxTime % 60);
+    printf("%02d:%02d:%02d\n", maxParkTime / 3600, maxParkTime % 3600 / 60, maxParkTime % 60);
     return 0;
-} // attention
+}

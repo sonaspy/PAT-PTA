@@ -10,25 +10,24 @@ int main(int argc, char const *argv[])
 {
     /* code */
     int n;
-    long long int ans;
+    long long int ans, length = 10;
     scanf("%d", &n);
-    int _number = sqrt(n);
-    for (int length = 13; length > 0; length--)
+    while (--length)
     {
-        for (int start = 2; start <= _number; start++)
+        for (int lo = 2; lo <= sqrt(n); lo++)
         {
             ans = 1;
-            for (int i = start; i < start + length; i++)
+            for (int i = lo; i < lo + length; i++)
                 ans *= i;
             if (n % ans == 0)
             {
-                printf("%d\n%d", length, start);
-                for (int i = start + 1; i < start + length; i++)
+                printf("%d\n%d", length, lo);
+                for (int i = lo + 1; i < lo + length; i++)
                     printf("*%d", i);
-                return 0;
+                exit(0);
             }
         }
     }
     printf("1\n%d", n);
     return 0;
-} //attention
+}

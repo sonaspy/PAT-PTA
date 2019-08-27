@@ -30,7 +30,7 @@ TreeNode *Construct(int root, int lo, int hi, TreeNode *thisParent)
     mp[thisNode->val] = thisNode;
     return thisNode;
 }
-
+TreeNode *root;
 TreeNode *getLCA(TreeNode *p, TreeNode *q)
 {
     while (p->depth > q->depth)
@@ -43,14 +43,14 @@ TreeNode *getLCA(TreeNode *p, TreeNode *q)
 }
 int main()
 {
-    //test();
+    test();
     int m, n;
     scanf("%d %d", &m, &n);
     for (int i = 0; i < n; ++i)
         scanf("%d", in + i);
     for (int i = 0; i < n; ++i)
         scanf("%d", pre + i);
-    TreeNode *root = Construct(0, 0, n - 1, nullptr);
+    root = Construct(0, 0, n - 1, nullptr);
     while (m--)
     {
         int x1, x2;
@@ -70,4 +70,4 @@ int main()
         }
     }
     return 0;
-} //attention1
+}

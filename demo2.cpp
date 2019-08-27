@@ -63,8 +63,8 @@ int main(int argc, char const *argv[])
 {
     /* code */
     //test();
-    int a[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-    for_each(a, a + 10, [](int &c) { c = -c; });
-    cout << a[0];
+    string a(10, 'A');
+    for_each(a.begin(), a.end(), [](char &c) { c += 32; });
+    cout << a;
     return 0;
 }

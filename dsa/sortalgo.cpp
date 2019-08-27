@@ -243,6 +243,21 @@ T findKthMin(T *lo, T *hi, int k)
         return findKthMin(p + 1, hi, k - len - 1);
 }
 
+void sort__1(int *a, int n){
+    int i = 1, mi, ma;
+    while(i < n - i + 1){
+        mi = ma = i;
+        for(int j = i + 1; j <= n + i -1; j++){
+            if(a[j] < a[mi]) mi = j;
+            else if(a[j] < a[ma]) ma = j;
+        }
+        if(mi != i) swap(a[mi] , a[i]);
+        if(ma != n- i + 1){
+            
+        }
+    }
+}
+
 int main(int argc, char const *argv[])
 {
     /* code */

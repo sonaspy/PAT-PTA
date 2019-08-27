@@ -7,19 +7,16 @@
 
 using namespace std;
 int first = 1;
-typedef struct Node *ptrNode;
-struct Node
+typedef struct TreeNode *ptrNode;
+struct TreeNode
 {
     int data;
     ptrNode left = nullptr, right = nullptr;
-    Node(int d) : data(d) {}
+    TreeNode(int d) : data(d) {}
 };
-
 enum operation
 {
-    push,
-    pop,
-    firstop
+    push, pop, firstop
 };
 void post(ptrNode root)
 {
@@ -37,10 +34,10 @@ int main(int argc, char const *argv[])
     operation _op = firstop;
     stack<ptrNode> S;
     cin >> n;
-    ptrNode lastPOP, root, TreeNodes[n + 1];
+    ptrNode root, TreeNodes[n + 1], lastnode;
     string s;
     for (int i = 1; i <= n; i++)
-        TreeNodes[i] = new Node(i);
+        TreeNodes[i] = new TreeNode(i);
     for (int i = 0; i < 2 * n; i++)
     {
         cin >> s;
@@ -48,17 +45,18 @@ int main(int argc, char const *argv[])
         {
             cin >> id;
             if (_op == pop)
-                lastPOP->right = TreeNodes[id];
+                lastnode->right = TreeNodes[id];
             else if (_op == push)
-                S.top()->left = TreeNodes[id];
+                lastnode->left = TreeNodes[id];
             else
                 root = TreeNodes[id];
             S.push(TreeNodes[id]);
+            lastnode = S.top();
             _op = push;
         }
         else
         {
-            lastPOP = S.top();
+            lastnode = S.top();
             S.pop();
             _op = pop;
         }

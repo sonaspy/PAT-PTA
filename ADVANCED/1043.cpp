@@ -73,10 +73,12 @@ int main()
             postorder(root);
         }
     }
-    if (!f) printf("NO");
+    if (!f)
+        printf("NO");
     else
     {
-        cout << "YES\n" << post_output[0];
+        cout << "YES\n"
+             << post_output[0];
         for (int i = 1; i < post_output.size(); i++)
             printf(" %d", post_output[i]);
     }

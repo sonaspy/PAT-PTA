@@ -41,9 +41,9 @@ TreeNode *getLCA(TreeNode *p, TreeNode *q)
         p = p->parent, q = q->parent;
     return p;
 }
-int main()
+int main(int argc, char const *argv[])
 {
-    test();
+    //test();
     int m, n;
     scanf("%d %d", &m, &n);
     for (int i = 0; i < n; ++i)

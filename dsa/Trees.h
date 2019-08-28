@@ -154,7 +154,16 @@ public:
         del(root->right);
         delete root;
     }
-
+    bool TreeSimilar(TreeNode *T1, TreeNode *T2)
+    {
+        if (!T1 && !T2)
+            return 1;
+        if (!T1 || !T2) // if wanna test the two trees is identical , plus "|| T1->val != T2->val"
+            return 0;
+        bool lf = TreeSimilar(T1->left, T2->left);
+        bool rf = TreeSimilar(T1->right, T2->right);
+        return lf && rf;
+    }
     void Tree2Exp(TreeNode *root, int depth)
     {
         if (!root)

@@ -6,79 +6,70 @@
 #define test() freopen("in", "r", stdin)
 #define MAXBOUND 20
 using namespace std;
-struct nodes
+struct TreeNode
 {
-    int l = -1, r = -1, id = 0, isleft = -1, p, cur = 0;
-} nodes[22];
-int n, c1, c2, root, i, iscmt = 1, tree[22], ans;
-inline void level()
+    int val;
+    TreeNode *left, *right;
+    TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}
+};
+vector<TreeNode *> trees;
+int n, c1, c2, r = -1, last;
+bool level()
 {
-    queue<int> q;
-    int id, v;
-    fill(tree, tree + 22, -1);
-    tree[0] = root;
-    q.push(root);
+    TreeNode *v = trees[r];
+    queue<TreeNode *> q;
+    q.push(trees[r]);
     while (q.size())
     {
-        v = q.front();
-        q.pop();
-        if (nodes[v].l != -1)
-            q.push(nodes[v].l);
-        if (nodes[v].r != -1)
-            q.push(nodes[v].r);
-        if (nodes[v].isleft == 1)
+        v = q.front(), q.pop();
+        if (v)
         {
-            id = nodes[nodes[v].p].cur * 2 + 1;
-            nodes[v].cur = id;
-            if (id < MAXBOUND)
-                tree[id] = nodes[v].id;
+            last = v->val;
+            q.push(v->left), q.push(v->right);
         }
-        else if (nodes[v].isleft == 0)
+        else
         {
-            id = nodes[nodes[v].p].cur * 2 + 2;
-            nodes[v].cur = id;
-            if (id < MAXBOUND)
-                tree[id] = nodes[v].id;
+            while (q.size())
+            {
+                v = q.front(), q.pop();
+                if (v)
+                    return false;
+            }
         }
-        if (q.empty())
-            ans = v;
     }
+    return true;
 }
 
 int main(int argc, char const *argv[])
 {
     /* code */
     //test();
-    string s1, s2;
     cin >> n;
-    for (i = 0; i < n; i++)
+    vector<int> who(n, 0);
+    for (int i = 0; i < n; i++)
+        trees.push_back(new TreeNode(i));
+    for (int i = 0; i < n; i++)
     {
+        string s1, s2;
         cin >> s1 >> s2;
-        nodes[i].id = i;
         if (s1 != "-")
         {
-            nodes[i].l = stoi(s1);
-            nodes[nodes[i].l].p = i;
-            nodes[nodes[i].l].isleft = 1;
+            c1 = stoi(s1);
+            who[c1] = 1;
+            trees[i]->left = trees[c1];
         }
         if (s2 != "-")
         {
-            nodes[i].r = stoi(s2);
-            nodes[nodes[i].r].p = i;
-            nodes[nodes[i].r].isleft = 0;
+            c2 = stoi(s2);
+            who[c2] = 1;
+            trees[i]->right = trees[c2];
         }
     }
-    for (i = 0; i < n && nodes[i].isleft != -1; i++)
+    while (who[++r])
         ;
-    root = i;
-    level();
-    for (i = 0; i < n; i++)
-        if (tree[i] == -1)
-        {
-            iscmt = 0;
-            break;
-        }
-    cout << (iscmt ? "YES " : "NO ");
-    cout << (iscmt ? ans : root);
+    if (level())
+        cout << "YES " << last;
+    else
+        cout << "NO " << r;
     return 0;
 }

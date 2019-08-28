@@ -79,8 +79,8 @@ int main(int argc, char const *argv[])
     /* code */
     //test();
     int n, t, iscpt = 1;
-    vector<int> levelseq;
-    ptrn ROOT = nullptr , v = nullptr;
+    vector<int> st, check;
+    ptrn ROOT = nullptr, v = nullptr;
     cin >> n;
     for (int i = 0; i < n; i++)
     {
@@ -91,9 +91,8 @@ int main(int argc, char const *argv[])
     q.push(ROOT);
     while (q.size())
     {
-        v = q.front();
-        q.pop();
-        levelseq.push_back(v->id);
+        v = q.front(), q.pop();
+        st.push_back(v->id);
         cout << v->data;
         if (v->left)
         {
@@ -107,14 +106,8 @@ int main(int argc, char const *argv[])
         }
         cout << (q.empty() ? "\n" : " ");
     }
-    for (int i = 0; i < levelseq.size(); i++)
-    {
-        if (levelseq[i] != i)
-        {
-            iscpt = 0;
-            break;
-        }
-    }
+    check.resize(st.size()), iota(check.begin(), check.end(), 0);
+    iscpt = equal(check.begin(), check.end(), st.begin());
     cout << (iscpt ? "YES" : "NO");
     return 0;
 }

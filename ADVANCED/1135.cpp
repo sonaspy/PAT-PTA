@@ -6,51 +6,34 @@
 #define test() freopen("in", "r", stdin)
 
 using namespace std;
-enum COLOR
+enum COLOR{ BLK,RED};
+struct TreeNode
 {
-    BLK,
-    RED
-};
-struct node
-{
-    int data;
+    int val, belowBLKnum;
     COLOR color_;
-    node *left = nullptr, *right = nullptr;
-    node(int d, COLOR c) : data(d), color_(c) {}
+    TreeNode *left = nullptr, *right = nullptr;
+    TreeNode(int d, COLOR c) : val(d), belowBLKnum(1), color_(c) {}
 };
-int pre[100], in[100], k, n, flag;
-unordered_map<int, COLOR> itsColor;
-node *construct(int root, int lo, int hi)
+int pre[100], in[100], k, n, isRBtree;
+unordered_map<int, COLOR> colorTable;
+inline int getblknums(TreeNode *node) { return node ? node->belowBLKnum : 0; }
+TreeNode *__build(int root, int lo, int hi)
 {
     if (hi < lo)
-        return new node(-1, BLK); //dummy leaf node
+        return new TreeNode(INT_MIN, BLK); //dummy leaf TreeNode
     int i = lo;
     for (; i < hi && in[i] != pre[root]; i++)
         ;
-    node *cur = new node(pre[root], itsColor[pre[root]]);
-    cur->left = construct(root + 1, lo, i - 1);
-    cur->right = construct(root + 1 + i - lo, i + 1, hi);
-    if (cur->color_ == RED && !(cur->left->color_ == BLK && cur->right->color_ == BLK))
-        flag = 0;
-    return cur;
-}
-
-int postorder(node *root)
-{
-    if(!root || !flag)return 0;
-    int n1 = postorder(root->left);
-    int n2 = postorder(root->right);
-    if (n1 != n2)
-    {
-        flag = 0;
-        return 0;
-    }
-    return root->color_ == BLK ? n1 + 1 : n1;
-}
-inline bool judge(node *root)
-{
-    postorder(root);
-    return (root->color_ == RED || !flag) ? false: true;
+    TreeNode *node = new TreeNode(pre[root], colorTable[pre[root]]);
+    node->left = __build(root + 1, lo, i - 1);
+    node->right = __build(root + 1 + i - lo, i + 1, hi);
+    if (node->color_ == RED && (node->left->color_ == RED || node->right->color_ == RED))
+        isRBtree = 0;
+    if (node->left->belowBLKnum != node->right->belowBLKnum)
+        isRBtree = 0;
+    else
+        node->belowBLKnum = node->color_ == BLK ? node->left->belowBLKnum + 1 : node->left->belowBLKnum;
+    return node;
 }
 int main(int argc, char const *argv[])
 {
@@ -60,22 +43,17 @@ int main(int argc, char const *argv[])
     while (k--)
     {
         cin >> n;
-        flag = 1;
-        itsColor.clear();
+        isRBtree = 1;
+        colorTable.clear();
         for (int i = 0; i < n; i++)
         {
             cin >> pre[i];
-            if (pre[i] < 0)
-            {
-                pre[i] = -pre[i];
-                itsColor[pre[i]] = RED;
-            }
-            else itsColor[pre[i]] = BLK;
+            (pre[i] < 0) ? pre[i] *= -1, colorTable[pre[i]] = RED : colorTable[pre[i]] = BLK;
             in[i] = pre[i];
         }
         sort(in, in + n);
-        node *root = construct(0, 0, n - 1);
-        printf("%s\n", judge(root) ? "Yes" : "No");
+        TreeNode *root = __build(0, 0, n - 1);
+        printf("%s\n", (root->color_ == BLK && isRBtree) ? "Yes" : "No");
     }
     return 0;
 }

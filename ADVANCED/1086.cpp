@@ -16,14 +16,18 @@ struct TreeNode
 };
 enum operation
 {
-    push, pop, firstop
+    push,
+    pop,
+    firstop
 };
 void post(ptrNode root)
 {
-    if (!root) return;
+    if (!root)
+        return;
     post(root->left);
     post(root->right);
-    if (!first) cout << " ";
+    if (!first)
+        cout << " ";
     cout << root->data;
     first = 0;
 }

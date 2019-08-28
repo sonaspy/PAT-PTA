@@ -7,13 +7,11 @@
 
 using namespace std;
 
-int *inorder = new int[1001];
-int *levelorder = new int[1001];
+int *inorder = new int[1001], *levelorder = new int[1001];
 int n, cur = 0;
 static void Travel(int id)
 {
-    if (n - 1 < id)
-        return;
+    if (n - 1 < id) return;
     Travel(id * 2 + 1);
     levelorder[id] = inorder[cur++];
     Travel(id * 2 + 2);

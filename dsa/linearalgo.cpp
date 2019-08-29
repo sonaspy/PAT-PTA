@@ -3,7 +3,7 @@
 #include <iostream>
 #include <numeric>
 #define test() freopen("in", "r", stdin)
-
+#define SIZE 2000000
 using namespace std;
 double myPow(double x, int n)
 {
@@ -117,13 +117,16 @@ int main(int argc, char const *argv[])
 {
     /* code */
     //test();
-    int a[1000];
     srand(time(NULL));
-    iota(a, a + 1000, 0);
-    for (int i = 0; i < 100; i++)
-    {
-        int *p = bin_search(a, a + 1000, rand() % 1000);
-        cout << *p << endl;
-    }
+    int b[SIZE];
+    clock_t startTime, endTime;
+    iota(b, b + SIZE, 0);
+    startTime = clock();
+    for (int i = 0; i < 1000; i++)
+        _lowerbound(b, b + SIZE, 2000);
+
+    endTime = clock();
+
+    cout << "The run time is: " << (double)(endTime - startTime) / 1000 << "ms" << endl;
     return 0;
 }

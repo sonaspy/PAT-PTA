@@ -6,28 +6,28 @@
 #define test() freopen("in", "r", stdin)
 
 using namespace std;
-typedef struct node *ptrn;
-struct node
+typedef struct TreeNode *PtrNode;
+struct TreeNode
 {
-    int data, height, id;
-    ptrn left, right;
-    node(int d) : data(d), height(1), id(0), left(nullptr), right(nullptr) {}
+    int val, height, id;
+    PtrNode left, right;
+    TreeNode(int d) : val(d), height(1), id(0), left(nullptr), right(nullptr) {}
 };
-inline int getHeight(ptrn root) { return root == nullptr ? 0 : root->height; }
-inline int getFactor(ptrn root) { return getHeight(root->left) - getHeight(root->right); }
-inline void updateHeight(ptrn &root) { root->height = max(getHeight(root->left), getHeight(root->right)) + 1; }
-inline void LL(ptrn &root)
+inline int getHeight(PtrNode root) { return root == nullptr ? 0 : root->height; }
+inline int getFactor(PtrNode root) { return getHeight(root->left) - getHeight(root->right); }
+inline void updateHeight(PtrNode &root) { root->height = max(getHeight(root->left), getHeight(root->right)) + 1; }
+inline void LL(PtrNode &root)
 {
-    ptrn tmp = root->left;
+    PtrNode tmp = root->left;
     root->left = tmp->right;
     tmp->right = root;
     updateHeight(root);
     updateHeight(tmp);
     root = tmp;
 }
-inline void RR(ptrn &root)
+inline void RR(PtrNode &root)
 {
-    ptrn tmp = root->right;
+    PtrNode tmp = root->right;
     root->right = tmp->left;
     tmp->left = root;
     updateHeight(root);
@@ -35,16 +35,16 @@ inline void RR(ptrn &root)
     root = tmp;
 }
 
-void Insert(ptrn &root, int data)
+void Insert(PtrNode &root, int val)
 {
     if (!root)
     {
-        root = new node(data);
+        root = new TreeNode(val);
         return;
     }
-    if (data < root->data)
+    if (val < root->val)
     {
-        Insert(root->left, data);
+        Insert(root->left, val);
         updateHeight(root);
         if (getFactor(root) == 2)
         {
@@ -59,7 +59,7 @@ void Insert(ptrn &root, int data)
     }
     else
     {
-        Insert(root->right, data);
+        Insert(root->right, val);
         updateHeight(root);
         if (getFactor(root) == -2)
         {
@@ -78,22 +78,21 @@ int main(int argc, char const *argv[])
 {
     /* code */
     //test();
-    int n, t, iscpt = 1;
-    vector<int> st, check;
-    ptrn ROOT = nullptr, v = nullptr;
+    int n, t, iscpt = 1, last = -1;
+    PtrNode ROOT = nullptr, v = nullptr;
     cin >> n;
     for (int i = 0; i < n; i++)
     {
         cin >> t;
         Insert(ROOT, t);
     }
-    queue<ptrn> q;
+    queue<PtrNode> q;
     q.push(ROOT);
     while (q.size())
     {
         v = q.front(), q.pop();
-        st.push_back(v->id);
-        cout << v->data;
+        if(v->id != ++last)iscpt = 0;
+        cout << v->val;
         if (v->left)
         {
             v->left->id = v->id * 2 + 1;
@@ -106,8 +105,6 @@ int main(int argc, char const *argv[])
         }
         cout << (q.empty() ? "\n" : " ");
     }
-    check.resize(st.size()), iota(check.begin(), check.end(), 0);
-    iscpt = equal(check.begin(), check.end(), st.begin());
     cout << (iscpt ? "YES" : "NO");
     return 0;
 }

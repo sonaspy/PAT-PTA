@@ -8,37 +8,12 @@
 using namespace std;
 struct TreeNode
 {
-    int val;
+    int val, id;
     TreeNode *left, *right;
-    TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}
+    TreeNode(int v) : val(v), id(0), left(nullptr), right(nullptr) {}
 };
 vector<TreeNode *> trees;
-int n, c1, c2, r = -1, last;
-bool level()
-{
-    TreeNode *v = trees[r];
-    queue<TreeNode *> q;
-    q.push(trees[r]);
-    while (q.size())
-    {
-        v = q.front(), q.pop();
-        if (v)
-        {
-            last = v->val;
-            q.push(v->left), q.push(v->right);
-        }
-        else
-        {
-            while (q.size())
-            {
-                v = q.front(), q.pop();
-                if (v)
-                    return false;
-            }
-        }
-    }
-    return true;
-}
+int n, c1, c2, r = -1, last, trace = -1, iscpt = 1;
 
 int main(int argc, char const *argv[])
 {
@@ -65,9 +40,28 @@ int main(int argc, char const *argv[])
             trees[i]->right = trees[c2];
         }
     }
-    while (who[++r])
-        ;
-    if (level())
+    while (who[++r]) ;
+    TreeNode *v = trees[r];
+    queue<TreeNode *> q;
+    q.push(trees[r]);
+    while (q.size())
+    {
+        v = q.front(), q.pop();
+        last = v->val;
+        if (v->id != ++trace)
+            iscpt = 0;
+        if (v->left)
+        {
+            v->left->id = v->id * 2 + 1;
+            q.push(v->left);
+        }
+        if (v->right)
+        {
+            v->right->id = v->id * 2 + 2;
+            q.push(v->right);
+        }
+    }
+    if (iscpt)
         cout << "YES " << last;
     else
         cout << "NO " << r;

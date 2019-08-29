@@ -10,87 +10,67 @@ struct treenode
 {
     int val, depth;
     treenode *l, *r, *p;
-    treenode(int x, treenode *pre) : val(x), depth(0), l(nullptr), r(nullptr), p(pre) {}
+    treenode(int x, treenode *p) : val(x), depth(0), l(nullptr), r(nullptr), p(p) {}
 };
 inline int getdepth(treenode *root) { return root == nullptr ? 0 : root->depth; }
 vector<int> post(100), in(100);
-unordered_map<int, treenode *> mp;
-treenode *root;
+unordered_map<int, treenode *> table;
+treenode *root, *v;
 bool isfull = true;
-treenode *build(int root, int lo, int hi, treenode *pre)
+treenode *build(int root, int lo, int hi, treenode *p)
 {
     if (hi < lo)
         return nullptr;
     int i = lo;
-    treenode *node = new treenode(post[root], pre);
-    mp[node->val] = node;
-    node->depth = getdepth(pre) + 1;
+    treenode *node = new treenode(post[root], p);
+    table[node->val] = node;
+    node->depth = getdepth(p) + 1;
     while (i < hi && in[i] != post[root])
         i++;
     node->l = build(root - 1 + i - hi, lo, i - 1, node);
     node->r = build(root - 1, i + 1, hi, node);
     return node;
 }
-void isFull(treenode *root)
+inline bool judge(string &s)
 {
-    queue<treenode *> q;
-    treenode *v;
-    q.push(root);
-    while (q.size())
-    {
-        v = q.front(), q.pop();
-        if ((!v->l && v->r) || (!v->r && v->l))
-            isfull = 0;
-        if (v->l)
-            q.push(v->l);
-        if (v->r)
-            q.push(v->r);
-    }
-}
-
-bool judge(string &s)
-{
-    stringstream ss(s);
-    string tmp;
-    int a1, a2, a3;
+    stringstream bfstream(s);
+    string buffer;
+    int obj1, obj2;
     if (s.back() == 't')
     {
-        ss >> a1;
-        return root->val == a1;
+        bfstream >> obj1;
+        return root->val == obj1;
     }
     else if (s.back() == 'l')
     {
-        ss >> a1 >> tmp >> a2;
-        return mp[a1]->depth == mp[a2]->depth;
+        bfstream >> obj1 >> buffer >> obj2;
+        return table[obj1]->depth == table[obj2]->depth;
     }
     else if (s.back() == 's')
     {
-        ss >> a1 >> tmp >> a2;
-        return mp[a1]->p == mp[a2]->p;
+        bfstream >> obj1 >> buffer >> obj2;
+        return table[obj1]->p == table[obj2]->p;
     }
     else if (s.back() == 'e')
         return isfull;
     else
     {
-        ss >> a1 >> tmp >> tmp >> tmp;
-        if (tmp[0] == 'p')
+        bfstream >> obj1 >> buffer >> buffer >> buffer;
+        if (buffer[0] == 'p')
         {
-            ss >> tmp >> a2;
-            if (!mp[a2]->p) return false;
-            return mp[a2]->p->val == a1;
+            bfstream >> buffer >> obj2;
+            if (!table[obj2]->p)
+                return false;
+            return table[obj2]->p->val == obj1;
         }
-        if (tmp[0] == 'l')
+        if (buffer[0] == 'l')
         {
-            ss >> tmp >> tmp >> a2;
-            return mp[a2]->l == nullptr ? false : mp[a2]->l->val == a1;
+            bfstream >> buffer >> buffer >> obj2;
+            return table[obj2]->l == nullptr ? false : table[obj2]->l->val == obj1;
         }
-        else
-        {
-            ss >> tmp >> tmp >> a2;
-            return mp[a2]->r == nullptr ? false : mp[a2]->r->val == a1;
-        }
+        bfstream >> buffer >> buffer >> obj2;
+        return table[obj2]->r == nullptr ? false : table[obj2]->r->val == obj1;
     }
-    return 0;
 }
 
 int main(int argc, char const *argv[])
@@ -106,7 +86,21 @@ int main(int argc, char const *argv[])
         cin >> in[i];
     root = build(n - 1, 0, n - 1, nullptr);
     cin >> m, getchar();
-    isFull(root);
+    queue<treenode *> q;
+    q.push(root);
+    while (q.size())
+    {
+        v = q.front(), q.pop();
+        if ((!v->l && v->r) || (!v->r && v->l))
+        {
+            isfull = 0;
+            break;
+        }
+        if (v->l)
+            q.push(v->l);
+        if (v->r)
+            q.push(v->r);
+    }
     for (int i = 0; i < m; i++)
     {
         getline(cin, s);

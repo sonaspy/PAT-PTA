@@ -31,7 +31,7 @@ int main(int argc, char const *argv[])
     /* code */
     //test();
     cin >> n;
-    int zig = 1;
+    int sign = 1;
     for (int i = 0; i < n; i++)
         scanf("%d", in + i);
     for (int i = 0; i < n; i++)
@@ -41,7 +41,7 @@ int main(int argc, char const *argv[])
     q.push_back(ROOT);
     while (q.size())
     {
-        (zig == -1) ? result.insert(result.end(), q.begin(), q.end()) : result.insert(result.end(), q.rbegin(), q.rend());
+        (sign == -1) ? result.insert(result.end(), q.begin(), q.end()) : result.insert(result.end(), q.rbegin(), q.rend());
         while (q.size())
         {
             v = q.front(), q.pop_front();
@@ -51,7 +51,7 @@ int main(int argc, char const *argv[])
                 nex_q.push_back(v->right);
         }
         swap(q, nex_q);
-        zig *= -1;
+        sign *= -1;
     }
     for (int i = 0; i < result.size(); i++)
         printf("%d%c", result[i]->val, i == result.size() - 1 ? '\n' : ' ');

@@ -69,15 +69,14 @@ bool judge(string &s)
         return mp[a1]->p == mp[a2]->p;
     }
     else if (s.back() == 'e')
-    {
         return isfull;
-    }
     else
     {
         ss >> a1 >> tmp >> tmp >> tmp;
         if (tmp[0] == 'p')
         {
             ss >> tmp >> a2;
+            if (!mp[a2]->p) return false;
             return mp[a2]->p->val == a1;
         }
         if (tmp[0] == 'l')
@@ -106,8 +105,7 @@ int main(int argc, char const *argv[])
     for (int i = 0; i < n; i++)
         cin >> in[i];
     root = build(n - 1, 0, n - 1, nullptr);
-    cin >> m;
-    getchar();
+    cin >> m, getchar();
     isFull(root);
     for (int i = 0; i < m; i++)
     {

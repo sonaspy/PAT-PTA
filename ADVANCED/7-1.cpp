@@ -29,13 +29,11 @@ int main(int argc, char const *argv[])
     int n;
     cin >> n;
     if (isSexPrime(n))
-        cout << "Yes\n"
-             << (isPrime(n - 6) ? n - 6 : n + 6);
+        cout << "Yes\n" << (isPrime(n - 6) ? n - 6 : n + 6);
     else
     {
         cout << "No\n";
-        while (!isSexPrime(n))
-            n++;
+        while (!isSexPrime(++n));
         cout << n;
     }
     return 0;

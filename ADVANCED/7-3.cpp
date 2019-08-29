@@ -6,27 +6,18 @@
 #define test() freopen("in", "r", stdin)
 
 using namespace std;
-
-int k, n, m, a, b, c;
-struct node
+int k, n, m, a, b, c, mp[1111][1111] = {0};
+set<int> gangs;
+vector<int> suspect, suscall(1111, 0), callback(1111, 0), vis(1111, 0);
+void dfs(int id)
 {
-    int sum, suscall;
-    node() : sum(0), suscall(0) {}
-};
-vector<set<int>> gangs(1000);
-vector<vector<node>> mp(1111, vector<node>(1111, node()));
-vector<int> theUnion(1111, -1);
-bool cmp(set<int> &a, set<int> &b) { return a.size() > b.size(); }
-int find_root(int a)
-{
-    return theUnion[a] == 0 ? a : theUnion[a] = find_root(theUnion[a]);
+    vis[id] = 1, gangs.insert(id);
+    for (auto i : suspect)
+    {
+        if (!vis[i] && mp[id][i] && mp[i][id])
+            dfs(i);
+    }
 }
-void Unite(int a, int b)
-{
-    int ra = find_root(a), rb = find_root(b);
-    theUnion[rb] = ra;
-}
-
 int main(int argc, char const *argv[])
 {
     /* code */
@@ -34,57 +25,45 @@ int main(int argc, char const *argv[])
     cin >> k >> n >> m;
     for (int i = 0; i < m; i++)
     {
-        scanf("%d%d", &a, &b);
-        scanf("%d", &c);
-        mp[a][b].sum++;
-        if (c <= 5)
-            mp[a][b].suscall++;
+        scanf("%d%d%d", &a, &b, &c);
+        mp[a][b] += c;
     }
     for (int i = 1; i <= n; i++)
     {
-        int callt = 0, rece = 0, calp = 0;
-        double perc = 0;
         for (int j = 1; j <= n; j++)
         {
-            if (mp[i][j].suscall)
+            if (mp[i][j] && mp[i][j] <= 5)
             {
-                calp++;
-                callt += mp[i][j].suscall;
-                if (mp[j][i].sum)
-                    rece += min(mp[i][j].suscall, mp[j][i].sum);
+                suscall[i]++;
+                if (mp[j][i] > 0)
+                    callback[i]++;
             }
         }
-        perc = rece * 1.0 / callt;
-        if (perc <= 0.2 && calp > k)
-            theUnion[i] = 0;
+        if (callback[i] <= int(0.2 * suscall[i]) && suscall[i] > k)
+            suspect.push_back(i);
     }
-    for (int i = 1; i <= n; i++)
+    n = suspect.size();
+    if (!n)
     {
-        if (!theUnion[i])
-        {
-            for (int j = 1; j <= n; j++)
-                if (!theUnion[j] && mp[i][j].sum && mp[j][i].sum)
-                    Unite(i, j);
-        }
+        cout << "None";
+        return 0;
     }
-    for (int i = 1; i <= n; i++)
+    sort(suspect.begin(), suspect.end());
+    for (auto i : suspect)
     {
-        if (theUnion[i] != -1)
+        if (!vis[i])
         {
-            int root = find_root(i);
-            gangs[root].insert(i);
-        }
-    }
-    sort(gangs.begin(), gangs.end(), cmp);
-    for (auto &i : gangs)
-    {
-        if (i.size())
-        {
-            auto j = i.begin();
-            cout << *j;
-            j++;
-            for (; j != i.end(); j++)
-                cout << " " << *j;
+            gangs.clear();
+            dfs(i);
+            int first = 1;
+            for (auto fraud : gangs)
+            {
+                if (first)
+                    first = 0;
+                else
+                    cout << " ";
+                cout << fraud;
+            }
             cout << endl;
         }
     }

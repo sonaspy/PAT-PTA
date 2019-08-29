@@ -76,22 +76,22 @@ bool reverse_(T lo, T hi)
             swap(*lo, *hi);
 }
 template <class T>
-T *_lowerbound(T *lo, T *hi, const T &val)
+T *_lower_bound(T *lo, T *hi, const T &val)
 { // binary search
     int len = hi - lo;
-    int half;
+    int half_len;
     T *mid;
     while (len > 0)
     {
-        half = len >> 1;
-        mid = lo + half;
+        half_len = len >> 1;
+        mid = lo + half_len;
         if (*mid < val) // (<=) upperbound
         {
             lo = mid + 1;
-            len -= half + 1;
+            len -= half_len + 1;
         }
         else
-            len = half;
+            len = half_len;
     }
     return lo;
 }
@@ -110,7 +110,7 @@ T *bin_search(T *lo, T *hi, const T &val)
         else
             return mid;
     }
-    return nullptr;
+    return hi;
 }
 
 int main(int argc, char const *argv[])
@@ -123,7 +123,7 @@ int main(int argc, char const *argv[])
     iota(b, b + SIZE, 0);
     startTime = clock();
     for (int i = 0; i < 1000; i++)
-        _lowerbound(b, b + SIZE, 2000);
+        _lower_bound(b, b + SIZE, 2000);
 
     endTime = clock();
 

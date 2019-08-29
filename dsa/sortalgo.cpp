@@ -4,20 +4,19 @@
 #include <bits/stdc++.h>
 
 #define test() freopen("in", "r", stdin)
-#define SIZE 50000
+#define SIZE 10000
 using namespace std;
 
-template <class T>
-inline void HeapSort(T *lo, T *hi)
+template <typename T>
+static void HeapSort(T *lo, T *hi)
 {
     make_heap(lo, hi);
-    sort_heap(lo, hi);
-    // for (int i = n; i > 1; --i)
-    //     pop_heap(a, a + i);
+    for (int i = hi - lo; i > 1; --i)
+        pop_heap(lo, lo + i);
 }
 
-template <class T>
-void bubbleSort(T *lo, T *hi)
+template <typename T>
+static void bubbleSort(T *lo, T *hi)
 { // Bubble largest element in a[0:n-1] to hi.
     T *i, *k;
     for (k = hi - 1; k > lo; k--)
@@ -34,8 +33,8 @@ void bubbleSort(T *lo, T *hi)
     }
 }
 
-template <class T>
-void double_bubbleSort(T *lo, T *hi)
+template <typename T>
+static void double_bubbleSort(T *lo, T *hi)
 { // Bubble largest element in a[0:n-1] to hi.
     bool flag = true;
     hi--;
@@ -54,8 +53,8 @@ void double_bubbleSort(T *lo, T *hi)
     }
 }
 
-template <class T>
-void selectionSort(T *lo, T *hi)
+template <typename T>
+static void selectionSort(T *lo, T *hi)
 { // Sort the n elements a[0:n-1].
 
     T *i, *j;
@@ -66,7 +65,7 @@ void selectionSort(T *lo, T *hi)
     }
 }
 
-template <class T>
+template <typename T>
 static inline void linear_insert(T *lo, T *hi)
 { // [lo, hi]
     T val = *hi;
@@ -76,7 +75,7 @@ static inline void linear_insert(T *lo, T *hi)
     copy_backward(pos, hi, hi + 1);
     *pos = val;
 }
-template <class T>
+template <typename T>
 static void insertionSort(T *lo, T *hi)
 { // [lo, hi)
     if (lo != hi)
@@ -85,21 +84,21 @@ static void insertionSort(T *lo, T *hi)
 }
 
 const int Sedgewick[] = {929, 505, 209, 109, 41, 19, 5, 1, 0};
-template <class T>
+template <typename T>
 static void shellSort(T *a, T *b)
 {
     int n = b - a;
-    int i, j, c, step;
-    for (c = 0; Sedgewick[c] >= n; ++c)
+    int i, j, c, increment;
+    for (c = 0; n <= Sedgewick[c]; ++c)
         ;
 
-    for (step = Sedgewick[c]; step; step = Sedgewick[++c])
-        for (i = step; i < n; ++i)
+    for (increment = Sedgewick[c]; increment != 0; increment = Sedgewick[++c])
+        for (i = increment; i < n; ++i)
         {
-            T t = a[i];
-            for (j = i; step <= j && t < a[j - step]; j -= step)
-                a[j] = a[j - step];
-            a[j] = t;
+            T tmp = a[i];
+            for (j = i; increment <= j && tmp < a[j - increment]; j -= increment)
+                a[j] = a[j - increment];
+            a[j] = tmp;
         }
 }
 
@@ -171,35 +170,50 @@ template <typename T>
 static T *__partition(T *lo, T *hi)
 {
     T pivot = __median3(lo, hi);
-    T *i = lo, *j = hi;
-    while (i < j)
+    T *pre = lo, *post = hi;
+    while (pre < post)
     {
-        while (i < j && *j >= pivot)
-            j--;
-        *i = i < j ? *j : *i;
-        while (i < j && *i <= pivot)
-            i++;
-        *j = i < j ? *i : *j;
+        while (pre < post && pivot <= *post)
+            post--;
+        while (pre < post && *pre <= pivot)
+            pre++;
+        swap(*pre, *post);
     }
-    *i = pivot;
-    return i;
+    *pre = pivot;
+    return pre;
 }
-//quickSort Routine
 template <typename T>
 static void quickSort(T *lo, T *hi)
 {
     if (lo < hi)
     {
-        if (hi - lo < CUTOFF)
-        {
-            insertionSort(lo, hi + 1);
-            return;
-        }
-        T *pivot = __partition(lo, hi);
-        quickSort(lo, pivot - 1);
-        quickSort(pivot + 1, hi);
+        T *p = __partition(lo, hi);
+        quickSort(lo, p - 1);
+        quickSort(p + 1, hi);
     }
 }
+template <typename T>
+static T *findKthMin(T *lo, T *hi, int k)
+{
+    T *p = __partition(lo, hi);
+    int rank = p - lo;
+    if (rank == k)
+        return p;
+    else if (k < rank)
+        return findKthMin(lo, p - 1, k);
+    else
+        return findKthMin(p + 1, hi, k - (rank + 1));
+}
+/*
+
+1:Build max heap , then call DeletMax for k times.  
+O(N + KlogN)
+2:Keep a min heap of k elements. Compare a new element with the root and, DeletMin and Insert the
+new element (if the new one is larger.)
+O(K + NlogK)
+3:partition Average = O(N). Worst=O(N2).
+
+*/
 
 template <typename T>
 static void tableSort(T *a, T *b)
@@ -210,11 +224,11 @@ static void tableSort(T *a, T *b)
         table[i] = i;
     for (int i = 1; i < n; i++)
     {
-        int t = table[i];
+        int tmp = table[i];
         int j;
-        for (j = i; 1 <= j && a[t] < a[table[j - 1]]; j -= 1)
+        for (j = i; 1 <= j && a[tmp] < a[table[j - 1]]; j -= 1)
             table[j] = table[j - 1];
-        table[j] = t;
+        table[j] = tmp;
     }
     for (int i = 0; i < n; i++)
     {
@@ -230,33 +244,6 @@ static void tableSort(T *a, T *b)
         a[last] = val;
     }
 }
-template <typename T>
-T findKthMin(T *lo, T *hi, int k)
-{
-    T *p = __partition(lo, hi);
-    int len = p - lo;
-    if (len == k)
-        return *p;
-    else if (len > k)
-        return findKthMin(lo, p - 1, k);
-    else
-        return findKthMin(p + 1, hi, k - len - 1);
-}
-
-void sort__1(int *a, int n){
-    int i = 1, mi, ma;
-    while(i < n - i + 1){
-        mi = ma = i;
-        for(int j = i + 1; j <= n + i -1; j++){
-            if(a[j] < a[mi]) mi = j;
-            else if(a[j] < a[ma]) ma = j;
-        }
-        if(mi != i) swap(a[mi] , a[i]);
-        if(ma != n- i + 1){
-            
-        }
-    }
-}
 
 int main(int argc, char const *argv[])
 {
@@ -268,7 +255,7 @@ int main(int argc, char const *argv[])
     clock_t startTime, endTime;
     startTime = clock();
 
-    quickSort(b, b + SIZE);
+    quickSort(b, b +SIZE);
 
     endTime = clock();
 

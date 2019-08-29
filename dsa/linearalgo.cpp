@@ -1,6 +1,7 @@
 // author - newguo@sonaspy.cn
 // coding - utf_8
 #include <iostream>
+#include <numeric>
 #define test() freopen("in", "r", stdin)
 
 using namespace std;
@@ -74,10 +75,55 @@ bool reverse_(T lo, T hi)
         for (; lo < --hi; ++lo)
             swap(*lo, *hi);
 }
+template <class T>
+T *_lowerbound(T *lo, T *hi, const T &val)
+{ // binary search
+    int len = hi - lo;
+    int half;
+    T *mid;
+    while (len > 0)
+    {
+        half = len >> 1;
+        mid = lo + half;
+        if (*mid < val) // (<=) upperbound
+        {
+            lo = mid + 1;
+            len -= half + 1;
+        }
+        else
+            len = half;
+    }
+    return lo;
+}
+
+template <class T>
+T *bin_search(T *lo, T *hi, const T &val)
+{
+    T *mid;
+    while (lo <= hi)
+    {
+        mid = lo + (hi - lo) / 2;
+        if (*mid < val)
+            lo = mid + 1;
+        else if (val < *mid)
+            hi = mid - 1;
+        else
+            return mid;
+    }
+    return nullptr;
+}
 
 int main(int argc, char const *argv[])
 {
     /* code */
     //test();
+    int a[1000];
+    srand(time(NULL));
+    iota(a, a + 1000, 0);
+    for (int i = 0; i < 100; i++)
+    {
+        int *p = bin_search(a, a + 1000, rand() % 1000);
+        cout << *p << endl;
+    }
     return 0;
 }

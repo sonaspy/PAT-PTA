@@ -1,4 +1,4 @@
-# author -  newguo@sonaspy.cn
+# author - sonaspy@outlook.com
 # coding - utf_8
 count = 0
 x = input()

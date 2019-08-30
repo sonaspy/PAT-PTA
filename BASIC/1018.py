@@ -1,4 +1,4 @@
-# author -  newguo@sonaspy.cn
+# author - sonaspy@outlook.com
 # coding - utf_8
 n = eval(input())
 arr = list()

@@ -1,4 +1,4 @@
-# author -  newguo@sonaspy.cn 
+# author - sonaspy@outlook.com 
 # coding - utf_8 
 #-1.2E+10
 num = input().split('E')

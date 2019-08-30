@@ -1,4 +1,4 @@
-# author -  newguo@sonaspy.cn
+# author - sonaspy@outlook.com
 # coding - utf_8
 import math
 a = [float(i) for i in input().split()]

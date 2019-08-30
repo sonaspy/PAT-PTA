@@ -1,4 +1,4 @@
-// author - newguo@sonaspy.cn
+// author -sonaspy@outlook.com
 // coding - utf_8
 
 #include <bits/stdc++.h>
@@ -11,12 +11,12 @@ set<int> gangs;
 vector<int> suspect, suscall(1111, 0), callback(1111, 0), vis(1111, 0);
 void dfs(int id)
 {
-    vis[id] = 1, gangs.insert(id);
     for (auto i : suspect)
-    {
         if (!vis[i] && mp[id][i] && mp[i][id])
+        {
+            vis[id] = 1, gangs.insert(id);
             dfs(i);
-    }
+        }
 }
 int main(int argc, char const *argv[])
 {
@@ -54,6 +54,7 @@ int main(int argc, char const *argv[])
         if (!vis[i])
         {
             gangs.clear();
+            vis[i] = 1;
             dfs(i);
             int first = 1;
             for (auto fraud : gangs)

@@ -1,4 +1,4 @@
-# author - newguo@sonaspy.cn
+# author -sonaspy@outlook.com
 # coding - utf_8
 num, n = eval(','.join(input().split()))
 step = 0

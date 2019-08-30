@@ -1,29 +1,20 @@
-// author - newguo@sonaspy.cn
+// author -sonaspy@outlook.com
 // coding - utf_8
 
-#include <iostream>
-#include <algorithm>
-#include <vector>
-#include <string>
-#include <unordered_map>
-#include <stack>
-#include <queue>
-#include <cmath>
-#include <numeric>
+#include <bits/stdc++.h>
 
 #define test() freopen("in", "r", stdin)
 
 using namespace std;
-typedef long long ll;
-vector<ll> isPrime(5e4, 1);
+vector<int64_t> isPrime(1e4, 1);
 int main(int argc, char const *argv[])
 {
     /* code */
     //test();
-    ll num;
+    int64_t num;
     cin >> num;
-    for (int i = 2; i * i < 5e4; i++)
-        for (int j = 2; j * i < 5e4; j++)
+    for (int i = 2; i * i < 1e4; i++)
+        for (int j = 2; j * i < 1e4; j++)
             isPrime[i * j] = 0;
     printf("%lld=", num);
     if (num == 1)
@@ -32,24 +23,20 @@ int main(int argc, char const *argv[])
         return 0;
     }
     bool first = true;
-    for (int i = 2; num > 1; i++)
+    for (int factor = 2; num > 1; factor++)
     {
         int cnt = 0, flag = 0;
-        while (isPrime[i] && num % i == 0)
-        {
-            cnt++;
-            num /= i;
-            flag = 1;
-        }
+        while (isPrime[factor] && num % factor == 0)
+            cnt++, num /= factor, flag = 1;
         if (flag)
         {
             if (!first)
                 printf("*");
-            printf("%d", i);
+            printf("%d", factor);
             first = false;
+            if (cnt > 1)
+                printf("^%d", cnt);
         }
-        if (cnt >= 2)
-            printf("^%d", cnt);
     }
     return 0;
-} //attention
+}

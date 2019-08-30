@@ -1,4 +1,4 @@
-// author -  newguo@sonaspy.cn
+// author - sonaspy@outlook.com
 // coding - utf_8
 
 #define test() freopen("in","r",stdin)

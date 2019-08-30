@@ -1,14 +1,7 @@
-// author - newguo@sonaspy.cn
+// author -sonaspy@outlook.com
 // coding - utf_8
 
-#include <iostream>
-#include <algorithm>
-#include <vector>
-#include <string>
-#include <unordered_map>
-#include <stack>
-#include <queue>
-#include <numeric>
+#include <bits/stdc++.h>
 
 #define test() freopen("in", "r", stdin)
 
@@ -92,4 +85,4 @@ int main(int argc, char const *argv[])
     for (int i = 1; i < n; i++)
         printf(" %d", mp[w[i]]);
     return 0;
-}//attention
+} //attention

@@ -78,20 +78,18 @@ bool reverse_(T lo, T hi)
 template <class T>
 T *_lower_bound(T *lo, T *hi, const T &val)
 { // binary search
-    int len = hi - lo;
-    int half_len;
+    int len = hi - lo, half;
     T *mid;
     while (len > 0)
     {
-        half_len = len >> 1;
-        mid = lo + half_len;
+        half = len >> 1;
+        mid = lo + half;
         if (*mid < val) // (<=) upperbound
         {
             lo = mid + 1;
-            len -= half_len + 1;
+            len -= half + 1;
         }
-        else
-            len = half_len;
+        else len = half;
     }
     return lo;
 }

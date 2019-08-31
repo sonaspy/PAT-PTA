@@ -4,7 +4,7 @@
 #include <bits/stdc++.h>
 
 #define test() freopen("in", "r", stdin)
-#define SIZE 10000
+#define SIZE 40000
 using namespace std;
 
 template <typename T>
@@ -66,7 +66,7 @@ static void selectionSort(T *lo, T *hi)
 }
 
 template <class T>
-T * _lower_bound(T *lo, T *hi, const T &val)
+T *_lower_bound(T *lo, T *hi, const T &val)
 { // binary search
     int len = hi - lo, half_len;
     T *mid;
@@ -85,7 +85,7 @@ T * _lower_bound(T *lo, T *hi, const T &val)
     return lo;
 }
 template <class T>
-T * _upper_bound(T *lo, T *hi, const T &val)
+T *_upper_bound(T *lo, T *hi, const T &val)
 { // binary search
     int len = hi - lo, half_len;
     T *mid;
@@ -283,6 +283,18 @@ static void tableSort(T *a, T *b)
     }
 }
 
+// template <class Iter>
+// void q_sort(Iter* left, Iter* right)
+// {
+//     if (left >= right)
+//         return;
+//     Iter *mid = left;
+//     mid = partition(left + 1, right, bind2nd(less<int>(), *mid));
+//     iter_swap(mid - 1, left);
+//     q_sort(left, mid - 1);
+//     q_sort(mid, right);
+// }
+
 int main(int argc, char const *argv[])
 {
     /* code */
@@ -290,11 +302,10 @@ int main(int argc, char const *argv[])
     srand(time(NULL));
     int b[SIZE];
     generate(b, b + SIZE, []() { return rand() % SIZE; });
+    //iota(b, b + SIZE, 1);
     clock_t startTime, endTime;
     startTime = clock();
-
-    insertionSort(b, b + SIZE);
-
+    
     endTime = clock();
 
     cout << is_sorted(b, b + SIZE) << endl;

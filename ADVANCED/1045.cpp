@@ -12,15 +12,13 @@ void DFS(int start, int curRank)
 {
     for (int i = start; i < n; i++)
     {
-        int rank = colorRank[strip[i]];
-        if (curRank <= rank)
+        if (curRank <= colorRank[strip[i]])
         {
             length++;
-            DFS(i + 1, rank);
+            DFS(i + 1, colorRank[strip[i]]);
         }
     }
-    if (length > maxlen)
-        maxlen = length;
+    maxlen = max(length, maxlen);
     length--;
 }
 int main(int argc, char const *argv[])

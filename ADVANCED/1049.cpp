@@ -1,4 +1,4 @@
-// author -sonaspy@outlook.com
+// author - newguo@sonaspy.cn
 // coding - utf_8
 
 #include <iostream>
@@ -15,22 +15,20 @@ int main(int argc, char const *argv[])
 {
     /* code */
     //test();
-    int n, sum = 0;
+    int n, left, right, a = 1, now, sum = 0;
     cin >> n;
     string s = to_string(n);
     for (int i = 0, bits = s.size() - 1; i < s.size(); i++, bits--)
     {
-        int i_num = s[i] - '0',
-            high = (i != 0 ? stoi(s.substr(0, i)) : 0),
-            low = (i != s.size() - 1 ? stoi(s.substr(i + 1, s.size() - i - 1)) : 0);
-        if (i_num == 0)
+        int now = s[i] - '0', high = (i != 0 ? stoi(s.substr(0, i)) : 0), low = (i != s.size() - 1 ? stoi(s.substr(i + 1, s.size() - i - 1)) : 0);
+        if (!now)
             sum += high * pow(10, bits);
-        else if (i_num == 1)
+        else if (now == 1)
             sum += high * pow(10, bits) + low + 1;
         else
             sum += (high + 1) * pow(10, bits);
     }
     cout << sum;
-    //attention
+
     return 0;
 }

@@ -2,7 +2,6 @@
 // coding - utf_8
 
 #include <bits/stdc++.h>
-//attention
 #define test() freopen("in", "r", stdin)
 using namespace std;
 int n, f = 0, c = 0;
@@ -66,13 +65,16 @@ int main()
         invert(root);
         pre.clear();
         preorder(root);
-        if (equal(pre.begin(), pre.end(), input.begin())) f = 1;
+        if (equal(pre.begin(), pre.end(), input.begin()))
+            f = 1;
     }
     postorder(root);
-    if (!f) printf("NO");
+    if (!f)
+        printf("NO");
     else
     {
-        cout << "YES\n" << post_output[0];
+        cout << "YES\n"
+             << post_output[0];
         for (int i = 1; i < post_output.size(); i++)
             printf(" %d", post_output[i]);
     }

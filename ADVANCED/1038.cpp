@@ -1,4 +1,4 @@
-// author -sonaspy@outlook.com
+// author - newguo@sonaspy.cn
 // coding - utf_8
 
 #include <bits/stdc++.h>
@@ -15,11 +15,11 @@ int main(int argc, char const *argv[])
     int n, j = -1;
     cin >> n;
     string s, res;
-    vector<string> lis(n);
+    vector<string> l(n);
     for (int i = 0; i < n; i++)
-        cin >> lis[i];
-    sort(lis.begin(), lis.end(), cmp);
-    for (auto i : lis)
+        cin >> l[i];
+    sort(l.begin(), l.end(), cmp);
+    for (auto i : l)
         res += i;
     while (res[++j] == '0')
         ;
@@ -28,4 +28,4 @@ int main(int argc, char const *argv[])
     else
         cout << res.substr(j, res.size() - j);
     return 0;
-} //attention
+}

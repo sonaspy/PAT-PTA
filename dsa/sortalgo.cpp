@@ -65,6 +65,44 @@ static void selectionSort(T *lo, T *hi)
     }
 }
 
+template <class T>
+T * _lower_bound(T *lo, T *hi, const T &val)
+{ // binary search
+    int len = hi - lo, half_len;
+    T *mid;
+    while (len > 0)
+    {
+        half_len = len >> 1;
+        mid = lo + half_len;
+        if (*mid < val) // (<=) upperbound
+        {
+            lo = mid + 1;
+            len -= half_len + 1;
+        }
+        else
+            len = half_len;
+    }
+    return lo;
+}
+template <class T>
+T * _upper_bound(T *lo, T *hi, const T &val)
+{ // binary search
+    int len = hi - lo, half_len;
+    T *mid;
+    while (len > 0)
+    {
+        half_len = len >> 1;
+        mid = lo + half_len;
+        if (*mid <= val) // (<=) upperbound
+        {
+            lo = mid + 1;
+            len -= half_len + 1;
+        }
+        else
+            len = half_len;
+    }
+    return lo;
+}
 template <typename T>
 static inline void linear_insert(T *lo, T *hi)
 { // [lo, hi]
@@ -255,7 +293,7 @@ int main(int argc, char const *argv[])
     clock_t startTime, endTime;
     startTime = clock();
 
-    quickSort(b, b +SIZE);
+    insertionSort(b, b + SIZE);
 
     endTime = clock();
 

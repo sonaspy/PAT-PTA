@@ -7,7 +7,7 @@
 
 using namespace std;
 
-struct Node
+struct node
 {
     int data, next, id = -1;
 };
@@ -16,8 +16,8 @@ int main(int argc, char const *argv[])
     /* code */
     //test();
     int c1, d, c2, src, n, k, step = 0, i;
-    Node mp[100000];
-    deque<Node> res, tmp;
+    node mp[100000];
+    deque<node> res, tmp;
     cin >> src >> n >> k;
     for (i = 0; i < n; i++)
     {
@@ -33,10 +33,7 @@ int main(int argc, char const *argv[])
         }
         tmp.push_back(mp[walk]);
     }
-    if (step % k == 0)
-        res.insert(res.end(), tmp.rbegin(), tmp.rend());
-    else
-        res.insert(res.end(), tmp.begin(), tmp.end());
+    step % k == 0 ? res.insert(res.end(), tmp.rbegin(), tmp.rend()) : res.insert(res.end(), tmp.begin(), tmp.end());
     for (i = 0; i < res.size() - 1; i++)
         printf("%05d %d %05d\n", res[i].id, res[i].data, res[i + 1].id);
     printf("%05d %d -1\n", res[i].id, res[i].data);

@@ -96,7 +96,7 @@ static void shellSort(T *a, T *b)
         for (i = increment; i < n; ++i)
         {
             T tmp = a[i];
-            for (j = i; increment <= j && tmp < a[j - increment]; j -= increment)
+            for (j = i; increment <= j && a[j - increment] > tmp; j -= increment)
                 a[j] = a[j - increment];
             a[j] = tmp;
         }

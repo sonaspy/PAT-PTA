@@ -6,16 +6,21 @@
 #define test() freopen("in", "r", stdin)
 
 using namespace std;
-vector<int> a(100), b(10);
-bool cmp(int &it1, int &it2) { return a[it1] < a[it2]; }
+struct node
+{
+    char a[1000];
+};
+void fun(node s[10])
+{
+    cout << &s->a << endl;
+}
 int main(int argc, char const *argv[])
 {
     /* code */
     //test();
-
-    iota(a.begin(), a.end(), 0);
-    iota(b.begin(), b.end(), 0);
-    auto i = max_element(b.begin(), b.begin() + 12, cmp);
-    cout << *i;
+    node n1[10];
+    //n1.a = new char[10];
+    cout << &n1->a << endl;
+    fun(n1);
     return 0;
 }

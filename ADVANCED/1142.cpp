@@ -1,4 +1,4 @@
-// author -sonaspy@outlook.com
+// author - newguo@sonaspy.cn
 // coding - utf_8
 
 #include <bits/stdc++.h>
@@ -6,58 +6,45 @@
 #define test() freopen("in", "r", stdin)
 
 using namespace std;
-unordered_set<int> MAP[211], st;
-int main(int argc, char const *argv[])
+int n, m, k, p;
+vector<int> mp[250];
+int check[205], vis[205], val[205];
+int main()
 {
-    /* code */
-    //test();
-    int n, m, a1, a2, k, p, tmp, tmp1;
     cin >> n >> m;
-    for (int i = 0; i < m; i++)
+    int x, y;
+    for (int i = 0; i < m; ++i)
     {
-        scanf("%d%d", &a1, &a2);
-        MAP[a1].insert(a2), MAP[a2].insert(a1);
+        cin >> x >> y;
+        mp[x].push_back(y), mp[y].push_back(x);
     }
     cin >> k;
-    for (int i = 0; i < k; i++)
+    while (k--)
     {
-        bool f1 = true, f2 = true, f3;
-        st.clear();
-        scanf("%d%d", &p, &tmp);
-        st.insert(tmp);
-        for (int j = 1; j < p; j++)
+        cin >> p;
+        fill(vis, vis + n + 1, 0);
+        for (int i = 0; i < p; i++)
         {
-            scanf("%d", &tmp1);
-            st.insert(tmp1);
-            if (!MAP[tmp].count(tmp1))
-                f1 = false;
+            cin >> check[i];
+            for (auto j : mp[check[i]])
+                vis[j]++;
         }
-        if (!f1)
-            printf("Not a Clique\n");
-        else
+        bool flag = true;
+        for (int i = 0; i < p; i++)
         {
-            for (int j = 1; j <= n; j++)
+            if (vis[check[i]] != p - 1)
             {
-                if (!st.count(j))
-                {
-                    f3 = true;
-                    for (auto v : st)
-                    {
-                        if (!MAP[j].count(v))
-                        {
-                            f3 = false;
-                            break;
-                        }
-                    }
-                    if (f3)
-                    {
-                        f2 = false;
-                        break;
-                    }
-                }
+                flag = false;
+                break;
             }
-            !f2 ? printf("Not Maximal\n") : printf("Yes\n");
         }
+        if (!flag)
+        {
+            printf("Not a Clique\n");
+            continue;
+        }
+        int no = count_if(vis + 1, vis + n + 1, [](int &c) { return c == p; });
+        (no) ? printf("Not Maximal\n") : printf("Yes\n");
     }
     return 0;
 }

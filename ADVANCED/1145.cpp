@@ -14,7 +14,6 @@ bool isprime(int n)
             return false;
     return true;
 }
-
 int main(int argc, char const *argv[])
 {
     /* code */

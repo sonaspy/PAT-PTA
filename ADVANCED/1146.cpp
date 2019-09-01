@@ -1,4 +1,4 @@
-// author -sonaspy@outlook.com
+// author - newguo@sonaspy.cn
 // coding - utf_8
 
 #include <bits/stdc++.h>
@@ -6,25 +6,26 @@
 #define test() freopen("in", "r", stdin)
 
 using namespace std;
-int indegree[1001] = {0}, nonfirst = 0, topOrder[1001] = {0}, n, m, k, a1, a2;
-vector<int> MAP[1001];
-bool Judge()
+int indegree[1001] = {0}, cnt = 0, resorder[1001] = {0}, n, m, k, a1, a2;
+vector<int> MAP[1001], res;
+
+inline bool Judge()
 {
-    vector<int> indgr(indegree, indegree + 1001);
+    vector<int> In(indegree, indegree + n + 1);
     for (int i = 0; i < n; i++)
     {
-        int V = topOrder[i];
-        if (indgr[V])
+        int V = resorder[i];
+        if (In[V])
             return false;
         for (auto w : MAP[V])
-            indgr[w]--;
+            In[w]--;
     }
     return true;
 }
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+    //test();
     cin >> n >> m;
     for (int i = 0; i < m; i++)
     {
@@ -36,13 +37,13 @@ int main(int argc, char const *argv[])
     for (int i = 0; i < k; i++)
     {
         for (int j = 0; j < n; j++)
-            scanf("%d", &topOrder[j]);
+            scanf("%d", &resorder[j]);
         if (!Judge())
         {
-            if (nonfirst)
+            if (cnt != 0)
                 cout << " ";
             cout << i;
-            nonfirst = 1;
+            cnt++;
         }
     }
 

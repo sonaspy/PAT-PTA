@@ -18,12 +18,12 @@ int main(int argc, char const *argv[])
     for (int i = 0; i < n - 1; i++)
     {
         tmp.clear();
-        for (int j = 0; j < res.size(); j++)
+        for (auto j = res.begin(); j < res.end(); j++)
         {
             int cnt = 1;
-            while (j < res.size() - 1 && res[j] == res[j + 1])
+            while (j < res.end() - 1 && *j == *(j + 1))
                 cnt++, j++;
-            tmp += res[j] + to_string(cnt);
+            tmp += *j + to_string(cnt);
         }
         res = tmp;
     }

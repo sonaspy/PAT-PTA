@@ -21,7 +21,7 @@ int main(int argc, char const *argv[])
     }
     while (k--)
     {
-        int cnt, explotion = 0, onship[100000] = {0};
+        int cnt, explode = 0, onship[100000] = {0};
         scanf("%d", &cnt);
         vector<int> packages(cnt);
         for (int i = 0; i < cnt; i++)
@@ -33,10 +33,10 @@ int main(int argc, char const *argv[])
             for (auto v : danger_pair[node])
                 if (onship[v] == 1)
                 {
-                    explotion = 1;
+                    explode = 1;
                     break;
                 }
-        printf("%s\n", explotion ? "No" : "Yes");
+        printf("%s\n", explode ? "No" : "Yes");
     }
     return 0;
 }

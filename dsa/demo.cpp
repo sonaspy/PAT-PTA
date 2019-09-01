@@ -11,13 +11,8 @@ int main(int argc, char const *argv[])
 {
     /* code */
     //test();
-    list<int> l1(10);
-    iota(l1.begin(), l1.end(), 0);
-    for (auto i : l1)
-        cout << i << ' ';
-    l1.splice(l1.begin(), l1, --------l1.end());
-    cout << endl;
-    for (auto i : l1)
-        cout << i << ' ';
+    int vis[10] = {1, 1, 1, 1, 1, 1, 0};
+    int i = count_if(vis, vis + 5, [](int &c) { return c != 1; });
+    cout << i;
     return 0;
 }

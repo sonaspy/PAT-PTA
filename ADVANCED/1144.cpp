@@ -19,7 +19,7 @@ int main(int argc, char const *argv[])
         scanf("%d", &num);
         st.insert(num);
     }
-    for (int i = 1; i <= 2 * n; i++)
+    for (int i = 1; i <= n + 1; i++)
     {
         if (!st.count(i))
         {

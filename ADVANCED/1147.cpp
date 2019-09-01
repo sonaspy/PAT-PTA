@@ -9,7 +9,8 @@ int m, n;
 vector<int> v;
 void postOrder(int id)
 {
-    if (id >= n)return;
+    if (n - 1 < id)
+        return;
     postOrder(id * 2 + 1);
     postOrder(id * 2 + 2);
     printf("%d%s", v[id], id == 0 ? "\n" : " ");

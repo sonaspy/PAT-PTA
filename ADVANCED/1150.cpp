@@ -1,10 +1,12 @@
-// author -sonaspy@outlook.com
+// author - newguo@sonaspy.cn
 // coding - utf_8
 
 #include <bits/stdc++.h>
 
 #define test() freopen("in", "r", stdin)
-
+#define NTC 2
+#define TS 3
+#define NA 0
 using namespace std;
 int MAP[300][300] = {0}, n, m, a1, a2, d, k, ansid, ansd = 1 << 30, tmpd, p, vis[300], first, tmp, last, flag;
 int main(int argc, char const *argv[])
@@ -29,12 +31,12 @@ int main(int argc, char const *argv[])
         {
             scanf("%d", &tmp);
             if (!MAP[last][tmp])
-                flag = 0;
+                flag = NA;
             tmpd += MAP[last][tmp];
             vis[tmp]++;
             last = tmp;
         }
-        if (!flag)
+        if (flag == NA)
         {
             printf("NA (Not a TS cycle)\n");
             continue;
@@ -43,11 +45,14 @@ int main(int argc, char const *argv[])
         for (int i = 1; i <= n; i++)
         {
             if (!vis[i])
-                flag = 2;
+            {
+                flag = NTC;
+                break;
+            }
             else if (vis[i] > 1 && i != first)
-                flag = 3;
+                flag = TS;
         }
-        if (flag == 2 || last != first)
+        if (flag == NTC || last != first)
         {
             printf("(Not a TS cycle)\n");
             continue;
@@ -57,7 +62,7 @@ int main(int argc, char const *argv[])
             ansd = tmpd;
             ansid = i;
         }
-        printf("%s\n", flag == 3 ? "(TS cycle)" : "(TS simple cycle)");
+        printf("%s\n", flag == TS ? "(TS cycle)" : "(TS simple cycle)");
     }
     printf("Shortest Dist(%d) = %d\n", ansid, ansd);
     return 0;

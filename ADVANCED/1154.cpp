@@ -6,7 +6,7 @@
 #define test() freopen("in", "r", stdin)
 
 using namespace std;
-vector<int> MAP[10010];
+vector<int> mp[10010];
 unordered_set<int> Color;
 int main(int argc, char const *argv[])
 {
@@ -17,23 +17,23 @@ int main(int argc, char const *argv[])
     for (int i = 0; i < m; i++)
     {
         scanf("%d%d", &v1, &v2);
-        MAP[v1].push_back(v2), MAP[v2].push_back(v1);
+        mp[v1].push_back(v2), mp[v2].push_back(v1);
     }
     cin >> k;
     while (k--)
     {
-        vector<int> vc(n);
+        vector<int> color(n);
         Color.clear();
         bool flag = true;
         for (int i = 0; i < n; i++)
         {
-            scanf("%d", &vc[i]);
-            Color.insert(vc[i]);
+            scanf("%d", &color[i]);
+            Color.insert(color[i]);
         }
         for (int i = 0; i < n; i++)
         {
-            for (auto j : MAP[i])
-                if (vc[j] == vc[i])
+            for (auto j : mp[i])
+                if (color[j] == color[i])
                 {
                     flag = false;
                     goto end;

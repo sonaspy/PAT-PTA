@@ -27,10 +27,10 @@ int main(int argc, char const *argv[])
     {
         lists.clear();
         scanf("%d%d", &a1, &a2);
-        set_intersection(v[a1].begin(), v[a1].end(), v[a2].begin(), v[a2].end(), back_inserter(lists));
+        set_intersection(v[a1].begin(), v[a1].end(), v[a2].begin(), v[a2].end(), inserter(lists, lists.begin()));
         nc = lists.size();
         lists.clear();
-        set_union(v[a1].begin(), v[a1].end(), v[a2].begin(), v[a2].end(), back_inserter(lists));
+        set_union(v[a1].begin(), v[a1].end(), v[a2].begin(), v[a2].end(), inserter(lists, lists.begin()));
         nt = lists.size();
         printf("%.1f%%\n", nc * 100.0 / nt);
     }

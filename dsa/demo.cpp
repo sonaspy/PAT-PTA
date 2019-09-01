@@ -6,21 +6,18 @@
 #define test() freopen("in", "r", stdin)
 
 using namespace std;
-struct node
-{
-    char a[1000];
-};
-void fun(node s[10])
-{
-    cout << &s->a << endl;
-}
+
 int main(int argc, char const *argv[])
 {
     /* code */
     //test();
-    node n1[10];
-    //n1.a = new char[10];
-    cout << &n1->a << endl;
-    fun(n1);
+    list<int> l1(10);
+    iota(l1.begin(), l1.end(), 0);
+    for (auto i : l1)
+        cout << i << ' ';
+    l1.splice(l1.begin(), l1, --------l1.end());
+    cout << endl;
+    for (auto i : l1)
+        cout << i << ' ';
     return 0;
 }

@@ -12,7 +12,7 @@ struct Station
     double price, x;
     const bool operator<(const Station b) const { return x < b.x; }
 };
-//attention
+//attention onerous
 int main(int argc, char const *argv[])
 {
     /* code */

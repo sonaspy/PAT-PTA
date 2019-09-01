@@ -7,10 +7,10 @@
 using namespace std;
 struct ListNode
 {
-    int val;
-    ListNode *next;
-    ListNode() : val(INT_MIN), next(nullptr) {}
-    ListNode(int v) : val(v), next(nullptr) {}
+    int val, freq;
+    ListNode *next, *pre;
+    ListNode() : val(INT_MIN), freq(0), next(nullptr), pre(nullptr) {}
+    ListNode(int v) : val(v), freq(0), next(nullptr), pre(nullptr) {}
 };
 double myPow(double x, int n)
 {
@@ -170,9 +170,10 @@ static void _merge_list(ListNode *l1, ListNode *l2, ListNode *&l)
     }
     r->next = p ? p : q;
 }
-#define HEAD_INSERT(L, walk) \
-    walk->next = L->next;    \
-    L->next = walk
+
+#define HEAD_INSERT(L, first) \
+    first->next = L->next;    \
+    L->next = first
 static void _merge_list2(ListNode *l1, ListNode *l2, ListNode *&l)
 { // 2 increasing order list merge to a new decreasing order list. in-place (head insert)
     ListNode *p = l1->next, *q = l2->next, *h;
@@ -195,6 +196,7 @@ static void _merge_list2(ListNode *l1, ListNode *l2, ListNode *&l)
         HEAD_INSERT(l, h);
     }
 }
+
 void reverse_List(ListNode *L)
 {
     ListNode *walk, *post;
@@ -216,6 +218,184 @@ void unique_sorted_list(T *lo, T *hi)
         if (*i != *j)
             *(++i) = *j;
 }
+void unique_sorted_Linkedlist(ListNode *l)
+{
+    ListNode *p = l->next, *d;
+    if (!p)
+        return;
+    while (p->next)
+    {
+        d = p->next;
+        if (d->val == p->val)
+        {
+            p->next = d->next;
+            delete d;
+        }
+        else
+            p = p->next;
+    }
+}
+
+void del_x_inlist1(ListNode *&l, int x)
+{
+    if (!l)
+        return;
+    if (l->val == x)
+    {
+        ListNode *p = l;
+        l = l->next;
+        delete l;
+        del_x_inlist1(l, x);
+    }
+    else
+        del_x_inlist1(l->next, x);
+}
+void del_x_inlist2(ListNode *&l, int x)
+{
+    ListNode *p = l->next, *r = l, *q;
+    while (p)
+    {
+        if (p->val != x)
+        {
+            r->next = p;
+            r = p;
+            p = p->next;
+        }
+        else
+        {
+            q = p;
+            p = p->next;
+            delete q;
+        }
+    }
+    r->next = nullptr;
+}
+
+void list_sort(ListNode *&l)
+{ // L->p->post
+    ListNode *p = l->next, *pre, *post = p->next;
+    p->next = nullptr;
+    p = post;
+    while (p)
+    {
+        post = p->next;
+        pre = l;
+        while (pre->next && pre->next->val < p->val)
+            pre = pre->next;
+        p->next = pre->next;
+        pre->next = p;
+        p = post;
+    }
+}
+
+void Min_delete(ListNode *&l)
+{
+    ListNode *p, *pre, *u;
+    while (l->next)
+    {
+        pre = l;
+        p = pre->next;
+        while (p->next)
+        {
+            if (p->next->val < pre->next->val)
+                pre = p;
+            p = p->next;
+        }
+        //cout << pre->next->val;
+        u = pre->next;
+        pre->next = u->next;
+        delete u;
+    }
+    delete (l);
+}
+
+ListNode *Locate(ListNode *&l, int x)
+{
+    ListNode *p = l->next, *left;
+    while (p && p->val != x)
+        p = p->next;
+    if (!p)
+        return nullptr;
+    p->freq++;
+    p->next->pre = p->pre;
+    p->pre->next = p->next;
+    left = p->pre;
+    while (left != l && left->freq <= p->freq)
+        left = left->pre;
+    p->next = left->next;
+    p->pre = left;
+    left->next = p;
+    p->next->pre = p;
+    return p;
+}
+
+ListNode *kth_ultimate(ListNode *&L, int k)
+{
+    ListNode *r, *l;
+    r = l = L;
+    while (--k && r)
+        r = r->next;
+    if (0 <= k && !r->next)
+        return nullptr;
+    while (r->next && l->next)
+    {
+        r = r->next;
+        l = l->next;
+    }
+    return l;
+}
+
+ListNode *createList()
+{
+    ListNode *dummy = new ListNode, *p = dummy;
+    for (int i = 1; i <= 100; i++)
+    {
+        p->next = new ListNode(i);
+        p = p->next;
+    }
+    return dummy;
+}
+
+ListNode *find_common_p(ListNode *l1, ListNode *l2)
+{
+    ListNode *thelong, *theshort, *p = l1, *q = l2;
+    int len1 = 0, len2 = 0, step = 0;
+    while (p = p->next)
+        len1++;
+    while (q = q->next)
+        len2++;
+    thelong = len1 > len2 ? l1 : l2;
+    theshort = thelong == l2 ? l1 : l2;
+    step = abs(len1 - len2);
+    while (step--)
+        thelong = thelong->next;
+    while (thelong != theshort)
+        thelong = thelong->next, theshort = theshort->next;
+    return thelong;
+}
+vector<int> twoSum(vector<int> &nums, int target)
+{
+    unordered_map<int, int> mapping;
+    unordered_set<int> st;
+    vector<int> result;
+    for (int i = 0; i < nums.size(); i++)
+    {
+        mapping[nums[i]] = 0;
+        st.insert(nums[i]);
+    }
+    for (int i = 0; i < nums.size(); i++)
+    {
+        const int gap = target - nums[i];
+        if (st.count(gap) && !mapping[gap] && !mapping[nums[i]])
+        {
+            result.push_back(nums[i]);
+            result.push_back(gap);
+            mapping[gap] = 1;
+            mapping[nums[i]] = 1;
+        }
+    }
+    return result;
+}
 
 int main(int argc, char const *argv[])
 {
@@ -227,7 +407,9 @@ int main(int argc, char const *argv[])
     clock_t startTime, endTime;
     //iota(b, b + SIZE, 0);
     startTime = clock();
-    cout << M_search(b, b + 5, a, a + 4) << endl;
+
+    ListNode *L = createList();
+
     endTime = clock();
 
     cout << "The run time is: " << (double)(endTime - startTime) / 1000 << "ms" << endl;

@@ -21,9 +21,5 @@ int main(int argc, char const *argv[])
     int(*p2arr)[3];
     int **p;
 
-    p = a2;
-    p = a3;
-    p2arr = &b;
-    p2arr = a;
     return 0;
 }

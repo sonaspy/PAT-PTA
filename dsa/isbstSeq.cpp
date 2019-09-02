@@ -9,9 +9,18 @@ using namespace std;
 bool flag = 1;
 void insert(TreeNode *&root, int v)
 {
-    if (!flag) return;
-    if (!root){ root = new TreeNode(v); return; }
-    if (root->left && root->right){flag = 0;return;}
+    if (!flag)
+        return;
+    if (!root)
+    {
+        root = new TreeNode(v);
+        return;
+    }
+    if (root->left && root->right)
+    {
+        flag = 0;
+        return;
+    }
     root->val <= v ? insert(root->right, v) : insert(root->left, v);
 }
 bool isBSTSeq(vector<int> &s)
@@ -29,7 +38,7 @@ int main(int argc, char const *argv[])
 {
     /* code */
     //test();
-    int a[] = {3, 2, 4, 1};
+    int a[] = {4, 3, 2, 1};
     vector<int> seq(a, a + 4);
 
     cout << isBSTSeq(seq);

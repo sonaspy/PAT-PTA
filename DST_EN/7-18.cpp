@@ -35,7 +35,8 @@ int main(int argc, char const *argv[])
         }
     }
     for (auto i : indegree)
-        if (!i.second) pq.push(i.first);
+        if (!i.second)
+            pq.push(i.first);
     while (pq.size())
     {
         v = pq.top(), pq.pop();
@@ -46,7 +47,8 @@ int main(int argc, char const *argv[])
     }
     for (int i = 0; i < ans.size(); i++)
     {
-        if (i) printf(" ");
+        if (i)
+            printf(" ");
         printf("%d", ans[i]);
     }
     return 0;

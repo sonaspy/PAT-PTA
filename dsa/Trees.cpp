@@ -1,3 +1,8 @@
+// author - newguo@sonaspy.cn
+// coding - utf_8
+
+#include <bits/stdc++.h>
+
 using namespace std;
 vector<int> arr(1000, -1);
 inline int find_root(int id)
@@ -544,4 +549,3 @@ public:
             percDown(i);
     }
 };
-

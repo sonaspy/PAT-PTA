@@ -41,7 +41,8 @@ int main(int argc, char const *argv[])
                 break;
             }
         }
-        if (!f) printf("-");
+        if (!f)
+            printf("-");
     }
     return 0;
 }

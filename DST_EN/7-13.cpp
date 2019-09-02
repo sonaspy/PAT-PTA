@@ -20,13 +20,13 @@ int main(int argc, char const *argv[])
     for (int i = 0; i < n; i++)
         scanf("%d", &b[i]);
     for (int i = 1; i < n; i++)
+    {
+        if (!is_sorted(b, b + i + 1))
         {
-            if (!is_sorted(b, b + i + 1))
-                {
-                    cur = i;
-                    break;
-                }
+            cur = i;
+            break;
         }
+    }
     for (int j = cur; j < n; j++)
         if (a[j] != b[j])
             is_insert = false;
@@ -34,30 +34,30 @@ int main(int argc, char const *argv[])
     if (is_insert)
         sort(b, b + cur + 1);
     else
+    {
+        for (step = 2; step < n / 2; step *= 2)
         {
-            for (step = 2; step < n / 2; step *= 2)
-                {
-                    int i;
-                    for (i = 0; i < n - (n % step); i += step)
-                        {
-                            if (!is_sorted(b + i, b + i + step))
-                                goto end;
-                        }
-                    if (!is_sorted(b + i, b + n))
-                        goto end;
-                }
-end:
-            if (step == n / 2)
-                sort(b, b + n);
-            else
-                {
-                    int i, num = n - (n % step);
-                    for (i = 0; i < num; i += step)
-                        sort(b + i, b + i + step);
-                    if ((n % (step)) > step / 2)
-                        sort(b + num, b + n);
-                }
+            int i;
+            for (i = 0; i < n - (n % step); i += step)
+            {
+                if (!is_sorted(b + i, b + i + step))
+                    goto end;
+            }
+            if (!is_sorted(b + i, b + n))
+                goto end;
         }
+    end:
+        if (step == n / 2)
+            sort(b, b + n);
+        else
+        {
+            int i, num = n - (n % step);
+            for (i = 0; i < num; i += step)
+                sort(b + i, b + i + step);
+            if ((n % (step)) > step / 2)
+                sort(b + num, b + n);
+        }
+    }
     cout << b[0];
     for (int i = 1; i < n; i++)
         printf(" %d", b[i]);

@@ -32,16 +32,7 @@ void funa(int *x, int *y)
     *y = *x - *y;
     *x = *x - *y;
 }
-inline int GCD(int n1, int n2)
-{
-    while (n2)
-    {
-        int tmp = n1 % n2;
-        n1 = n2;
-        n2 = tmp;
-    }
-    return n1;
-}
+
 
 inline double f(double s) { return s * s * s - 4 * s * s + 3 * s - 6; }
 inline double dichotomy(string s)

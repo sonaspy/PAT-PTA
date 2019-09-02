@@ -140,7 +140,16 @@ T *bin_search(T *lo, T *hi, const T &val)
     }
     return hi;
 }
-
+inline int GCD(int n1, int n2)
+{
+    while (n2)
+    {
+        int tmp = n1 % n2;
+        n1 = n2;
+        n2 = tmp;
+    }
+    return n1;
+}
 bool isMatch(vector<int> &push_seq, vector<int> &pop_seq, int capacity)
 {
     int walk = 0;
@@ -451,13 +460,16 @@ class tag_queue
 private:
     int tag, front, rear, maxsize;
     vector<int> data;
+
 public:
-    tag_queue(){
+    tag_queue()
+    {
         tag = front = rear = 0;
         data.resize(100);
         maxsize = 100;
     }
-    inline bool isempty(){
+    inline bool isempty()
+    {
         return front == rear && !tag;
     }
     inline bool isfull()
@@ -538,6 +550,12 @@ bool bracketMatch(char *f)
 6.表达式处理完毕后 output rest in stack
 (before start, put a guard in stack ,pri = -1(lowest) );
 */
+
+
+
+
+
+
 
 int main(int argc, char const *argv[])
 {

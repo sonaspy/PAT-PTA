@@ -402,27 +402,28 @@ class s_queue
 private:
     stack<int> s1, s2; // s1 - input . s2 - output
     int maxsize;
+
 public:
     inline bool enQueue(int x)
     {
-        int y;
         if (s1.size() == maxsize)
         {
             if (s2.size())
                 return 0;
             while (s1.size())
             {
-                y = s1.top(), s1.pop();
-                s2.push(y);
+                s2.push(s1.top());
+                s1.pop();
             }
             s1.push(x);
             return 1;
         }
         s1.push(x);
+        return 1;
     }
     inline bool deQueue(int &x)
     {
-        if (!s2.empty())
+        if (s2.size())
         {
             x = s2.top();
             s2.pop();
@@ -445,7 +446,86 @@ public:
     }
 };
 
+class tag_queue
+{
+private:
+    int tag, front, rear, maxsize;
+    vector<int> data;
+public:
+    tag_queue(){
+        tag = front = rear = 0;
+        data.resize(100);
+        maxsize = 100;
+    }
+    inline bool isempty(){
+        return front == rear && !tag;
+    }
+    inline bool isfull()
+    {
+        return front == rear && tag;
+    }
+    bool enqueue(int x)
+    {
+        if (isfull())
+            return 0;
+        data[rear] = x;
+        rear = (rear + 1) % maxsize;
+        tag = 1;
+        return 1;
+    }
+    bool dequeue(int &x)
+    {
+        if (isempty())
+            return 0;
+        x = data[front];
+        front = (front + 1) % maxsize;
+        tag = 0;
+        return 1;
+    }
+};
 
+bool bracketMatch(char *f)
+{
+    stack<char> s;
+    char *p = f;
+    while (*p)
+    {
+        if (*p == '\'')
+            while (*(++p) != '\'')
+                ;
+        else if (*p == '\"')
+            while (*(++p) != '\"')
+                ;
+        switch (*p)
+        {
+        case '{':
+        case '[':
+        case '(':
+            s.push(*p);
+            break;
+        case ')':
+            if (s.top() == '(')
+                s.pop();
+            else
+                return 0;
+            break;
+        case '}':
+            if (s.top() == '{')
+                s.pop();
+            else
+                return 0;
+            break;
+        case ']':
+            if (s.top() == '[')
+                s.pop();
+            else
+                return 0;
+            break;
+        }
+        ++p;
+    }
+    return s.empty();
+}
 
 // 后缀表达式O(N)
 // 中缀 -> 后缀

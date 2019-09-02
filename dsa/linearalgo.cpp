@@ -397,6 +397,68 @@ vector<int> twoSum(vector<int> &nums, int target)
     return result;
 }
 
+class s_queue
+{
+private:
+    stack<int> s1, s2; // s1 - input . s2 - output
+    int maxsize;
+public:
+    inline bool enQueue(int x)
+    {
+        int y;
+        if (s1.size() == maxsize)
+        {
+            if (s2.size())
+                return 0;
+            while (s1.size())
+            {
+                y = s1.top(), s1.pop();
+                s2.push(y);
+            }
+            s1.push(x);
+            return 1;
+        }
+        s1.push(x);
+    }
+    inline bool deQueue(int &x)
+    {
+        if (!s2.empty())
+        {
+            x = s2.top();
+            s2.pop();
+            return 1;
+        }
+        if (s1.empty())
+            return 0;
+        while (s1.size())
+        {
+            s2.push(s1.top());
+            s1.pop();
+        }
+        x = s2.top();
+        s2.pop();
+        return 1;
+    }
+    inline bool isempty()
+    {
+        return s1.empty() && s2.empty();
+    }
+};
+
+
+
+// 后缀表达式O(N)
+// 中缀 -> 后缀
+/*
+1.运算数 output
+2.左括号， push
+3.右括号， pop output, until reach '(', pop too.
+4.运算符 I.if pri(this) > pri(top),push. II.if <= ,pop output, then compare again, until push.
+5.'(' push之前pri最高， push后pri最低
+6.表达式处理完毕后 output rest in stack
+(before start, put a guard in stack ,pri = -1(lowest) );
+*/
+
 int main(int argc, char const *argv[])
 {
     /* code */

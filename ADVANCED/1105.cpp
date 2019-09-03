@@ -18,7 +18,7 @@ inline int func(int N)
 int main(int argc, char const *argv[])
 {
     /* code */
-    test();
+    //test();
     int N, m, n;
     cin >> N;
     n = func(N);
@@ -27,19 +27,19 @@ int main(int argc, char const *argv[])
     for (int i = 0; i < N; i++)
         scanf("%d", a + i);
     sort(a, a + N, greater<int>());
-    int i, j, left = 0, right = n - 1, up = 0, down = m - 1, x = 0, row = 0, col = 0, d = 1, done;
+    int i, j, left = 0, right = n - 1, up = 0, down = m - 1, x = 0, row = 0, col = 0, status = 1, done;
     while (x < N)
     {
         b[row][col] = a[x++];
         done = 0;
         do
         {
-            switch (d)
+            switch (status)
             {
             case 1:
                 if (++col > right)
                 {
-                    col = right, d = 2;
+                    col = right, status = 2;
                     continue;
                 }
                 else
@@ -50,7 +50,7 @@ int main(int argc, char const *argv[])
             case 2:
                 if (++row > down)
                 {
-                    row = down, d = 3;
+                    row = down, status = 3;
                     continue;
                 }
                 else
@@ -61,7 +61,7 @@ int main(int argc, char const *argv[])
             case 3:
                 if (--col < left)
                 {
-                    col = left, d = 4;
+                    col = left, status = 4;
                     continue;
                 }
                 else
@@ -74,7 +74,7 @@ int main(int argc, char const *argv[])
                 {
                     down--, left++, up++, right--;
                     row = up;
-                    d = 1;
+                    status = 1;
                     continue;
                 }
                 else

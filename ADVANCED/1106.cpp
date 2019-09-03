@@ -14,28 +14,24 @@ struct Node
 } nodes[100001];
 int n, num, tmp, root = 0, res = 0;
 double price, per;
-double ans = 99999999.999;
-
+double ans = 99999999;
 void BFS()
 {
     queue<int> q;
-    int v;
-    bool f;
+    int v, f;
     double p;
     q.push(root);
     while (q.size())
     {
-        v = q.front();
-        q.pop();
-        p = nodes[v].p;
-        f = false;
+        v = q.front(), q.pop();
+        p = nodes[v].p, f = 1;
         for (auto i : nodes[v].sub)
         {
             q.push(i);
             nodes[i].p = p + (p * per) / 100;
-            f = true;
+            f = 0;
         }
-        if (!f && p < ans)
+        if (f && p < ans)
             ans = p;
     }
 }

@@ -6,17 +6,16 @@
 #define test() freopen("in", "r", stdin)
 
 using namespace std;
-typedef struct Node *ptrn;
-struct Node
+struct TreeNode
 {
     int val, flag;
-    ptrn left, right;
-    Node(int x) : val(x), flag(-1), left(nullptr), right(nullptr) {}
+    TreeNode *left, *right;
+    TreeNode(int x) : val(x), flag(-1), left(nullptr), right(nullptr) {}
 };
-vector<ptrn> tree(20);
+vector<TreeNode *> tree(20);
 vector<int> res;
 int n, root;
-void inOrder(ptrn root)
+void inOrder(TreeNode *root)
 {
     if (!root)
         return;
@@ -24,11 +23,11 @@ void inOrder(ptrn root)
     res.push_back(root->val);
     inOrder(root->right);
 }
-void level(ptrn root)
+void level(TreeNode *root)
 {
-    queue<ptrn> q;
+    queue<TreeNode *> q;
     q.push(root);
-    ptrn v;
+    TreeNode *v;
     while (q.size())
     {
         v = q.front(), q.pop();
@@ -39,11 +38,10 @@ void level(ptrn root)
             q.push(v->right);
     }
 }
-ptrn invert(ptrn root)
+TreeNode *invert(TreeNode *root)
 {
-    if (!root)
-        return nullptr;
-    ptrn tmp = invert(root->right);
+    if (!root) return nullptr;
+    TreeNode *tmp = invert(root->right);
     root->right = invert(root->left);
     root->left = tmp;
     return root;
@@ -61,7 +59,7 @@ int main(int argc, char const *argv[])
     cin >> n;
     char c1, c2;
     for (int i = 0; i < 20; i++)
-        tree[i] = new Node(i);
+        tree[i] = new TreeNode(i);
     for (int i = 0; i < n; i++)
     {
         getchar();

@@ -6,26 +6,21 @@
 #define test() freopen("in", "r", stdin)
 
 using namespace std;
-typedef struct node *ptrn;
-struct node
+struct TreeNode
 {
-    int data;
-    ptrn l = nullptr, r = nullptr;
-    node(int d) : data(d) {}
+    int val;
+    TreeNode *l = nullptr, *r = nullptr;
+    TreeNode(int d) : val(d) {}
 };
 
-void insert_node(int data, ptrn &root)
+void insert_node(int val, TreeNode *&root)
 {
     if (!root)
     {
-        root = new node(data);
+        root = new TreeNode(val);
         return;
     }
-    else if (data <= root->data)
-        insert_node(data, root->l);
-    else if (data > root->data)
-        insert_node(data, root->r);
-    return;
+    (val <= root->val) ? insert_node(val, root->l) : insert_node(val, root->r);
 }
 
 int main(int argc, char const *argv[])
@@ -33,18 +28,19 @@ int main(int argc, char const *argv[])
     /* code */
     //test();
     int n, tmp, n1 = 0, n2 = 0;
-    vector<int> level_size(1, 0);
+    vector<int> level_size;
     cin >> n;
-    ptrn ROOT, v;
+    TreeNode *ROOT, *v;
     for (int i = 0; i < n; i++)
     {
         scanf("%d", &tmp);
         insert_node(tmp, ROOT);
     }
-    queue<ptrn> q, next_q;
+    queue<TreeNode *> q, next_q;
     q.push(ROOT);
     while (q.size())
     {
+        level_size.push_back(0);
         while (q.size())
         {
             v = q.front(), q.pop();
@@ -54,11 +50,9 @@ int main(int argc, char const *argv[])
             if (v->r)
                 next_q.push(v->r);
         }
-        level_size.push_back(0);
         swap(q, next_q);
     }
-    level_size.pop_back();
-    n1 = level_size[level_size.size() - 1], n2 = level_size[level_size.size() - 2];
+    n1 = level_size.back(), n2 = *(level_size.rbegin() + 1);
     printf("%d + %d = %d", n1, n2, n1 + n2);
     return 0;
 }

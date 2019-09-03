@@ -18,7 +18,8 @@ int main(int argc, char const *argv[])
         scanf("%s", a);
         sscanf(a, "%lf", &number);
         sprintf(b, "%.2f", number);
-        if (strncmp(a, b, strlen(a)) != 0 || abs(number) > 1000)
+        string s1(a), s2(b);
+        if (!equal(s1.begin(), s1.end(), s2.begin()) || abs(number) > 1000)
         {
             printf("ERROR: %s is not a legal number\n", a);
             continue;

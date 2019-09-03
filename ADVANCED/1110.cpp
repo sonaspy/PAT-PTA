@@ -40,7 +40,8 @@ int main(int argc, char const *argv[])
             trees[i]->right = trees[c2];
         }
     }
-    while (who[++r]) ;
+    while (who[++r])
+        ;
     TreeNode *v = trees[r];
     queue<TreeNode *> q;
     q.push(trees[r]);

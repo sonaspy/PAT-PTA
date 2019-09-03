@@ -20,11 +20,8 @@ bool cmp(const node *a, const node *b)
 int n, k, m, tmpm;
 static inline int seq(int &idx)
 {
-    if (idx % 2 == 0)
-        return tmpm / 2 + idx / 2;
-    return tmpm / 2 - (idx + 1) / 2;
+    return (idx % 2 == 0) ? tmpm / 2 + idx / 2 : tmpm / 2 - (idx + 1) / 2;
 }
-
 int main(int argc, char const *argv[])
 {
     /* code */

@@ -14,8 +14,7 @@ inline int find_root(int id)
 inline void Union__(int a, int b)
 {
     int ra = find_root(a), rb = find_root(b);
-    if (ra != rb)
-        tree[rb] = ra;
+    if (ra != rb) tree[rb] = ra;
 }
 int main(int argc, char const *argv[])
 {
@@ -41,8 +40,7 @@ int main(int argc, char const *argv[])
         if (exist[i])
         {
             cnt2++;
-            if (tree[i] == -1)
-                cnt1++;
+            cnt1 += tree[i] == -1 ? 1 : 0;
         }
     }
     cout << cnt1 << " " << cnt2 << endl;

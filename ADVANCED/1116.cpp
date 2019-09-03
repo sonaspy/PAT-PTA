@@ -9,10 +9,9 @@ using namespace std;
 int arr[10000];
 inline bool isPrime(int num)
 {
-    if (num != 2 && num % 2 == 0)
+    if (num < 2 || (num > 2 && num % 2 == 0))
         return false;
-    int s = sqrt(num);
-    for (int i = 3; i <= s; i += 2)
+    for (int i = 3; i <= sqrt(num); i += 2)
         if (num % i == 0)
             return false;
     return true;

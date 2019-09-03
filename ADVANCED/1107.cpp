@@ -8,16 +8,18 @@
 using namespace std;
 
 int n, id, hob, k, vis[1001] = {0}, cnt = 0;
-vector<int> sizes, hobby[1001], MAP[1001];
+vector<int> cluster, hobby[1001], MAP[1001];
 
 inline void dfs(int v)
 {
-    vis[v] = 1;
-    cnt++;
     for (auto k : MAP[v])
     {
         if (!vis[k])
+        {
+            vis[k] = 1;
+            cnt++;
             dfs(k);
+        }
     }
 }
 
@@ -32,14 +34,8 @@ int main(int argc, char const *argv[])
         for (int j = 0; j < k; j++)
         {
             scanf("%d", &hob);
-            if (hobby[hob].size())
-            {
-                for (auto k : hobby[hob])
-                {
-                    MAP[k].push_back(i);
-                    MAP[i].push_back(k);
-                }
-            }
+            for (auto &k : hobby[hob])
+                MAP[k].push_back(i), MAP[i].push_back(k);
             hobby[hob].push_back(i);
         }
     }
@@ -47,18 +43,17 @@ int main(int argc, char const *argv[])
     {
         if (!vis[i])
         {
-            cnt = 0;
+            cnt = 1, vis[i] = 1;
             dfs(i);
-            sizes.push_back(cnt);
+            cluster.push_back(cnt);
         }
     }
-    sort(sizes.begin(), sizes.end(), greater<int>());
-    cout << sizes.size() << endl;
-    for (int i = 0; i < sizes.size(); i++)
+    sort(cluster.begin(), cluster.end(), greater<int>());
+    cout << cluster.size() << endl;
+    for (int i = 0; i < cluster.size(); i++)
     {
-        if (i)
-            cout << " ";
-        cout << sizes[i];
+        if (i) cout << " ";
+        cout << cluster[i];
     }
     return 0;
 }

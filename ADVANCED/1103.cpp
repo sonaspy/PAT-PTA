@@ -6,20 +6,19 @@
 #define test() freopen("in", "r", stdin)
 
 using namespace std;
-int target, k, p, maxFacSum = -1;
-vector<int> potentials(1, 0), res, tmpRes;
+int target, k, p, maxFacSum = -1, thisSum = 0, facSum = 0;
+vector<int> potentials, res, tmpRes;
 inline void init()
 {
     int c = 1, n = 1;
     while (n <= target)
     {
         potentials.push_back(n);
-        n = pow(++c, p); // potentials [0......] -> [,1,2,3,4,....]
+        n = pow(++c, p);
     }
 }
 inline void dfs(int this_fac)
 {
-    static int thisSum = 0, facSum = 0;
     if (tmpRes.size() == k)
     {
         if (thisSum == target && facSum > maxFacSum)
@@ -29,17 +28,13 @@ inline void dfs(int this_fac)
         }
         return;
     }
-    for (; this_fac; this_fac--)
+    for (; this_fac > -1; this_fac--)
     {
         if (thisSum + potentials[this_fac] <= target)
         {
-            facSum += this_fac;
-            tmpRes.push_back(this_fac);
-            thisSum += potentials[this_fac];
+            facSum += this_fac, tmpRes.push_back(this_fac + 1), thisSum += potentials[this_fac];
             dfs(this_fac);
-            thisSum -= potentials[this_fac];
-            tmpRes.pop_back();
-            facSum -= this_fac;
+            thisSum -= potentials[this_fac], tmpRes.pop_back(), facSum -= this_fac;
         }
     }
 }

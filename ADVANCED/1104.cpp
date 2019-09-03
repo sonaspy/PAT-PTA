@@ -10,7 +10,6 @@ using namespace std;
 int main(int argc, char const *argv[])
 {
     /* code */
-    //test();
     int n;
     cin >> n;
     double sum = 0.0, temp;

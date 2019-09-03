@@ -23,8 +23,7 @@ TreeNode *Construct(int leftOfpre, int rightOfpre, int leftOfpost, int rightOfpo
     if (leftOfpre == rightOfpre)
         return root;
     int leftSubVal = pre[leftOfpre + 1], i, sub_cnt;
-    for (i = leftOfpost; i < rightOfpost && post[i] != leftSubVal; i++)
-        ;
+    for (i = leftOfpost; i < rightOfpost && post[i] != leftSubVal; i++) ;
     sub_cnt = i - leftOfpost;
     if (i + 1 < rightOfpost) // 2 child
     {

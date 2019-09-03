@@ -40,7 +40,7 @@ int main(int argc, char const *argv[])
     for (int i = 0; i < s.size(); i++)
     {
         int k = 1, c = i;
-        if (isstuck[s[i]] == true)
+        if (isstuck[s[i]])
             while (i < s.size() - 1 && s[i] == s[i + 1])
             {
                 i++, k++;

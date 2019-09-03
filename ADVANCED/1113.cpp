@@ -11,12 +11,12 @@ int main(int argc, char const *argv[])
 {
     /* code */
     //test();
-    long long n, a[100000], ini = 0;
+    long long n, a[100000];
     cin >> n;
     for (int i = 0; i < n; i++)
         scanf("%lld", a + i);
-    sort(a, a + n);
-    cout << (n % 2 == 0 ? 0 : 1) << " ";
-    cout << accumulate(a + n / 2, a + n, ini) - accumulate(a, a + n / 2, ini);
+    nth_element(a, a + n / 2, a + n);
+    cout << n % 2 << " ";
+    cout << accumulate(a + n / 2, a + n, 0) - accumulate(a, a + n / 2, 0);
     return 0;
 }

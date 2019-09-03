@@ -369,10 +369,10 @@ ListNode *find_common_p(ListNode *l1, ListNode *l2)
 {
     ListNode *thelong, *theshort, *p = l1, *q = l2;
     int len1 = 0, len2 = 0, step = 0;
-    while (p = p->next)
-        len1++;
-    while (q = q->next)
-        len2++;
+    while (p)
+        p = p->next, len1++;
+    while (q)
+        q = q->next, len2++;
     thelong = len1 > len2 ? l1 : l2;
     theshort = thelong == l2 ? l1 : l2;
     step = abs(len1 - len2);
@@ -496,6 +496,36 @@ public:
     }
 };
 
+class share_stack
+{
+private:
+    int maxsize, top1, top2;
+    vector<int> data;
+
+public:
+    share_stack(int m)
+    {
+        maxsize = m, top1 = -1, top2 = maxsize;
+        data.resize(maxsize);
+    }
+    inline bool isfull() { return top1 + 1 == top2; }
+    inline bool isempty(int id) { return id == 1 ? top1 == -1 : top2 == maxsize; }
+    bool push(int id, int x)
+    {
+        if (isfull())
+            return 0;
+        data[id == 1 ? ++top1 : --top2] = x;
+        return true;
+    }
+    bool pop(int id, int &x)
+    {
+        if (isempty(id))
+            return 0;
+        x = data[id == 1 ? top1-- : top2++];
+        return 1;
+    }
+};
+
 bool bracketMatch(char *f)
 {
     stack<char> s;
@@ -551,11 +581,23 @@ bool bracketMatch(char *f)
 (before start, put a guard in stack ,pri = -1(lowest) );
 */
 
-
-
-
-
-
+string str_add(string s1, string s2)
+{
+    int carry = 0;
+    auto i = s1.rbegin(), j = s2.rbegin();
+    string res;
+    while (i != s1.rend() || j != s2.rend())
+    {
+        int a = i != s1.rend() ? *(i++) - '0' : 0;
+        int b = j != s2.rend() ? *(j++) - '0' : 0;
+        int tmp = a + b + carry;
+        carry = tmp / 10;
+        res = to_string(int64_t(tmp % 10)) + res;
+    }
+    if (carry)
+        res = to_string(int64_t(carry)) + res;
+    return res;
+}
 
 int main(int argc, char const *argv[])
 {
@@ -568,7 +610,7 @@ int main(int argc, char const *argv[])
     //iota(b, b + SIZE, 0);
     startTime = clock();
 
-    ListNode *L = createList();
+    cout << str_add(string("11111111111111111111111"), string("11111111111111111111111111")) << endl;
 
     endTime = clock();
 

@@ -2,8 +2,6 @@
 # coding - utf_8
 
 from fractions import Fraction
-import re
-
 
 def solveFractions(frac):
     integer = int(frac.numerator / frac.denominator)
@@ -17,20 +15,20 @@ def solveFractions(frac):
     return res
 
 fs = input().split()
-res , strout = [], []
+res, str_res = [], []
 f1, f2 = Fraction(fs[0]), Fraction(fs[1])
-strout.append(solveFractions(f1))
-strout.append(solveFractions(f2))
+str_res.append(solveFractions(f1))
+str_res.append(solveFractions(f2))
 res.append(f1 + f2)
 res.append(f1 - f2)
 res.append(f1 * f2)
 for i in range(3):
-    strout.append(solveFractions(res[i]))
+    str_res.append(solveFractions(res[i]))
 if f2 == 0:
-    strout.append('Inf')
+    str_res.append('Inf')
 else:
-    strout.append(solveFractions(f1 / f2))
-print("{} + {} = {}".format(strout[0], strout[1], strout[2]))
-print("{} - {} = {}".format(strout[0], strout[1], strout[3]))
-print("{} * {} = {}".format(strout[0], strout[1], strout[4]))
-print("{} / {} = {}".format(strout[0], strout[1], strout[5]))
+    str_res.append(solveFractions(f1 / f2))
+print("{} + {} = {}".format(str_res[0], str_res[1], str_res[2]))
+print("{} - {} = {}".format(str_res[0], str_res[1], str_res[3]))
+print("{} * {} = {}".format(str_res[0], str_res[1], str_res[4]))
+print("{} / {} = {}".format(str_res[0], str_res[1], str_res[5]))

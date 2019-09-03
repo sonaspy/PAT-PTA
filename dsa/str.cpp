@@ -33,8 +33,6 @@ bool str_if_match(string s, string p)
     return 0;
 }
 
-
-
 int main(int argc, char const *argv[])
 {
     /* code */

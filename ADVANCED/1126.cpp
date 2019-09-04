@@ -21,28 +21,37 @@ int main(int argc, char const *argv[])
     for (int i = 1; i <= n; i++)
     {
         printf("%d%c", degree[i], (i == n ? '\n' : ' '));
-        oddnum += degree[i] % 2 == 1 ? 1 : 0;
+        oddnum += degree[i] % 2;
     }
     for (int i = 1; i <= n; i++)
     {
-        if(!vis[i]){
-            if(i > 1){
+        if (!vis[i])
+        {
+            if (i > 1)
+            {
                 isconn = 0;
                 break;
             }
             queue<int> q;
             q.push(i);
-            while(q.size()){
+            vis[i] = 1;
+            while (q.size())
+            {
                 v = q.front(), q.pop();
-                vis[v] = 1;
-                for(auto j : MAP[v])
-                    if(!vis[j])
+                for (auto j : MAP[v])
+                    if (!vis[j])
+                    {
+                        vis[j] = 1;
                         q.push(j);
+                    }
             }
         }
     }
-    if(isconn && oddnum == 0)cout << "Eulerian\n";
-    else if (isconn && oddnum == 2) cout << "Semi-Eulerian\n";
-    else cout << "Non-Eulerian\n";
+    if (isconn && oddnum == 0)
+        cout << "Eulerian\n";
+    else if (isconn && oddnum == 2)
+        cout << "Semi-Eulerian\n";
+    else
+        cout << "Non-Eulerian\n";
     return 0;
 }

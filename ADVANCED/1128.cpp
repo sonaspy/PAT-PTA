@@ -28,7 +28,7 @@ int main(int argc, char const *argv[])
                 }
             }
         }
-        cout << (flag == true ? "YES\n" : "NO\n");
+        cout << (flag ? "YES\n" : "NO\n");
     }
     return 0;
 }

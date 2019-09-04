@@ -11,24 +11,25 @@ int main(int argc, char const *argv[])
 {
     /* code */
     //test();
-    int m, n, s;
-    cin >> m >> n >> s;
+    int m, n, supposed;
+    cin >> m >> n >> supposed;
     string str;
-    unordered_map<string, int> mp;
+    unordered_map<string, int> already;
     bool flag = false;
     for (int i = 1; i <= m; i++)
     {
         cin >> str;
-        if (mp.count(str))
-            s++;
-        if (i == s && !mp.count(str))
+        if (already.count(str))
+            supposed++;
+        if (i == supposed && !already.count(str))
         {
-            mp[str] = 1;
+            already[str] = 1;
             cout << str << endl;
-            flag = true;
-            s += n;
+            flag = 1;
+            supposed += n;
         }
     }
-    if (flag == false) cout << "Keep going...\n";
+    if (!flag)
+        cout << "Keep going...\n";
     return 0;
 }

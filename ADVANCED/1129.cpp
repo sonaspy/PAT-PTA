@@ -34,13 +34,12 @@ int main(int argc, char const *argv[])
     {
         scanf("%d", &tmp);
         printf("%d:", tmp);
-        int c = 0;
+        int c = -1;
         for (auto j : pq)
         {
-            if (c == k)
+            if (++c == k)
                 break;
             printf(" %d", j->val);
-            c++;
         }
         if (!pq.count(keys + tmp))
         {

@@ -19,7 +19,7 @@ int main(int argc, char const *argv[])
         scanf("%lf", &tmp);
         pq.push(tmp);
     }
-    while (pq.size() > 1)
+    while (pq.size() >= 2)
     {
         a1 = pq.top(), pq.pop(), a2 = pq.top(), pq.pop();
         pq.push((a1 + a2) / 2.0);

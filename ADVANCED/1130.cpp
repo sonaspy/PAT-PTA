@@ -22,11 +22,13 @@ void inorder(node *root, int depth)
         s += root->data;
     else
     {
-        if (depth) s.push_back('(');
+        if (depth)
+            s.push_back('(');
         inorder(root->l, depth + 1);
         s += root->data;
         inorder(root->r, depth + 1);
-        if (depth) s.push_back(')');
+        if (depth)
+            s.push_back(')');
     }
 }
 
@@ -51,7 +53,8 @@ int main(int argc, char const *argv[])
             f[r] = 1;
         }
     }
-    while (f[root]) root++;
+    while (f[root])
+        root++;
     inorder(a[root], 0);
     cout << s;
     return 0;

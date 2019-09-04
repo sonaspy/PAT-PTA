@@ -4,7 +4,7 @@
 #include <bits/stdc++.h>
 
 #define test() freopen("in", "r", stdin)
-#define SIZE 11
+#define SIZE 20000
 using namespace std;
 
 template <typename T>
@@ -301,11 +301,12 @@ int main(int argc, char const *argv[])
     //test();
     srand(time(NULL));
     int b[SIZE];
-    //generate(b, b + SIZE, []() { return rand() % SIZE; });
-    iota(b, b + SIZE, 1);
+    generate(b, b + SIZE, [&]() { return rand() % SIZE; });
     clock_t startTime, endTime;
     startTime = clock();
-    cout << *findKthMin(b, b + SIZE, 4) << endl;
+
+    //quickSort(b, b + SIZE);
+
     endTime = clock();
 
     cout << is_sorted(b, b + SIZE) << endl;

@@ -11,8 +11,7 @@ int main(int argc, char const *argv[])
 {
     /* code */
     //test();
-    int vis[10] = {1, 1, 1, 1, 1, 1, 0};
-    int i = count_if(vis, vis + 5, [](int &c) { return c != 1; });
-    cout << i;
+
+    
     return 0;
 }

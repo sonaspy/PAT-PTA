@@ -4,7 +4,7 @@
 #include <bits/stdc++.h>
 
 #define test() freopen("in", "r", stdin)
-
+#define CALLINE(i, j) (i) * 1000 + (j)
 using namespace std;
 vector<int> mp[10000];
 int vis[10000], minStops, mintrans, src, dst, stops;
@@ -15,7 +15,7 @@ int get_trans_t(vector<int> &a)
     int T = 0, lastLine = 0, curline;
     for (int i = 1; i < a.size(); i++)
     {
-        curline = whichLine[a[i - 1] * 10000 + a[i]];
+        curline = whichLine[CALLINE(a[i - 1], a[i])];
         if (curline != lastLine)
             T++;
         lastLine = curline;
@@ -50,7 +50,7 @@ int main(int argc, char const *argv[])
         {
             scanf("%d", &temp);
             mp[pre].push_back(temp), mp[temp].push_back(pre);
-            whichLine[pre * 10000 + temp] = whichLine[temp * 10000 + pre] = i + 1;
+            whichLine[CALLINE(pre, temp)] = whichLine[CALLINE(temp, pre)] = i + 1;
             pre = temp;
         }
     }
@@ -65,7 +65,7 @@ int main(int argc, char const *argv[])
         int lastLine = 0, start, curline;
         for (int j = 1; j < ansPath.size(); j++)
         {
-            curline = whichLine[ansPath[j - 1] * 10000 + ansPath[j]];
+            curline = whichLine[CALLINE(ansPath[j - 1], ansPath[j])];
             if (curline != lastLine)
             {
                 if (lastLine)

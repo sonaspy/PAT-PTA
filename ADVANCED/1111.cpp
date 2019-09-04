@@ -1,19 +1,18 @@
-// author -sonaspy@outlook.com
+// author - newguo@sonaspy.cn
 // coding - utf_8
 
 #include <bits/stdc++.h>
 
 #define test() freopen("in", "r", stdin)
-#define INF (1 << 30)
+#define INF_MAX (1 << 30)
 using namespace std;
 struct node
 {
-    int l = INF, t = INF;
-} MAP[501][501];
-int src, dst, n, m, i, v1, v2, onew, l, t, vis[501], dis[501], times[501], min_time = INF, tmp_time = 0, assist_a[501];
+    int l = INF_MAX, t = INF_MAX;
+} mp[501][501];
+int src, dst, n, m, i, v1, v2, onew, l, t, vis[501], dis[501], times[501], w2nd[501];
 vector<int> pre(501);
 deque<int> res_t, res_l;
-
 inline void findPath(deque<int> &path)
 {
     int walk = dst;
@@ -25,86 +24,96 @@ inline void findPath(deque<int> &path)
     path.push_front(walk);
 }
 
-inline void dij1()
+inline void dij4dis()
 {
-    fill(dis, dis + 501, INF);
+    fill(dis, dis + 501, INF_MAX);
     fill(vis, vis + 501, 0);
     fill(pre.begin(), pre.end(), -1);
     pre.clear();
     dis[src] = 0;
-    assist_a[src] = 0;
+    w2nd[src] = 0;
     while (true)
     {
-        int k = -1, min_ = INF;
+        int v = -1, min_ = INF_MAX;
         for (i = 0; i < n; i++)
         {
             if (!vis[i] && dis[i] < min_)
             {
                 min_ = dis[i];
-                k = i;
+                v = i;
             }
         }
-        if (k == -1)
+        if (v == -1)
             break;
-        vis[k] = 1;
+        vis[v] = 1;
         for (i = 0; i < n; i++)
         {
-            if (!vis[i] && MAP[k][i].l != INF)
+            if (!vis[i] && mp[v][i].l != INF_MAX)
             {
-                if (dis[k] + MAP[k][i].l < dis[i])
+                if (dis[v] + mp[v][i].l < dis[i])
                 {
-                    dis[i] = dis[k] + MAP[k][i].l;
-                    assist_a[i] = assist_a[k] + MAP[k][i].t;
-                    pre[i] = (k);
+                    dis[i] = dis[v] + mp[v][i].l;
+                    w2nd[i] = w2nd[v] + mp[v][i].t;
+                    pre[i] = (v);
                 }
-                else if (dis[k] + MAP[k][i].l == dis[i] && assist_a[k] + MAP[k][i].t < assist_a[i])
+                else if (dis[v] + mp[v][i].l == dis[i] && w2nd[v] + mp[v][i].t < w2nd[i])
                 {
-                    assist_a[i] = assist_a[k] + MAP[k][i].t;
-                    pre[i] = (k);
+                    w2nd[i] = w2nd[v] + mp[v][i].t;
+                    pre[i] = (v);
                 }
             }
         }
     }
 }
 
-inline void dij2()
+inline void dij4time()
 {
-    fill(times, times + 501, INF);
+    fill(times, times + 501, INF_MAX);
     fill(pre.begin(), pre.end(), -1);
     fill(vis, vis + 501, 0);
     pre.clear();
     times[src] = 0;
     while (true)
     {
-        int k = -1, min_ = INF;
+        int v = -1, min_ = INF_MAX;
         for (i = 0; i < n; i++)
         {
             if (!vis[i] && times[i] < min_)
             {
                 min_ = times[i];
-                k = i;
+                v = i;
             }
         }
-        if (k == -1)
+        if (v == -1)
             break;
-        vis[k] = 1;
+        vis[v] = 1;
         for (i = 0; i < n; i++)
         {
-            if (!vis[i] && MAP[k][i].t != INF)
+            if (!vis[i] && mp[v][i].t != INF_MAX)
             {
-                if (times[k] + MAP[k][i].t < times[i])
+                if (times[v] + mp[v][i].t < times[i])
                 {
-                    times[i] = times[k] + MAP[k][i].t;
-                    assist_a[i] = assist_a[k] + 1;
-                    pre[i] = k;
+                    times[i] = times[v] + mp[v][i].t;
+                    w2nd[i] = w2nd[v] + 1;
+                    pre[i] = v;
                 }
-                else if (times[k] + MAP[k][i].t == times[i] && assist_a[k] + 1 < assist_a[i])
+                else if (times[v] + mp[v][i].t == times[i] && w2nd[v] + 1 < w2nd[i])
                 {
-                    pre[i] = k;
-                    assist_a[i] = assist_a[k] + 1;
+                    pre[i] = v;
+                    w2nd[i] = w2nd[v] + 1;
                 }
             }
         }
+    }
+}
+inline void output(deque<int> &dq)
+{
+    i = 0;
+    for (auto j : dq)
+    {
+        if (i != 0) printf(" -> ");
+        else i = 1;
+        printf("%d", j);
     }
 }
 
@@ -116,50 +125,22 @@ int main(int argc, char const *argv[])
     for (i = 0; i < m; i++)
     {
         scanf("%d%d%d%d%d", &v1, &v2, &onew, &l, &t);
-        if (!onew)
-            MAP[v2][v1].l = l, MAP[v2][v1].t = t;
-        MAP[v1][v2].l = l, MAP[v1][v2].t = t;
+        if (!onew) mp[v2][v1].l = l, mp[v2][v1].t = t;
+        mp[v1][v2].l = l, mp[v1][v2].t = t;
     }
     cin >> src >> dst;
-    dij1();
-    findPath(res_l);
-    dij2();
-    findPath(res_t);
+    dij4dis(), findPath(res_l), dij4time(), findPath(res_t);
     if (res_t == res_l)
     {
         printf("Distance = %d; Time = %d: ", dis[dst], times[dst]);
-        i = 0;
-        for (auto j : res_t)
-        {
-            if (i != 0)
-                printf(" -> ");
-            else
-                i = 1;
-            printf("%d", j);
-        }
+        output(res_t);
     }
     else
     {
         printf("Distance = %d: ", dis[dst]);
-        i = 0;
-        for (auto j : res_l)
-        {
-            if (i != 0)
-                printf(" -> ");
-            else
-                i = 1;
-            printf("%d", j);
-        }
+        output(res_l);
         printf("\nTime = %d: ", times[dst]);
-        i = 0;
-        for (auto j : res_t)
-        {
-            if (i != 0)
-                printf(" -> ");
-            else
-                i = 1;
-            printf("%d", j);
-        }
+        output(res_t);
     }
     return 0;
-} //refer
+}

@@ -25,10 +25,12 @@ int main(int argc, char const *argv[])
     }
     cout << friend_num.size() << endl;
     n = 0;
-    for(auto i : friend_num){
-        if(n != 0){
+    for (auto i : friend_num)
+    {
+        if (n)
             cout << " ";
-        }else n = 1;
+        else
+            n = 1;
         cout << i;
     }
     return 0;

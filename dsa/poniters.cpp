@@ -20,7 +20,8 @@ int main(int argc, char const *argv[])
     int *a3[3] = {b, c, d};
     int(*p2arr)[3];
     int **p;
-    p2arr = a;  
+    p2arr = a;
+    
 
     return 0;
 }

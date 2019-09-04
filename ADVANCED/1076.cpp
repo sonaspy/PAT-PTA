@@ -6,30 +6,34 @@
 #define test() freopen("in", "r", stdin)
 
 using namespace std;
-int n, level, num, k, tmp, vis[1010], sum_f, le[1010];
-vector<int> BUCKET[1010];
+int n, threshold, num, k, tmp, vis[1010], sum_f, le;
+vector<int> mp[1010];
 inline void solve(int src)
 {
     fill(vis, vis + 1010, 0);
-    fill(le, le + 1010, 0);
-    deque<int> Q;
+    deque<int> Q, nexq;
     sum_f = 0;
     Q.push_back(src);
     vis[src] = 1;
+    le = 0;
     while (Q.size())
     {
-        src = Q.front(), Q.pop_front();
-        if (le[src] < level)
-            for (int ip : BUCKET[src])
-            {
-                if (!vis[ip])
+        le++;
+        while (Q.size())
+        {
+            src = Q.front(), Q.pop_front();
+            if (le <= threshold)
+                for (auto &v : mp[src])
                 {
-                    ++sum_f;
-                    vis[ip] = 1;
-                    le[ip] = le[src] + 1;
-                    Q.push_back(ip);
+                    if (!vis[v])
+                    {
+                        vis[v] = 1;
+                        ++sum_f;
+                        nexq.push_back(v);
+                    }
                 }
-            }
+        }
+        swap(nexq, Q);
     }
 }
 
@@ -37,14 +41,14 @@ int main(int argc, char const *argv[])
 {
     /* code */
     //test();
-    cin >> n >> level;
+    cin >> n >> threshold;
     for (int i = 1; i <= n; ++i)
     {
         scanf("%d", &num);
         for (int j = 0; j < num; ++j)
         {
             scanf("%d", &tmp);
-            BUCKET[tmp].push_back(i);
+            mp[tmp].push_back(i);
         }
     }
     cin >> k;

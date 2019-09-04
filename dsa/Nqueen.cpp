@@ -16,7 +16,7 @@ public:
         this->main_diag = vector<bool>(2 * n - 1, false); // if there is a queen in this diag
         this->vice_diag = vector<bool>(2 * n - 1, false); // if there is a queen in this diag
         this->C = vector<int>(n, -1);                     // each row's queen put in which column
-        vector<vector<string>> res;
+        vector<vector<string> > res;
         this->n = n;
         dfs(res, 0);
         return res;
@@ -26,7 +26,7 @@ private:
     vector<bool> columns, main_diag, vice_diag;
     vector<int> C;
     int n;
-    void dfs(vector<vector<string>> &res, int row)
+    void dfs(vector<vector<string> > &res, int row)
     {
         if (row == n)
         {
@@ -60,7 +60,7 @@ int main(int argc, char const *argv[])
     /* code */
     //test();
     Solution s;
-    vector<vector<string>> ss = s.solveNQueens(6);
+    vector<vector<string> > ss = s.solveNQueens(6);
     for (auto vs : ss)
     {
         for (auto str : vs)

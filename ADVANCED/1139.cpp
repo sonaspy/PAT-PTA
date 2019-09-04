@@ -5,18 +5,17 @@
 #define MAXN 10005
 using namespace std;
 set<int> difGender[MAXN], sameGender[MAXN];
-char c[10], d[10];
+string c, d;
 int main(int argc, char const *argv[])
 {
     //test();
-    int n, m, k, src, dst, lenc, lend;
+    int n, m, k, src, dst;
     scanf("%d %d", &n, &m);
     for (int i = 0; i < m; ++i)
     {
-        scanf("%s%s", c, d);
-        lenc = strlen(c), lend = strlen(d);
-        src = abs(atoi(c)), dst = abs(atoi(d));
-        if (lenc != lend)
+        cin >> c >> d;
+        src = abs(stoi(c)), dst = abs(stoi(d));
+        if (c.size() != d.size())
             difGender[src].insert(dst), difGender[dst].insert(src);
         else
             sameGender[src].insert(dst), sameGender[dst].insert(src);
@@ -24,12 +23,11 @@ int main(int argc, char const *argv[])
     scanf("%d", &k);
     for (int i = 0; i < k; ++i)
     {
-        scanf("%s%s", c, d);
-        lenc = strlen(c), lend = strlen(d);
-        src = abs(atoi(c)), dst = abs(atoi(d));
+        cin >> c >> d;
+        src = abs(stoi(c)), dst = abs(stoi(d));
         vector<pair<int, int>> ans;
-        for (auto v1 : sameGender[src])
-            for (auto v2 : (lenc == lend ? sameGender[v1] : difGender[v1]))
+        for (auto &v1 : sameGender[src])
+            for (auto &v2 : (c.size() == d.size() ? sameGender[v1] : difGender[v1]))
                 if (v1 != dst && v2 != src && v1 != src && v2 != dst && sameGender[v2].count(dst))
                     ans.push_back(make_pair(v1, v2));
         printf("%lu\n", ans.size());

@@ -581,24 +581,6 @@ bool bracketMatch(char *f)
 (before start, put a guard in stack ,pri = -1(lowest) );
 */
 
-string str_add(string s1, string s2)
-{
-    int carry = 0;
-    auto i = s1.rbegin(), j = s2.rbegin();
-    string res;
-    while (i != s1.rend() || j != s2.rend())
-    {
-        int a = i != s1.rend() ? *(i++) - '0' : 0;
-        int b = j != s2.rend() ? *(j++) - '0' : 0;
-        int tmp = a + b + carry;
-        carry = tmp / 10;
-        res = to_string(int64_t(tmp % 10)) + res;
-    }
-    if (carry)
-        res = to_string(int64_t(carry)) + res;
-    return res;
-}
-
 int main(int argc, char const *argv[])
 {
     /* code */
@@ -609,8 +591,6 @@ int main(int argc, char const *argv[])
     clock_t startTime, endTime;
     //iota(b, b + SIZE, 0);
     startTime = clock();
-
-    cout << str_add(string("11111111111111111111111"), string("11111111111111111111111111")) << endl;
 
     endTime = clock();
 

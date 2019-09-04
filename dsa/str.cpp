@@ -32,7 +32,23 @@ bool str_if_match(string s, string p)
     }
     return 0;
 }
-
+string str_add(string s1, string s2)
+{
+    int carry = 0;
+    auto i = s1.rbegin(), j = s2.rbegin();
+    string res;
+    while (i != s1.rend() || j != s2.rend())
+    {
+        int a = i != s1.rend() ? *(i++) - '0' : 0;
+        int b = j != s2.rend() ? *(j++) - '0' : 0;
+        int tmp = a + b + carry;
+        carry = tmp / 10;
+        res = to_string(int64_t(tmp % 10)) + res;
+    }
+    if (carry)
+        res = to_string(int64_t(carry)) + res;
+    return res;
+}
 int main(int argc, char const *argv[])
 {
     /* code */

@@ -93,7 +93,6 @@ public:
         root->left = tmp;
         return root;
     }
-
     void deleteleave(TreeNode *root, TreeNode *preorder)
     {
         if (root)
@@ -170,7 +169,8 @@ public:
         bool rf = TreeSimilar(T1->right, T2->right);
         return lf && rf;
     }
-    void Tree2Exp(TreeNode *root, int depth)
+    // invoke this
+    void tree2Infix(TreeNode *root, int depth)
     {
         if (!root)
             return;
@@ -180,9 +180,9 @@ public:
         {
             if (depth)
                 s.push_back('(');
-            Tree2Exp(root->left, depth + 1);
+            tree2Infix(root->left, depth + 1);
             s += root->val;
-            Tree2Exp(root->right, depth + 1);
+            tree2Infix(root->right, depth + 1);
             if (depth)
                 s.push_back(')');
         }

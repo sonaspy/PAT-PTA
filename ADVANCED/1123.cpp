@@ -91,7 +91,8 @@ int main(int argc, char const *argv[])
     while (q.size())
     {
         v = q.front(), q.pop();
-        if(v->id != ++last)iscpt = 0;
+        if (v->id != ++last)
+            iscpt = 0;
         cout << v->val;
         if (v->left)
         {

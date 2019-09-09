@@ -169,7 +169,7 @@ public:
         bool rf = TreeSimilar(T1->right, T2->right);
         return lf && rf;
     }
-    // invoke this
+
     void tree2Infix(TreeNode *root, int depth)
     {
         if (!root)
@@ -186,6 +186,18 @@ public:
             if (depth)
                 s.push_back(')');
         }
+    }
+    double op(double a, double b, char oper) { return 1.0; }
+    double treeExp_val(TreeNode *root)
+    {
+        if (!root)
+            return 0;
+        if (root->left && root->right)
+        {
+            double a = treeExp_val(root->left), b = treeExp_val(root->right);
+            return op(a, b, root->val);
+        }
+        return root->val;
     }
 
     bool isCMPtree(TreeNode *root)
@@ -234,28 +246,6 @@ public:
         return root;
     }
 
-    vector<int> preOrderTraversal(TreeNode *root)
-    {
-        vector<int> resSeq;
-        stack<TreeNode *> s;
-        TreeNode *p = root;
-        while (s.size() || p)
-        {
-            while (p)
-            {
-                resSeq.push_back(p->val);
-                s.push(p);
-                p = p->left;
-            }
-            if (s.size())
-            {
-                p = s.top();
-                s.pop();
-                p = p->right;
-            }
-        }
-        return resSeq;
-    }
     vector<int> inTrav(TreeNode *root)
     {
         vector<int> resSeq;
@@ -287,8 +277,7 @@ public:
         s.push(root);
         while (s.size())
         {
-            root = s.top();
-            s.pop();
+            root = s.top(), s.pop();
             resSeq.push_back(root->val);
             if (root->right)
                 s.push(root->right);
@@ -378,9 +367,13 @@ public:
         return root;
     }
 };
-
 // 后缀表达式 -> exp_tree
-// stack : node*; 遇 oprand: create node then push, 遇operator: pop 2 item become its childs, then push.
+// stack : node*; 遇 oprand: create node then push, 遇operator: pop 2 item become its childs, then push, 2nd_pop item is left.
+
+
+
+
+
 
 class AVLTree
 {

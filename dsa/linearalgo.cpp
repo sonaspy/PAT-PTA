@@ -406,7 +406,7 @@ vector<int> twoSum(vector<int> &nums, int target)
     return result;
 }
 
-class s_queue
+class sk_queue
 {
 private:
     stack<int> s1, s2; // s1 - input . s2 - output
@@ -420,38 +420,21 @@ public:
             if (s2.size())
                 return 0;
             while (s1.size())
-            {
-                s2.push(s1.top());
-                s1.pop();
-            }
-            s1.push(x);
-            return 1;
+                s2.push(s1.top()), s1.pop();
         }
         s1.push(x);
         return 1;
     }
     inline bool deQueue(int &x)
     {
-        if (s2.size())
-        {
-            x = s2.top();
-            s2.pop();
-            return 1;
-        }
-        if (s1.empty())
+        if (s1.empty() && s2.empty())
             return 0;
-        while (s1.size())
-        {
-            s2.push(s1.top());
-            s1.pop();
-        }
+        if (s2.empty())
+            while (s1.size())
+                s2.push(s1.top()), s1.pop();
         x = s2.top();
         s2.pop();
         return 1;
-    }
-    inline bool isempty()
-    {
-        return s1.empty() && s2.empty();
     }
 };
 

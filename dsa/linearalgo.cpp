@@ -3,7 +3,7 @@
 
 #include <bits/stdc++.h>
 #define test() freopen("in", "r", stdin)
-#define SIZE 10000
+#define SIZE 1000
 using namespace std;
 struct ListNode
 {
@@ -12,6 +12,65 @@ struct ListNode
     ListNode() : val(INT_MIN), freq(0), next(nullptr), pre(nullptr) {}
     ListNode(int v) : val(v), freq(0), next(nullptr), pre(nullptr) {}
 };
+void towersOfHanoi(int n, char x, char y, char z)
+{ // Move the top n disks from tower x to tower y.
+    // Use tower z for intermediate storage.
+    if (n > 0)
+    {
+        towersOfHanoi(n - 1, x, z, y);
+        std::cout << "Move top disk from tower " << x
+                  << " to top of tower " << y << std::endl;
+        towersOfHanoi(n - 1, z, y, x);
+    }
+}
+class NQueen
+{
+public:
+    vector<vector<string>> solveNQueens(int n)
+    {
+        this->columns = vector<bool>(n, false);           // if there is a queen in this column.
+        this->main_diag = vector<bool>(2 * n - 1, false); // if there is a queen in this diag
+        this->vice_diag = vector<bool>(2 * n - 1, false); // if there is a queen in this diag
+        this->C = vector<int>(n, -1);                     // each row's queen put in which column
+        vector<vector<string>> res;
+        this->n = n;
+        dfs(res, 0);
+        return res;
+    }
+
+private:
+    vector<bool> columns, main_diag, vice_diag;
+    vector<int> C;
+    int n;
+    void dfs(vector<vector<string>> &res, int row)
+    {
+        if (row == n)
+        {
+            res.push_back(vector<string>());
+            for (int i = 0; i < n; i++)
+            {
+                string s(n, '.');
+                for (int j = 0; j < n; j++)
+                    if (j == C[i])
+                        s[j] = 'Q';
+                res.back().push_back(s);
+            }
+            return;
+        }
+        for (int j = 0; j < n; j++)
+        {
+            if (!columns[j] && !main_diag[row - j + n - 1] && !vice_diag[row + j])
+            {
+                C[row] = j;
+                columns[j] = main_diag[row - j + n - 1] = vice_diag[row + j] = true;
+                dfs(res, row + 1);
+                C[row] = -1;
+                columns[j] = main_diag[row - j + n - 1] = vice_diag[row + j] = false;
+            }
+        }
+    }
+};
+
 double myPow(double x, int n)
 {
     long long N = n;
@@ -281,7 +340,7 @@ void del_x_inlist2(ListNode *&l, int x)
 }
 
 void sort_linkedlist(ListNode *&l)
-{
+{ // insertion
     ListNode *walk = l->next, *pre, *the_nex = walk->next;
     walk->next = nullptr;
     walk = the_nex;
@@ -294,6 +353,27 @@ void sort_linkedlist(ListNode *&l)
         pre->next = walk;
         walk = the_nex;
     }
+}
+void sort_linkedlist1(ListNode *&l)
+{ // bubble
+    ListNode *pre, *post;
+    int flag;
+    do
+    {
+        flag = 0, pre = l, post = pre->next;
+        while (post && post->next)
+        {
+            if (post->val > post->next->val)
+            {
+                flag = 1;
+                pre->next = post->next;
+                post->next = post->next->next;
+                pre->next->next = post;
+            }
+            pre = post;
+            post = post->next;
+        }
+    } while (flag);
 }
 
 void Min_delete(ListNode *&l)
@@ -590,11 +670,11 @@ int main(int argc, char const *argv[])
     int b[SIZE];
     generate(b, b + SIZE, [&]() { return rand() % SIZE; });
     vector<int> a(b, b + SIZE);
-    sort(a.begin(), a.end(), less<int>());
+    //sort(a.begin(), a.end(), less<int>());
     clock_t startTime, endTime;
     startTime = clock();
     ListNode *head = createList(a);
-    sort_linkedlist(head);
+    sort_linkedlist1(head);
     cout << if_list_sorted(head) << endl;
     //output(head);
     endTime = clock();

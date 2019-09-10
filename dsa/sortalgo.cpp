@@ -304,7 +304,7 @@ int main(int argc, char const *argv[])
     generate(b, b + SIZE, [&]() { return rand() % SIZE; });
     clock_t startTime, endTime;
     startTime = clock();
-    
+
     //quickSort(b, b + SIZE);
 
     endTime = clock();

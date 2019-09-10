@@ -4,7 +4,7 @@
 #include <bits/stdc++.h>
 
 #define test() freopen("in", "r", stdin)
-
+#define SIZE 100
 using namespace std;
 
 struct TreeNode
@@ -14,6 +14,59 @@ struct TreeNode
     int height = 1, depth = 1;
     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
+class solution12_13
+{
+public:
+    void countLeavesOfLevel(TreeNode *root)
+    {
+        queue<TreeNode *> q, nex_q;
+        q.push(root);
+        TreeNode *v, *sub;
+        int cntOfLeaves, level = 0;
+        while (q.size())
+        {
+            cntOfLeaves = 0;
+            while (q.size())
+            {
+                v = q.front(), q.pop();
+                if (!v->left)
+                    cntOfLeaves++;
+                else
+                {
+                    sub = v->left;
+                    while (sub)
+                    {
+                        nex_q.push(sub);
+                        sub = sub->right;
+                    }
+                }
+            }
+            cout << level << " : " << cntOfLeaves << endl;
+            level++;
+            swap(q, nex_q);
+        }
+    }
+};
+
+class solution13_14
+{
+private:
+    vector<int> tree;
+    inline int find_root(int id)
+    {
+        return tree[id] == -1 ? 1 : find_root(tree[id]) + 1;
+    }
+
+public:
+    int Find_height()
+    {
+        int maxh = 0;
+        for (auto i : tree)
+            maxh = max(maxh, find_root(i));
+        return maxh;
+    }
+};
+
 class Solution1_1
 {
     vector<TreeNode *> path;
@@ -167,11 +220,59 @@ public:
     }
 };
 
+class Solution3_2
+{
+private:
+    bool flag;
+    vector<TreeNode *> ls;
+    void insert_node(TreeNode *&root, int v)
+    {
+        if (!root)
+        {
+            root = new TreeNode(v);
+            ls.push_back(root);
+            return;
+        }
+        root->val <= v ? insert_node(root->right, v) : insert_node(root->left, v);
+    }
+    void pre(TreeNode *root)
+    {
+        if (!root || !flag)
+            return;
+        if (root->left && root->right)
+            flag = 0;
+        pre(root->left);
+        pre(root->right);
+    }
+
+public:
+    Solution3_2()
+    {
+        flag = 1;
+    }
+    bool isBSTSeq(vector<int> &s)
+    {
+        TreeNode *root = nullptr;
+        for (auto i : s)
+            insert_node(root, i);
+        pre(root);
+        for_each(ls.begin(), ls.end(), [](TreeNode *&p) { delete p; });
+        return flag;
+    }
+    ~Solution3_2()
+    {
+    }
+};
+
 int main(int argc, char const *argv[])
 {
     /* code */
     //test();
     srand(time(NULL));
-
+    int b[SIZE] = {2, 4, 1};
+    generate(b, b + SIZE, [&]() { return rand() % 100; });
+    vector<int> a(b, b + SIZE);
+    Solution3_2 s;
+    cout << s.isBSTSeq(a);
     return 0;
 }

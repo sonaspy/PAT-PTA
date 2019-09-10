@@ -3,7 +3,7 @@
 
 #include <bits/stdc++.h>
 #define test() freopen("in", "r", stdin)
-#define SIZE 2000
+#define SIZE 10000
 using namespace std;
 struct ListNode
 {
@@ -140,15 +140,15 @@ T *bin_search(T *lo, T *hi, const T &val)
     }
     return hi;
 }
-inline int GCD(int n1, int n2)
+inline int GCD(int a, int b)
 {
-    while (n2)
+    while (b)
     {
-        int tmp = n1 % n2;
-        n1 = n2;
-        n2 = tmp;
+        int c = a % b;
+        a = b;
+        b = c;
     }
-    return n1;
+    return a;
 }
 bool isMatch(vector<int> &push_seq, vector<int> &pop_seq, int capacity)
 {
@@ -280,20 +280,19 @@ void del_x_inlist2(ListNode *&l, int x)
     r->next = nullptr;
 }
 
-void list_sort(ListNode *&l)
-{ // L->p->post
-    ListNode *p = l->next, *pre, *post = p->next;
-    p->next = nullptr;
-    p = post;
-    while (p)
+void sort_linkedlist(ListNode *&l)
+{
+    ListNode *walk = l->next, *pre, *the_nex = walk->next;
+    walk->next = nullptr;
+    walk = the_nex;
+    while (walk)
     {
-        post = p->next;
-        pre = l;
-        while (pre->next && pre->next->val < p->val)
-            pre = pre->next;
-        p->next = pre->next;
-        pre->next = p;
-        p = post;
+        the_nex = walk->next;
+        for (pre = l; pre->next && pre->next->val <= walk->val; pre = pre->next)
+            ;
+        walk->next = pre->next;
+        pre->next = walk;
+        walk = the_nex;
     }
 }
 
@@ -337,6 +336,14 @@ ListNode *Locate(ListNode *&l, int x)
     p->next->pre = p;
     return p;
 }
+bool if_list_sorted(ListNode *L)
+{
+    ListNode *p = L->next;
+    vector<int> a;
+    for (; p; p = p->next)
+        a.push_back(p->val);
+    return is_sorted(a.begin(), a.end());
+}
 
 ListNode *kth_ultimate(ListNode *&L, int k)
 {
@@ -354,10 +361,21 @@ ListNode *kth_ultimate(ListNode *&L, int k)
     return l;
 }
 
-ListNode *createList()
+void output(ListNode *h)
+{
+    ListNode *p = h->next;
+    while (p)
+    {
+        cout << p->val << " ";
+        p = p->next;
+    }
+    cout << endl;
+}
+
+ListNode *createList(vector<int> &a)
 {
     ListNode *dummy = new ListNode, *p = dummy;
-    for (int i = 1; i <= 100; i++)
+    for (auto &i : a)
     {
         p->next = new ListNode(i);
         p = p->next;
@@ -569,12 +587,16 @@ int main(int argc, char const *argv[])
     /* code */
     //test();
     srand(time(NULL));
-    int b[SIZE] = {1, 3, 5, 7, 9, 11};
-    int a[SIZE] = {2, 4, 6, 8, 10};
+    int b[SIZE];
+    generate(b, b + SIZE, [&]() { return rand() % SIZE; });
+    vector<int> a(b, b + SIZE);
+    sort(a.begin(), a.end(), less<int>());
     clock_t startTime, endTime;
-    //iota(b, b + SIZE, 0);
     startTime = clock();
-
+    ListNode *head = createList(a);
+    sort_linkedlist(head);
+    cout << if_list_sorted(head) << endl;
+    //output(head);
     endTime = clock();
 
     cout << "The run time is: " << (double)(endTime - startTime) / 1000 << "ms" << endl;

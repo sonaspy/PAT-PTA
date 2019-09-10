@@ -372,9 +372,6 @@ public:
 
 
 
-
-
-
 class AVLTree
 {
     inline void LL(TreeNode *&root)
@@ -543,34 +540,7 @@ public:
             percDown(i);
     }
 };
-bool flag = 0;
-void insert_node(TreeNode *&root, int v)
-{
-    if (!flag)
-        return;
-    if (!root)
-    {
-        root = new TreeNode(v);
-        return;
-    }
-    if (root->left && root->right)
-    {
-        flag = 0;
-        return;
-    }
-    root->val <= v ? insert_node(root->right, v) : insert_node(root->left, v);
-}
-bool isBSTSeq(vector<int> &s)
-{
-    TreeNode *root = nullptr;
-    for (auto i : s)
-    {
-        insert_node(root, i);
-        if (!flag)
-            break;
-    }
-    return flag;
-}
+
 int main(int argc, char const *argv[])
 {
     /* code */

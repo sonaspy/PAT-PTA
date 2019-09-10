@@ -6,12 +6,11 @@
 #define test() freopen("in", "r", stdin)
 #define INF 1 << 30
 using namespace std;
+int n, m, c1, c2, a1, a2, b, team[501], map[501][501], sOfTeam[501], dis[501], nOfPath[501], vis[501];
 int main(int argc, char const *argv[])
 {
     /* code */
     //test();
-    int n, m, c1, c2, a1, a2, b, team[501], map[501][501], sOfTeam[501], dis[501], nOfPath[501];
-    bool vis[501];
     cin >> n >> m >> c1 >> c2;
     for (int i = 0; i < n; i++)
         scanf("%d", &team[i]);
@@ -43,14 +42,13 @@ int main(int argc, char const *argv[])
                 if (dis[v] + map[v][i] < dis[i])
                 {
                     dis[i] = dis[v] + map[v][i];
-                    nOfPath[i] = nOfPath[v];
                     sOfTeam[i] = sOfTeam[v] + team[i];
+                    nOfPath[i] = nOfPath[v];
                 }
                 else if (dis[v] + map[v][i] == dis[i])
                 {
                     nOfPath[i] += nOfPath[v];
-                    if (sOfTeam[i] < sOfTeam[v] + team[i])
-                        sOfTeam[i] = sOfTeam[v] + team[i];
+                    sOfTeam[i] = max(sOfTeam[v] + team[i], sOfTeam[i]);
                 }
             }
         }

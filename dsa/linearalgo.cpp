@@ -124,8 +124,8 @@ T M_search(T *lo1, T *hi1, T *lo2, T *hi2)
     return min(*lo1, *lo2);
 }
 
-template <class T>
-bool isparlindrome(T lo, T hi)
+template <class RandomIterator>
+bool isparlindrome(RandomIterator lo, RandomIterator hi)
 {
     if (lo < hi)
         for (; lo < --hi; ++lo)
@@ -134,12 +134,12 @@ bool isparlindrome(T lo, T hi)
     return true;
 }
 
-template <class T>
-bool reverse_(T lo, T hi)
+template <class RandomIterator>
+void reverse_(RandomIterator lo, RandomIterator hi)
 {
     if (lo < hi)
         for (; lo < --hi; ++lo)
-            swap(*lo, *hi);
+            iter_swap(lo, hi);
 }
 
 template <class T>
@@ -673,10 +673,7 @@ int main(int argc, char const *argv[])
     vector<int> a(b, b + SIZE);
     //sort(a.begin(), a.end(), less<int>());
     clock_t startTime, endTime;
-    startTime = clock();
-    ListNode *head = createList(a);
-    sort_linkedlist1(head);
-    cout << if_list_sorted(head) << endl;
+    reverse_(a.begin(), a.end());
     //output(head);
     endTime = clock();
 

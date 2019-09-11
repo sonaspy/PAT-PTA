@@ -14,6 +14,7 @@ struct TreeNode
     int height = 1, depth = 1;
     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
+
 class solution12_13
 {
 public:
@@ -264,15 +265,112 @@ public:
     }
 };
 
+class Solution5_1
+{
+public:
+    void insert_node(TreeNode *&root, int v)
+    {
+        if (!root)
+        {
+            root = new TreeNode(v);
+            return;
+        }
+        root->val <= v ? insert_node(root->right, v) : insert_node(root->left, v);
+    }
+    int count_leaf(TreeNode *root)
+    {
+        if (!root)
+            return 0;
+        if (!root->left && !root->right)
+            return 1;
+        int lefnum = 0;
+        lefnum = count_leaf(root->left);
+        lefnum += count_leaf(root->right);
+        return lefnum;
+    }
+    int count_leaf2(TreeNode *root)
+    {
+        queue<TreeNode *> q;
+        q.push(root);
+        TreeNode *v;
+        int cnt = 0;
+        while (q.size())
+        {
+            v = q.front(), q.pop();
+            if (!v->left && !v->right)
+                cnt++;
+            if (v->left)
+                q.push(v->left);
+            if (v->right)
+                q.push(v->right);
+        }
+        return cnt;
+    }
+};
+
+class Solution5_2
+{
+private:
+    template <class RandomIter>
+    inline void reverse_(RandomIter lo, RandomIter hi)
+    {
+        if (lo < hi)
+            for (; lo < --hi; ++lo)
+                iter_swap(lo, hi);
+    }
+
+public:
+    void reverse_words(string &s)
+    {
+        vector<int> wordslen;
+        int cnt = 0, i, c;
+        for (i = 0; i < s.size(); i++)
+        {
+            if (s[i] != ' ')
+            {
+                cnt++;
+                continue;
+            }
+            wordslen.push_back(cnt);
+            cnt = 0;
+        }
+        wordslen.push_back(cnt);
+        reverse_(s.begin(), s.end());
+        reverse_(wordslen.begin(), wordslen.end());
+        for (i = 0, c = 0; i < s.size(); i++)
+        {
+            if (i == 0 || s[i - 1] == ' ')
+                reverse_(s.begin() + i, s.begin() + i + wordslen[c++]);
+        }
+        // below code is for cut surplus blank ' '
+        // for (i = 0; i < s.size() && s[i] == ' '; i++)
+        //     ;
+        // for (c = 0; i < s.size();)
+        // {
+        //     if (s[i] != ' ')
+        //         s[c++] = s[i++];
+        //     else
+        //     {
+        //         s[c++] = ' ';
+        //         while (i < s.size() && s[++i] == ' ')
+        //             ;
+        //     }
+        // }
+        // s = s.substr(0, c);
+    }
+};
+
 int main(int argc, char const *argv[])
 {
     /* code */
     //test();
     srand(time(NULL));
-    int b[SIZE] = {2, 4, 1};
-    generate(b, b + SIZE, [&]() { return rand() % 100; });
+    int b[SIZE];
+    generate(b, b + SIZE, [&]() { return rand() % 10000; });
     vector<int> a(b, b + SIZE);
-    Solution3_2 s;
-    cout << s.isBSTSeq(a);
+    Solution5_2 s;
+    string str = "WARNING     Re-reading the partition table failed with error 16    Device or resource busy";
+    s.reverse_words(str);
+    cout << str;
     return 0;
 }

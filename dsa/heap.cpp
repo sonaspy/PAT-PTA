@@ -1,9 +1,9 @@
-// author - newguo@sonaspy.cn 
-// coding - utf_8 
+// author - newguo@sonaspy.cn
+// coding - utf_8
 
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 
-#define test() freopen("in","r",stdin)
+#define test() freopen("in", "r", stdin)
 
 using namespace std;
 class Heap

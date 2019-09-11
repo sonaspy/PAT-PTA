@@ -318,23 +318,42 @@ private:
             for (; lo < --hi; ++lo)
                 iter_swap(lo, hi);
     }
+    inline void cut_blank(string &s)
+    {
+        int i, c;
+        for (i = 0; i < s.size() && s[i] == ' '; i++)
+            ;
+        for (c = 0; i < s.size();)
+        {
+            if (s[i] != ' ')
+                s[c++] = s[i++];
+            else
+            {
+                s[c++] = ' ';
+                while (i < s.size() && s[++i] == ' ')
+                    ;
+            }
+        }
+        s = s.substr(0, c);
+    }
 
 public:
     void reverse_words(string &s)
     {
+        cut_blank(s);
         vector<int> wordslen;
-        int cnt = 0, i, c;
+        int len = 0, i, c;
         for (i = 0; i < s.size(); i++)
         {
             if (s[i] != ' ')
             {
-                cnt++;
+                len++;
                 continue;
             }
-            wordslen.push_back(cnt);
-            cnt = 0;
+            wordslen.push_back(len);
+            len = 0;
         }
-        wordslen.push_back(cnt);
+        wordslen.push_back(len);
         reverse_(s.begin(), s.end());
         reverse_(wordslen.begin(), wordslen.end());
         for (i = 0, c = 0; i < s.size(); i++)
@@ -342,22 +361,17 @@ public:
             if (i == 0 || s[i - 1] == ' ')
                 reverse_(s.begin() + i, s.begin() + i + wordslen[c++]);
         }
-        // below code is for cut surplus blank ' '
-        // for (i = 0; i < s.size() && s[i] == ' '; i++)
-        //     ;
-        // for (c = 0; i < s.size();)
-        // {
-        //     if (s[i] != ' ')
-        //         s[c++] = s[i++];
-        //     else
-        //     {
-        //         s[c++] = ' ';
-        //         while (i < s.size() && s[++i] == ' ')
-        //             ;
-        //     }
-        // }
-        // s = s.substr(0, c);
     }
+};
+
+void WPl_sum(TreeNode *root, int &wpl)
+{
+    if (!root)
+        return;
+    if (root->left)
+        wpl += root->val;
+    WPl_sum(root->left, wpl);
+    WPl_sum(root->right, wpl);
 };
 
 int main(int argc, char const *argv[])

@@ -4,96 +4,77 @@
 #include <bits/stdc++.h>
 
 using namespace std;
-vector<int> arr(1000, -1);
-inline int find_root(int id)
-{
-    return arr[id] == -1 ? id : arr[id] = find_root(arr[id]);
-}
-inline void Union__(int a, int b)
-{
-    int ra = find_root(a), rb = find_root(b);
-    if (ra != rb)
-        arr[rb] = ra;
-}
+#define SIZE 10
+template <typename T>
 struct TreeNode
 {
-    int val;
+    T val;
     TreeNode *left, *right, *parent;
-    int height = 1, depth = 1;
-    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+    int height, depth, ltag, rtag;
+    TreeNode(T x) : val(x), left(nullptr), right(nullptr), parent(nullptr), height(1), depth(1), ltag(0), rtag(0) {}
 };
-inline int GetHeight(TreeNode *root) { return root == nullptr ? 0 : root->height; }
-inline void updateHeight(TreeNode *root) { root->height = max(GetHeight(root->left), GetHeight(root->right)) + 1; }
-inline int getFactor(TreeNode *root) { return GetHeight(root->left) - GetHeight(root->right); }
-inline TreeNode *getMax(TreeNode *root)
-{
-    while (root->right)
-        root = root->right;
-    return root;
-}
-inline TreeNode *getMin(TreeNode *root)
-{
-    while (root->left)
-        root = root->left;
-    return root;
-}
-class Tree
+template <typename T>
+class Bin_Tree
 {
 public:
-    Tree()
-    {
-        preorder.resize(10);
-        iota(preorder.begin(), preorder.end(), 1);
-        inorder.insert(inorder.begin(), preorder.begin(), preorder.end());
-        int c = 450000;
-        while (next_permutation(inorder.begin(), inorder.end()) && c--)
-            ;
-
-        for (auto i : preorder)
-            cout << i << " ";
-        cout << endl;
-        for (auto i : inorder)
-            cout << i << " ";
-        cout << endl;
-    }
-
+    TreeNode<T> *ROOT;
     string s;
     vector<int> preorder, inorder, postorder;
     bool isunique;
-    TreeNode *__build1(int root, int lo, int hi)
+    inline int GetHeight(TreeNode<T> *root) { return root == nullptr ? 0 : root->height; }
+    inline void updateHeight(TreeNode<T> *root) { root->height = max(GetHeight(root->left), GetHeight(root->right)) + 1; }
+    inline int getFactor(TreeNode<T> *root) { return GetHeight(root->left) - GetHeight(root->right); }
+    inline TreeNode<T> *getMax(TreeNode<T> *root)
+    {
+        while (root->right)
+            root = root->right;
+        return root;
+    }
+    inline TreeNode<T> *getROOT() { return ROOT; }
+    inline TreeNode<T> *getMin(TreeNode<T> *root)
+    {
+        while (root->left)
+            root = root->left;
+        return root;
+    }
+    TreeNode<T> *__build1(int root, int lo, int hi)
     {
         if (hi < lo)
             return nullptr;
         int i = lo;
-        TreeNode *node = new TreeNode(preorder[root]);
+        TreeNode<T> *node = new TreeNode<T>(preorder[root]);
         while (i < hi && inorder[i] != preorder[root])
             i++;
         node->left = __build1(root + 1, lo, i - 1);
         node->right = __build1(root + 1 + i - lo, i + 1, hi);
         return node;
     }
-    TreeNode *__build2(int root, int lo, int hi)
+    TreeNode<T> *__build2(int root, int lo, int hi)
     {
         if (hi < lo)
             return nullptr;
         int i = lo;
-        TreeNode *node = new TreeNode(postorder[root]);
+        TreeNode<T> *node = new TreeNode<T>(postorder[root]);
         while (i < hi && inorder[i] != postorder[root])
             i++;
         node->left = __build2(root - 1 + i - hi, lo, i - 1);
         node->right = __build2(root - 1, i + 1, hi);
         return node;
     }
-    TreeNode *invert(TreeNode *root)
+    Bin_Tree()
+    {
+    }
+
+    TreeNode<T> *invert(TreeNode<T> *root)
     {
         if (!root)
             return nullptr;
-        TreeNode *tmp = invert(root->right);
+        TreeNode<T> *tmp = invert(root->right);
         root->right = invert(root->left);
         root->left = tmp;
         return root;
     }
-    void deleteleave(TreeNode *root, TreeNode *preorder)
+    void deleteleave(TreeNode<T> *root, TreeNode<T> *preorder)
     {
         if (root)
         {
@@ -116,10 +97,10 @@ public:
             }
         }
     }
-    void del_x_sub(TreeNode *root, int target)
+    void del_x_sub(TreeNode<T> *root, int target)
     {
-        queue<TreeNode *> q;
-        TreeNode *x;
+        queue<TreeNode<T> *> q;
+        TreeNode<T> *x;
         if (root->val == target)
         {
             del(root);
@@ -151,7 +132,7 @@ public:
             }
         }
     }
-    void del(TreeNode *root)
+    void del(TreeNode<T> *root)
     {
         if (!root)
             return;
@@ -159,7 +140,7 @@ public:
         del(root->right);
         delete root;
     }
-    bool TreeSimilar(TreeNode *T1, TreeNode *T2)
+    bool TreeSimilar(TreeNode<T> *T1, TreeNode<T> *T2)
     {
         if (!T1 && !T2)
             return 1;
@@ -170,7 +151,7 @@ public:
         return lf && rf;
     }
 
-    void tree2Infix(TreeNode *root, int depth)
+    void tree2Infix(TreeNode<T> *root, int depth)
     {
         if (!root)
             return;
@@ -188,7 +169,7 @@ public:
         }
     }
     double op(double a, double b, char oper) { return 1.0; }
-    double treeExp_val(TreeNode *root)
+    double treeExp_val(TreeNode<T> *root)
     {
         if (!root)
             return 0;
@@ -200,11 +181,11 @@ public:
         return root->val;
     }
 
-    bool isCMPtree(TreeNode *root)
+    bool isCMPtree(TreeNode<T> *root)
     {
-        queue<TreeNode *> q;
+        queue<TreeNode<T> *> q;
         q.push(root);
-        TreeNode *v;
+        TreeNode<T> *v;
         while (q.size())
         {
             v = q.front(), q.pop();
@@ -221,11 +202,11 @@ public:
         return true;
     }
 
-    TreeNode *Construct(int leftOfpre, int rightOfpre, int leftOfpost, int rightOfpost)
+    TreeNode<T> *Construct(int leftOfpre, int rightOfpre, int leftOfpost, int rightOfpost)
     {
         if (leftOfpre > rightOfpre || leftOfpost > rightOfpost)
             return nullptr;
-        TreeNode *root = new TreeNode(preorder[leftOfpre]);
+        TreeNode<T> *root = new TreeNode<T>(preorder[leftOfpre]);
         if (leftOfpre == rightOfpre)
             return root;
         int leftSubVal = preorder[leftOfpre + 1], i, sub_cnt;
@@ -246,11 +227,11 @@ public:
         return root;
     }
 
-    vector<int> inTrav(TreeNode *root)
+    vector<int> inTrav(TreeNode<T> *root)
     {
         vector<int> resSeq;
-        stack<TreeNode *> s;
-        TreeNode *p = root;
+        stack<TreeNode<T> *> s;
+        TreeNode<T> *p = root;
         while (s.size() || p)
         {
             while (p)
@@ -268,12 +249,12 @@ public:
         }
         return resSeq;
     }
-    vector<int> preTrav(TreeNode *root)
+    vector<int> preTrav(TreeNode<T> *root)
     {
         vector<int> resSeq;
         if (!root)
             return resSeq;
-        stack<TreeNode *> s;
+        stack<TreeNode<T> *> s;
         s.push(root);
         while (s.size())
         {
@@ -286,12 +267,12 @@ public:
         }
         return resSeq;
     }
-    vector<int> postTrav(TreeNode *root)
+    vector<int> postTrav(TreeNode<T> *root)
     {
         vector<int> resSeq;
         if (!root)
             return resSeq;
-        stack<pair<TreeNode *, bool>> s;
+        stack<pair<TreeNode<T> *, bool>> s;
         s.push(make_pair(root, false));
         bool isMyTurn;
         while (s.size())
@@ -311,7 +292,7 @@ public:
         return resSeq;
     }
 
-    TreeNode *get_LCA(TreeNode *p, TreeNode *q)
+    TreeNode<T> *get_LCA(TreeNode<T> *p, TreeNode<T> *q)
     {
         while (p->depth > q->depth)
             p = p->parent;
@@ -323,7 +304,7 @@ public:
     }
 
     // T1 <-> T2  convertable, left <-> right;
-    int Isomprphic(TreeNode *root1, TreeNode *root2)
+    int Isomprphic(TreeNode<T> *root1, TreeNode<T> *root2)
     {
         if (!root1 && !root2)
             return 1;
@@ -339,23 +320,104 @@ public:
             return Isomprphic(root1->left, root2->right) && Isomprphic(root1->right, root2->left);
     }
 
-    //BST:
-    TreeNode *deleteNode(TreeNode *&root, int x)
+    void InThread(TreeNode<T> *root, TreeNode<T> *pre)
+    {
+        if (root)
+        {
+            InThread(root->left, pre);
+            if (!root->left)
+            {
+                root->ltag = 1;
+                root->left = pre;
+            }
+            if (pre && !pre->right)
+            {
+                pre->rtag = 1;
+                pre->right = root;
+            }
+            InThread(root->right, root);
+        }
+    }
+};
+
+// 后缀表达式 -> exp_tree
+// stack : node*; 遇 oprand: create node then push, 遇operator: pop 2 item become its childs, then push, 2nd_pop item is left.
+template <typename T>
+class Huffman : Bin_Tree<T>
+{
+public:
+    struct cmp
+    {
+        bool operator()(const TreeNode<T> *a, const TreeNode<T> *b) const { return a->val > b->val; }
+    };
+    void createHuffman(vector<int> &data)
+    {
+        priority_queue<TreeNode<T> *, vector<TreeNode<T> *>, cmp> pq;
+        TreeNode<T> *v, *w, *root;
+        for (auto i : data)
+            pq.push(new TreeNode<T>(i));
+        while (pq.size() > 1)
+        {
+            v = pq.top(), pq.pop();
+            w = pq.top(), pq.pop();
+            root = new TreeNode<T>(v->val + w->val);
+            root->left = v, root->right = w;
+            pq.push(root);
+        }
+        this->ROOT = root;
+    }
+    void WPl_sum(TreeNode<T> *root, int &wpl)
+    {
+        if (!root)
+            return;
+        if (root->left)
+            wpl += root->val;
+        WPl_sum(root->left, wpl);
+        WPl_sum(root->right, wpl);
+    };
+    void wpl_sum(TreeNode<T> *root, int &wpl)
+    {
+        queue<TreeNode<T> *> q, nexq;
+        q.push(root);
+        TreeNode<T> *v;
+        int le = 0;
+        while (q.size())
+        {
+            while (q.size())
+            {
+                v = q.front(), q.pop();
+                if (!v->left && !v->right)
+                    wpl += le * v->val;
+                if (v->left)
+                    nexq.push(v->left);
+                if (v->right)
+                    nexq.push(v->right);
+            }
+            swap(q, nexq);
+            le++;
+        }
+    };
+};
+template <typename T>
+class BST : Bin_Tree<T>
+{
+public:
+    TreeNode<T> *delete_node(TreeNode<T> *&root, int x)
     {
         if (!root)
             return nullptr;
         if (x < root->val)
-            root->left = deleteNode(root->left, x);
+            root->left = delete_node(root->left, x);
         else if (root->val < x)
-            root->right = deleteNode(root->right, x);
+            root->right = delete_node(root->right, x);
         else
         {
-            TreeNode *tmp;
+            TreeNode<T> *tmp;
             if (root->left && root->right)
             {
                 tmp = getMin(root->right);
                 root->val = tmp->val;
-                root->right = deleteNode(root->right, tmp->val);
+                root->right = delete_node(root->right, tmp->val);
             }
             else
             {
@@ -367,72 +429,69 @@ public:
         return root;
     }
 };
-// 后缀表达式 -> exp_tree
-// stack : node*; 遇 oprand: create node then push, 遇operator: pop 2 item become its childs, then push, 2nd_pop item is left.
 
-
-
-class AVLTree
+template <typename T>
+class AVLTree : Bin_Tree<T>
 {
-    inline void LL(TreeNode *&root)
+    inline void LL(TreeNode<T> *&root)
     {
-        TreeNode *tmp = root->left;
+        TreeNode<T> *tmp = root->left;
         root->left = tmp->right;
         tmp->right = root;
         updateHeight(root);
         updateHeight(tmp);
         root = tmp;
     }
-    inline void RR(TreeNode *&root)
+    inline void RR(TreeNode<T> *&root)
     {
-        TreeNode *tmp = root->right;
+        TreeNode<T> *tmp = root->right;
         root->right = tmp->left;
         tmp->left = root;
         updateHeight(root);
         updateHeight(tmp);
         root = tmp;
     }
-    inline void LR(TreeNode *&root)
+    inline void LR(TreeNode<T> *&root)
     {
         RR(root->left);
         LL(root);
     }
-    inline void RL(TreeNode *&root)
+    inline void RL(TreeNode<T> *&root)
     {
         LL(root->right);
         RR(root);
     }
 
-    void Insert(TreeNode *&root, int val)
+    void insert_node(TreeNode<T> *&root, int val)
     {
         if (!root)
         {
-            root = new TreeNode(val);
+            root = new TreeNode<T>(val);
             return;
         }
         else if (val < root->val)
         {
-            Insert(root->left, val);
+            insert_node(root->left, val);
             updateHeight(root);
             if (getFactor(root) == 2)
                 getFactor(root->left) == 1 ? LL(root) : LR(root);
         }
         else if (val > root->val)
         {
-            Insert(root->right, val);
+            insert_node(root->right, val);
             updateHeight(root);
             if (getFactor(root) == -2)
                 getFactor(root->right) == -1 ? RR(root) : RL(root);
         }
     }
 
-    TreeNode *Delete(TreeNode *&root, int val)
+    TreeNode<T> *delete_node(TreeNode<T> *&root, int val)
     {
         if (!root)
             return nullptr;
         else if (root->val > val)
         {
-            root->left = Delete(root->left, val);
+            root->left = delete_node(root->left, val);
             updateHeight(root);
             if (getFactor(root) == -2)
             {
@@ -447,7 +506,7 @@ class AVLTree
         }
         else if (root->val < val)
         {
-            root->right = Delete(root->right, val);
+            root->right = delete_node(root->right, val);
             updateHeight(root);
             if (getFactor(root) == 2)
             {
@@ -466,20 +525,20 @@ class AVLTree
             {
                 if (getFactor(root) > 0)
                 {
-                    TreeNode *tmp = getMax(root->left);
+                    TreeNode<T> *tmp = getMax(root->left);
                     root->val = tmp->val;
-                    root->left = Delete(root->left, tmp->val);
+                    root->left = delete_node(root->left, tmp->val);
                 }
                 else
                 {
-                    TreeNode *tmp = getMin(root->right);
+                    TreeNode<T> *tmp = getMin(root->right);
                     root->val = tmp->val;
-                    root->right = Delete(root->right, tmp->val);
+                    root->right = delete_node(root->right, tmp->val);
                 }
             }
             else
             {
-                TreeNode *tmp = root;
+                TreeNode<T> *tmp = root;
                 root = (root->left == nullptr ? root->right : root->left);
                 delete tmp;
             }
@@ -488,62 +547,16 @@ class AVLTree
     }
 };
 
-class Heap
-{
-    // data[1....n] data[0] = INT_MAX
-public:
-    vector<int> data;
-    int size;
-    Heap()
-    {
-        data.push_back(INT_MAX);
-        data.resize(101);
-        generate(data.begin() + 1, data.end(), []() { return rand() % 100; });
-        size = data.size() - 1;
-    }
-    void push(int val)
-    {
-        data.push_back(val);
-        size = data.size() - 1;
-        int i = size;
-        for (; data[i / 2] < val; i /= 2)
-            data[i] = data[i / 2];
-        data[i] = val;
-    }
-    void percDown(int pos)
-    {
-        int val = data[pos], up = pos, down = 2 * pos;
-        for (; down <= size; up = down, down *= 2)
-        {
-            if (down < size && data[down] < data[down + 1])
-                ++down;
-            if (data[down] > val)
-                data[up] = data[down];
-            else
-                break;
-        }
-        data[up] = val;
-    }
-    void pop()
-    {
-        if (size == 1)
-            return;
-        data[1] = data.back();
-        data.pop_back();
-        size = data.size() - 1;
-        percDown(1);
-    }
-    void buildHeap()
-    {
-        int i;
-        for (i = size / 2; i; --i)
-            percDown(i);
-    }
-};
-
 int main(int argc, char const *argv[])
 {
     /* code */
     //test();
+    srand(time(NULL));
+    int b[SIZE];
+    generate(b, b + SIZE, [&]() { return rand() % 50; });
+    vector<int> a(b, b + SIZE);
+    Huffman<int> tr;
+    tr.createHuffman(a);
+
     return 0;
 }

@@ -33,7 +33,6 @@ void funa(int *x, int *y)
     *x = *x - *y;
 }
 
-
 inline double f(double s) { return s * s * s - 4 * s * s + 3 * s - 6; }
 inline double dichotomy(string s)
 {

@@ -10,6 +10,7 @@
 int main(int argc, char const *argv[])
 {
     /* code */
-    printf("%d", '0');
+    int x = 1, h = 10;
+    printf("%lu", sizeof(10 * 1.0 / 2));
     return 0;
 }

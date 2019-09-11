@@ -199,6 +199,7 @@ T *bin_search(T *lo, T *hi, const T &val)
     }
     return hi;
 }
+
 inline int GCD(int a, int b)
 {
     while (b)

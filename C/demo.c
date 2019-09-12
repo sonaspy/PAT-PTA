@@ -6,11 +6,16 @@
 #include <string.h>
 #include <math.h>
 #include <stdlib.h>
-
+int *f(int *p)
+{
+    return p;
+}
 int main(int argc, char const *argv[])
 {
     /* code */
-    int x = 1, h = 10;
-    printf("%lu", sizeof(10 * 1.0 / 2));
+    int i;
+    scanf("%d", &i);
+    i %= 4;
+    printf("%d", i);
     return 0;
 }

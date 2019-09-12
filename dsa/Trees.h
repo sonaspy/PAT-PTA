@@ -562,23 +562,32 @@ template <typename T>
 class BST : public Bin_Tree<T>
 {
 protected:
-    void insert_node(TreeNode<T> *&root, int v)
+    void __insert(TreeNode<T> *&root, int v)
     {
         if (!root)
         {
             root = new TreeNode<T>(v);
             return;
         }
-        root->val <= v ? insert_node(root->right, v) : insert_node(root->left, v);
+        root->val <= v ? __insert(root->right, v) : __insert(root->left, v);
     }
-    TreeNode<T> *delete_node(TreeNode<T> *&root, int x)
+    bool __judge_avl(TreeNode<T> *root)
+    {
+        if (!root)
+            return true;
+        bool f1 = __judge_avl(root->left);
+        bool f2 = __judge_avl(root->right);
+        this->__updateH(root);
+        return f1 && f2 && abs(this->__factor(root)) < 2;
+    }
+    TreeNode<T> *__delete(TreeNode<T> *&root, int x)
     {
         if (!root)
             return nullptr;
         if (x < root->val)
-            root->left = delete_node(root->left, x);
+            root->left = __delete(root->left, x);
         else if (root->val < x)
-            root->right = delete_node(root->right, x);
+            root->right = __delete(root->right, x);
         else
         {
             TreeNode<T> *tmp;
@@ -586,7 +595,7 @@ protected:
             {
                 tmp = this->__getMinOfR(root->right);
                 root->val = tmp->val;
-                root->right = delete_node(root->right, tmp->val);
+                root->right = __delete(root->right, tmp->val);
             }
             else
             {
@@ -602,16 +611,15 @@ public:
     void create_BST(vector<int> &a)
     {
         for (auto i : a)
-            insert_node(this->_ROOT, i);
+            __insert(this->_ROOT, i);
     }
-    bool judge_avl(TreeNode<T> *root)
+    bool is_balanced()
     {
-        if (!root)
-            return true;
-        bool f1 = judge_avl(root->left);
-        bool f2 = judge_avl(root->right);
-        this->__updateH(root);
-        return f1 && f2 && abs(this->__factor(root)) < 2;
+        return __judge_avl(this->_ROOT);
+    }
+    void del_one(T val)
+    {
+        __delete(this->_ROOT, val);
     }
 };
 
@@ -622,7 +630,11 @@ public:
     void create_BST(vector<int> &a)
     {
         for (auto i : a)
-            insert_node(this->_ROOT, i);
+            __insert(this->_ROOT, i);
+    }
+    void del_one(T val)
+    {
+        __delete(this->_ROOT, val);
     }
 
 protected:
@@ -654,7 +666,7 @@ protected:
         LL(root->right);
         RR(root);
     }
-    void insert_node(TreeNode<T> *&root, int val)
+    void __insert(TreeNode<T> *&root, int val)
     {
         if (!root)
         {
@@ -663,52 +675,38 @@ protected:
         }
         else if (val < root->val)
         {
-            insert_node(root->left, val);
+            __insert(root->left, val);
             this->__updateH(root);
             if (this->__factor(root) == 2)
                 this->__factor(root->left) == 1 ? LL(root) : LR(root);
         }
         else if (val > root->val)
         {
-            insert_node(root->right, val);
+            __insert(root->right, val);
             this->__updateH(root);
             if (this->__factor(root) == -2)
                 this->__factor(root->right) == -1 ? RR(root) : RL(root);
         }
     }
 
-    TreeNode<T> *delete_node(TreeNode<T> *&root, int val)
+    TreeNode<T> *__delete(TreeNode<T> *&root, int val)
     {
         if (!root)
             return nullptr;
         else if (root->val > val)
         {
-            root->left = delete_node(root->left, val);
+            root->left = __delete(root->left, val);
             this->__updateH(root);
-            if (__factor(root) == -2)
-            {
-                if (__factor(root->right) == -1)
-                    RR(root);
-                else
-                {
-                    LL(root->right);
-                    RR(root);
-                }
-            }
+            if (this->__factor(root) == -2)
+                this->__factor(root->right) == -1 ? RR(root) : RL(root);
         }
         else if (root->val < val)
         {
-            root->right = delete_node(root->right, val);
+            root->right = __delete(root->right, val);
             this->__updateH(root);
             if (this->__factor(root) == 2)
             {
-                if (this->__factor(root->left) == 1)
-                    LL(root);
-                else
-                {
-                    RR(root->left);
-                    LL(root);
-                }
+                (this->__factor(root->left) == 1) ? LL(root) : LR(root);
             }
         }
         else // find it
@@ -719,13 +717,13 @@ protected:
                 {
                     TreeNode<T> *tmp = this->__getMaxOfL(root->left);
                     root->val = tmp->val;
-                    root->left = delete_node(root->left, tmp->val);
+                    root->left = __delete(root->left, tmp->val);
                 }
                 else
                 {
                     TreeNode<T> *tmp = this->__getMinOfR(root->right);
                     root->val = tmp->val;
-                    root->right = delete_node(root->right, tmp->val);
+                    root->right = __delete(root->right, tmp->val);
                 }
             }
             else

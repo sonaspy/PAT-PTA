@@ -15,8 +15,9 @@ int main(int argc, char const *argv[])
     int b[SIZE];
     generate(b, b + SIZE, [&]() { return rand() % 200; });
     vector<int> a(b, b + SIZE), c = a, d;
-    sort(c.begin(), c.end());
-    BST<int> as;
-    as.build_pi(a, c);
+    AVLTree<int> avl;
+    avl.create_BST(a);
+    cout << avl.is_balanced();
+
     return 0;
 }

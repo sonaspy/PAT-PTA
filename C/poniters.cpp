@@ -22,7 +22,6 @@ int main(int argc, char const *argv[])
     int **p;
     p2arr = a;
     a2[1] = b;
-   
 
     return 0;
 }

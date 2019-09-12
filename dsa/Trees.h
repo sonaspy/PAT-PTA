@@ -26,13 +26,13 @@ protected:
     inline void __updateD(TreeNode<T> *root) { root->depth = __depth(root->parent) + 1; }
     inline void __updateH(TreeNode<T> *root) { root->height = max(__height(root->left), __height(root->right)) + 1; }
     inline int __factor(TreeNode<T> *root) { return __height(root->left) - __height(root->right); }
-    inline TreeNode<T> *__getMaxOfL(TreeNode<T> *root)
+    inline TreeNode<T> *__getmax(TreeNode<T> *root)
     {
         while (root->right)
             root = root->right;
         return root;
     }
-    inline TreeNode<T> *__getMinOfR(TreeNode<T> *root)
+    inline TreeNode<T> *__getmin(TreeNode<T> *root)
     {
         while (root->left)
             root = root->left;
@@ -131,7 +131,6 @@ protected:
         if (!this->_ROOT)
             return -1;
         int cnt = 0;
-        this->q.clear();
         this->q.push_back(this->_ROOT);
         while (this->q.size())
         {
@@ -143,6 +142,7 @@ protected:
             if (tp1->right)
                 this->q.push_back(tp1->right);
         }
+        this->q.clear();
         return cnt;
     }
     int __nodecount()
@@ -150,7 +150,6 @@ protected:
         if (!this->_ROOT)
             return 0;
         int cnt = 0;
-        this->q.clear();
         this->q.push_back(this->_ROOT);
         while (this->q.size())
         {
@@ -161,11 +160,11 @@ protected:
             if (tp1->right)
                 this->q.push_back(tp1->right);
         }
+        this->q.clear();
         return cnt;
     }
     void __del_targetSub(TreeNode<T> *root, int target)
     {
-        this->q.clear();
         TreeNode<T> *x;
         if (root->val == target)
         {
@@ -197,6 +196,7 @@ protected:
                     this->q.push_back(x->right);
             }
         }
+        this->q.clear();
     }
     void __del_allSub(TreeNode<T> *root)
     {
@@ -271,6 +271,24 @@ protected:
         f(root);
     }
 
+    void __InThread(TreeNode<T> *root, TreeNode<T> *pre)
+    {
+        if (root)
+        {
+            __InThread(root->left, pre);
+            if (!root->left)
+            {
+                root->ltag = 1;
+                root->left = pre;
+            }
+            if (pre && !pre->right)
+            {
+                pre->rtag = 1;
+                pre->right = root;
+            }
+            __InThread(root->right, root);
+        }
+    }
     double __op(double a, double b, char oper)
     {
         double res;
@@ -304,7 +322,6 @@ protected:
     }
     int __diameter()
     {
-        this->q.clear(), this->nexq.clear();
         q.push_back(this->_ROOT);
         int level = 0, last = 0;
         while (q.size())
@@ -322,6 +339,7 @@ protected:
             level++;
             swap(q, nexq);
         }
+        this->q.clear(), this->nexq.clear();
         return last + level - 1;
     }
     void __update_height(TreeNode<T> *root)
@@ -356,6 +374,7 @@ public:
     {
         this->_ROOT = nullptr;
         this->isunique = true;
+        this->q.clear(), this->nexq.clear();
     }
     inline TreeNode<T> *ROOT()
     {
@@ -406,6 +425,20 @@ public:
     {
         return __TreeIdentical(this->_ROOT, T2.ROOT());
     }
+    TreeNode<T> *convert2list()
+    {
+        vector<TreeNode<T> *> ls;
+        intrav([&](TreeNode<T> *v) { ls.push_back(v); });
+        auto p1 = ls.begin(), p2 = ls.begin() + 1;
+        TreeNode<T> *head = *p1;
+        for (; p2 != ls.end(); p1++, p2++)
+        {
+            (*p1)->left = nullptr;
+            (*p1)->right = (*p2);
+        }
+        (*p1)->right = (*p1)->left = nullptr;
+        return head;
+    }
     string tree2infix()
     {
         string s;
@@ -418,7 +451,6 @@ public:
     }
     bool iscmp()
     {
-        this->q.clear();
         TreeNode<T> *root = this->_ROOT;
         this->q.push_back(root);
         while (this->q.size())
@@ -434,6 +466,7 @@ public:
                         return false;
                 }
         }
+        this->q.clear();
         return true;
     }
 
@@ -454,7 +487,7 @@ public:
     }
     void inTrav()
     {
-        vector<int> resSeq;
+        vector<T> resSeq;
         stack<TreeNode<T> *> s;
         TreeNode<T> *root = this->_ROOT;
         if (!root)
@@ -479,7 +512,7 @@ public:
     }
     void preTrav()
     {
-        vector<int> resSeq;
+        vector<T> resSeq;
         TreeNode<T> *root = this->_ROOT;
         if (!root)
             return;
@@ -498,7 +531,7 @@ public:
     }
     void postTrav()
     {
-        vector<int> resSeq;
+        vector<T> resSeq;
         TreeNode<T> *root = this->_ROOT;
         if (!root)
             return;
@@ -548,25 +581,6 @@ public:
         else
             return Isomprphic(root1->left, root2->right) && Isomprphic(root1->right, root2->left);
     }
-
-    void InThread(TreeNode<T> *root, TreeNode<T> *pre)
-    {
-        if (root)
-        {
-            InThread(root->left, pre);
-            if (!root->left)
-            {
-                root->ltag = 1;
-                root->left = pre;
-            }
-            if (pre && !pre->right)
-            {
-                pre->rtag = 1;
-                pre->right = root;
-            }
-            InThread(root->right, root);
-        }
-    }
 };
 
 // 后缀表达式 -> exp_tree
@@ -574,14 +588,15 @@ public:
 template <typename T>
 class Huffman : public Bin_Tree<T>
 {
-public:
-    struct cmp
+protected:
+    int _wpl;
+    struct __cmp
     {
         bool operator()(const TreeNode<T> *a, const TreeNode<T> *b) const { return a->val > b->val; }
     };
-    void createHuffman(vector<int> &data)
+    void __build_hfm(vector<int> &data)
     {
-        priority_queue<TreeNode<T> *, vector<TreeNode<T> *>, cmp> pq;
+        priority_queue<TreeNode<T> *, vector<TreeNode<T> *>, __cmp> pq;
         TreeNode<T> *v, *w, *root;
         for (auto i : data)
             pq.push_back(new TreeNode<T>(i));
@@ -593,40 +608,33 @@ public:
             root->left = v, root->right = w;
             pq.push_back(root);
         }
-        this->_ROOT = root;
+        this->__updateROOT(root);
     }
-    void WPl_sum(TreeNode<T> *root, int &wpl)
+    void __wpl(TreeNode<T> *root)
     {
         if (!root)
             return;
         if (root->left)
-            wpl += root->val;
-        WPl_sum(root->left, wpl);
-        WPl_sum(root->right, wpl);
+            _wpl += root->val;
+        __wpl(root->left);
+        __wpl(root->right);
     };
-    void wpl_sum(TreeNode<T> *root, int &wpl)
+
+public:
+    Huffman()
     {
-        this->q.clear();
-        this->nexq.clear();
-        this->q.push_back(root);
-        TreeNode<T> *v;
-        int le = 0;
-        while (this->q.size())
-        {
-            while (this->q.size())
-            {
-                v = this->q.front(), this->q.pop_front();
-                if (!v->left && !v->right)
-                    wpl += le * v->val;
-                if (v->left)
-                    this->nexq.push_back(v->left);
-                if (v->right)
-                    this->nexq.push_back(v->right);
-            }
-            swap(this->q, this->nexq);
-            le++;
-        }
-    };
+        _wpl = -1;
+    }
+    void create(vector<int> &a)
+    {
+        __build_hfm(a);
+    }
+    int wpl()
+    {
+        if (_wpl == -1)
+            __wpl(this->_ROOT);
+        return _wpl;
+    }
 };
 template <typename T>
 class BST : public Bin_Tree<T>
@@ -663,7 +671,7 @@ protected:
             TreeNode<T> *tmp;
             if (root->left && root->right)
             {
-                tmp = this->__getMinOfR(root->right);
+                tmp = this->__getmin(root->right);
                 root->val = tmp->val;
                 root->right = __delete(root->right, tmp->val);
             }
@@ -678,7 +686,7 @@ protected:
     }
 
 public:
-    void create_BST(vector<int> &a)
+    void create(vector<int> &a)
     {
         for (auto i : a)
             __insert(this->_ROOT, i);
@@ -700,7 +708,7 @@ template <typename T>
 class AVLTree : public BST<T>
 {
 public:
-    void create_BST(vector<int> &a)
+    void create(vector<int> &a)
     {
         for (auto i : a)
             __insert(this->_ROOT, i);
@@ -769,7 +777,7 @@ protected:
     {
         if (!root)
             return nullptr;
-        else if (root->val > val)
+        if (val < root->val)
         {
             root->left = __delete(root->left, val);
             this->__updateH(root);
@@ -781,31 +789,30 @@ protected:
             root->right = __delete(root->right, val);
             this->__updateH(root);
             if (this->__factor(root) == 2)
-            {
                 (this->__factor(root->left) == 1) ? LL(root) : LR(root);
-            }
         }
         else // find it
         {
+            TreeNode<T> *tmp;
             if (root->right && root->left)
             {
                 if (this->__factor(root) > 0)
                 {
-                    TreeNode<T> *tmp = this->__getMaxOfL(root->left);
+                    tmp = this->__getmax(root->left);
                     root->val = tmp->val;
                     root->left = __delete(root->left, tmp->val);
                 }
                 else
                 {
-                    TreeNode<T> *tmp = this->__getMinOfR(root->right);
+                    tmp = this->__getmin(root->right);
                     root->val = tmp->val;
                     root->right = __delete(root->right, tmp->val);
                 }
             }
             else
             {
-                TreeNode<T> *tmp = root;
-                root = (root->left == nullptr ? root->right : root->left);
+                tmp = root;
+                root = root->left ? root->left : root->right;
                 delete tmp;
             }
         }

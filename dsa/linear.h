@@ -3,7 +3,7 @@
 
 #include <bits/stdc++.h>
 using namespace std;
-namespace linear
+namespace newlinear
 {
 struct ListNode
 {
@@ -225,262 +225,267 @@ bool isMatch(vector<int> &push_seq, vector<int> &pop_seq, int capacity)
     return walk == capacity;
 }
 
-static void _merge_list(ListNode *l1, ListNode *l2, ListNode *&l)
-{ // 2 increasing order list merge to a new increasing order list. in-place (rear insert)
-    ListNode *p = l1->next, *q = l2->next, *r;
-    l = l1;
-    l->next = nullptr;
-    delete l2;
-    r = l;
-    while (p && q)
-    {
-        p->val <= q->val ? r->next = p, p = p->next : r->next = q, q = q->next;
-        r = r->next;
+class Linked_List
+{
+public:
+    void _merge_list(ListNode *l1, ListNode *l2, ListNode *&l)
+    { // 2 increasing order list merge to a new increasing order list. in-place (rear insert)
+        ListNode *p = l1->next, *q = l2->next, *r;
+        l = l1;
+        l->next = nullptr;
+        delete l2;
+        r = l;
+        while (p && q)
+        {
+            p->val <= q->val ? r->next = p, p = p->next : r->next = q, q = q->next;
+            r = r->next;
+        }
+        r->next = p ? p : q;
     }
-    r->next = p ? p : q;
-}
 
 #define HEAD_INSERT(L, first) \
     first->next = L->next;    \
     L->next = first
-static void _merge_list2(ListNode *l1, ListNode *l2, ListNode *&l)
-{ // 2 increasing order list merge to a new decreasing order list. in-place (head insert)
-    ListNode *p = l1->next, *q = l2->next, *h;
-    l = l1;
-    l->next = nullptr;
-    delete l2;
-    while (p && q)
-    {
-        p->val <= q->val ? h = p, p = p->next : h = q, q = q->next;
-        HEAD_INSERT(l, h);
-    }
-    while (p)
-    {
-        h = p, p = p->next;
-        HEAD_INSERT(l, h);
-    }
-    while (q)
-    {
-        h = q, q = q->next;
-        HEAD_INSERT(l, h);
-    }
-}
-
-void reverse_List(ListNode *L)
-{
-    ListNode *walk, *post;
-    walk = L->next;
-    L->next = NULL;
-    while (walk)
-    {
-        post = walk->next;
-        HEAD_INSERT(L, walk);
-        walk = post;
-    }
-}
-
-template <class T>
-void unique_sorted_list(T *lo, T *hi)
-{
-    T *i = lo, *j = lo + 1;
-    for (; j < hi; ++j)
-        if (*i != *j)
-            *(++i) = *j;
-}
-void unique_sorted_Linkedlist(ListNode *l)
-{
-    ListNode *p = l->next, *d;
-    if (!p)
-        return;
-    while (p->next)
-    {
-        d = p->next;
-        if (d->val == p->val)
+    void _merge_list2(ListNode *l1, ListNode *l2, ListNode *&l)
+    { // 2 increasing order list merge to a new decreasing order list. in-place (head insert)
+        ListNode *p = l1->next, *q = l2->next, *h;
+        l = l1;
+        l->next = nullptr;
+        delete l2;
+        while (p && q)
         {
-            p->next = d->next;
-            delete d;
+            p->val <= q->val ? h = p, p = p->next : h = q, q = q->next;
+            HEAD_INSERT(l, h);
         }
-        else
-            p = p->next;
-    }
-}
-
-void del_x_inlist1(ListNode *&l, int x)
-{
-    if (!l)
-        return;
-    if (l->val == x)
-    {
-        ListNode *p = l;
-        l = l->next;
-        delete l;
-        del_x_inlist1(l, x);
-    }
-    else
-        del_x_inlist1(l->next, x);
-}
-void del_x_inlist2(ListNode *&l, int x)
-{
-    ListNode *p = l->next, *r = l, *q;
-    while (p)
-    {
-        if (p->val != x)
+        while (p)
         {
-            r->next = p;
-            r = p;
-            p = p->next;
+            h = p, p = p->next;
+            HEAD_INSERT(l, h);
         }
-        else
+        while (q)
         {
-            q = p;
-            p = p->next;
-            delete q;
+            h = q, q = q->next;
+            HEAD_INSERT(l, h);
         }
     }
-    r->next = nullptr;
-}
 
-void sort_linkedlist(ListNode *&l)
-{ // insertion
-    ListNode *walk = l->next, *pre, *the_nex = walk->next;
-    walk->next = nullptr;
-    walk = the_nex;
-    while (walk)
+    void reverse_List(ListNode *L)
     {
-        the_nex = walk->next;
-        for (pre = l; pre->next && pre->next->val <= walk->val; pre = pre->next)
-            ;
-        walk->next = pre->next;
-        pre->next = walk;
-        walk = the_nex;
-    }
-}
-void sort_linkedlist1(ListNode *&l)
-{ // bubble
-    ListNode *pre, *post;
-    int flag;
-    do
-    {
-        flag = 0, pre = l, post = pre->next;
-        while (post && post->next)
+        ListNode *walk, *post;
+        walk = L->next;
+        L->next = NULL;
+        while (walk)
         {
-            if (post->val > post->next->val)
-            {
-                flag = 1;
-                pre->next = post->next;
-                post->next = post->next->next;
-                pre->next->next = post;
-            }
-            pre = post;
-            post = post->next;
+            post = walk->next;
+            HEAD_INSERT(L, walk);
+            walk = post;
         }
-    } while (flag);
-}
+    }
 
-void Min_delete(ListNode *&l)
-{
-    ListNode *p, *pre, *u;
-    while (l->next)
+    template <class T>
+    void unique_sorted_list(T *lo, T *hi)
     {
-        pre = l;
-        p = pre->next;
+        T *i = lo, *j = lo + 1;
+        for (; j < hi; ++j)
+            if (*i != *j)
+                *(++i) = *j;
+    }
+    void unique_sorted_Linkedlist(ListNode *l)
+    {
+        ListNode *p = l->next, *d;
+        if (!p)
+            return;
         while (p->next)
         {
-            if (p->next->val < pre->next->val)
-                pre = p;
+            d = p->next;
+            if (d->val == p->val)
+            {
+                p->next = d->next;
+                delete d;
+            }
+            else
+                p = p->next;
+        }
+    }
+
+    void del_x_inlist1(ListNode *&l, int x)
+    {
+        if (!l)
+            return;
+        if (l->val == x)
+        {
+            ListNode *p = l;
+            l = l->next;
+            delete l;
+            del_x_inlist1(l, x);
+        }
+        else
+            del_x_inlist1(l->next, x);
+    }
+    void del_x_inlist2(ListNode *&l, int x)
+    {
+        ListNode *p = l->next, *r = l, *q;
+        while (p)
+        {
+            if (p->val != x)
+            {
+                r->next = p;
+                r = p;
+                p = p->next;
+            }
+            else
+            {
+                q = p;
+                p = p->next;
+                delete q;
+            }
+        }
+        r->next = nullptr;
+    }
+
+    void sort_linkedlist(ListNode *&l)
+    { // insertion
+        ListNode *walk = l->next, *pre, *the_nex = walk->next;
+        walk->next = nullptr;
+        walk = the_nex;
+        while (walk)
+        {
+            the_nex = walk->next;
+            for (pre = l; pre->next && pre->next->val <= walk->val; pre = pre->next)
+                ;
+            walk->next = pre->next;
+            pre->next = walk;
+            walk = the_nex;
+        }
+    }
+    void sort_linkedlist1(ListNode *&l)
+    { // bubble
+        ListNode *pre, *post;
+        int flag;
+        do
+        {
+            flag = 0, pre = l, post = pre->next;
+            while (post && post->next)
+            {
+                if (post->val > post->next->val)
+                {
+                    flag = 1;
+                    pre->next = post->next;
+                    post->next = post->next->next;
+                    pre->next->next = post;
+                }
+                pre = post;
+                post = post->next;
+            }
+        } while (flag);
+    }
+
+    void Min_delete(ListNode *&l)
+    {
+        ListNode *p, *pre, *u;
+        while (l->next)
+        {
+            pre = l;
+            p = pre->next;
+            while (p->next)
+            {
+                if (p->next->val < pre->next->val)
+                    pre = p;
+                p = p->next;
+            }
+            //cout << pre->next->val;
+            u = pre->next;
+            pre->next = u->next;
+            delete u;
+        }
+        delete (l);
+    }
+
+    ListNode *Locate(ListNode *&l, int x)
+    {
+        ListNode *p = l->next, *left;
+        while (p && p->val != x)
+            p = p->next;
+        if (!p)
+            return nullptr;
+        p->freq++;
+        p->next->pre = p->pre;
+        p->pre->next = p->next;
+        left = p->pre;
+        while (left != l && left->freq <= p->freq)
+            left = left->pre;
+        p->next = left->next;
+        p->pre = left;
+        left->next = p;
+        p->next->pre = p;
+        return p;
+    }
+    bool if_list_sorted(ListNode *L)
+    {
+        ListNode *p = L->next;
+        vector<int> a;
+        for (; p; p = p->next)
+            a.push_back(p->val);
+        return is_sorted(a.begin(), a.end());
+    }
+
+    ListNode *kth_ultimate(ListNode *&L, int k)
+    {
+        ListNode *r, *l;
+        r = l = L;
+        while (--k && r)
+            r = r->next;
+        if (0 <= k && !r->next)
+            return nullptr;
+        while (r->next && l->next)
+        {
+            r = r->next;
+            l = l->next;
+        }
+        return l;
+    }
+
+    void output(ListNode *h)
+    {
+        ListNode *p = h->next;
+        while (p)
+        {
+            cout << p->val << " ";
             p = p->next;
         }
-        //cout << pre->next->val;
-        u = pre->next;
-        pre->next = u->next;
-        delete u;
+        cout << endl;
     }
-    delete (l);
-}
 
-ListNode *Locate(ListNode *&l, int x)
-{
-    ListNode *p = l->next, *left;
-    while (p && p->val != x)
-        p = p->next;
-    if (!p)
-        return nullptr;
-    p->freq++;
-    p->next->pre = p->pre;
-    p->pre->next = p->next;
-    left = p->pre;
-    while (left != l && left->freq <= p->freq)
-        left = left->pre;
-    p->next = left->next;
-    p->pre = left;
-    left->next = p;
-    p->next->pre = p;
-    return p;
-}
-bool if_list_sorted(ListNode *L)
-{
-    ListNode *p = L->next;
-    vector<int> a;
-    for (; p; p = p->next)
-        a.push_back(p->val);
-    return is_sorted(a.begin(), a.end());
-}
-
-ListNode *kth_ultimate(ListNode *&L, int k)
-{
-    ListNode *r, *l;
-    r = l = L;
-    while (--k && r)
-        r = r->next;
-    if (0 <= k && !r->next)
-        return nullptr;
-    while (r->next && l->next)
+    ListNode *createList(vector<int> &a)
     {
-        r = r->next;
-        l = l->next;
+        ListNode *dummy = new ListNode, *p = dummy;
+        for (auto &i : a)
+        {
+            p->next = new ListNode(i);
+            p = p->next;
+        }
+        return dummy;
     }
-    return l;
-}
 
-void output(ListNode *h)
-{
-    ListNode *p = h->next;
-    while (p)
+    ListNode *find_common_p(ListNode *l1, ListNode *l2)
     {
-        cout << p->val << " ";
-        p = p->next;
+        ListNode *thelong, *theshort, *p = l1, *q = l2;
+        int len1 = 0, len2 = 0, step = 0;
+        while (p)
+            p = p->next, len1++;
+        while (q)
+            q = q->next, len2++;
+        thelong = len1 > len2 ? l1 : l2;
+        theshort = thelong == l2 ? l1 : l2;
+        step = abs(len1 - len2);
+        while (step--)
+            thelong = thelong->next;
+        while (thelong != theshort)
+            thelong = thelong->next, theshort = theshort->next;
+        return thelong;
     }
-    cout << endl;
-}
+};
 
-ListNode *createList(vector<int> &a)
-{
-    ListNode *dummy = new ListNode, *p = dummy;
-    for (auto &i : a)
-    {
-        p->next = new ListNode(i);
-        p = p->next;
-    }
-    return dummy;
-}
-
-ListNode *find_common_p(ListNode *l1, ListNode *l2)
-{
-    ListNode *thelong, *theshort, *p = l1, *q = l2;
-    int len1 = 0, len2 = 0, step = 0;
-    while (p)
-        p = p->next, len1++;
-    while (q)
-        q = q->next, len2++;
-    thelong = len1 > len2 ? l1 : l2;
-    theshort = thelong == l2 ? l1 : l2;
-    step = abs(len1 - len2);
-    while (step--)
-        thelong = thelong->next;
-    while (thelong != theshort)
-        thelong = thelong->next, theshort = theshort->next;
-    return thelong;
-}
 vector<int> twoSum(vector<int> &nums, int target)
 {
     unordered_map<int, int> mapping;
@@ -662,4 +667,4 @@ bool bracketMatch(char *f)
 6.表达式处理完毕后 output rest in stack
 (before start, put a guard in stack ,pri = -1(lowest) );
 */
-}; // namespace linear
+}; // namespace newlinear

@@ -364,15 +364,6 @@ public:
     }
 };
 
-void WPl_sum(TreeNode *root, int &wpl)
-{
-    if (!root)
-        return;
-    if (root->left)
-        wpl += root->val;
-    WPl_sum(root->left, wpl);
-    WPl_sum(root->right, wpl);
-};
 
 int main(int argc, char const *argv[])
 {

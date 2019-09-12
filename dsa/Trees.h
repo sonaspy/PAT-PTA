@@ -19,6 +19,7 @@ class Bin_Tree
 {
 protected:
     TreeNode<T> *_ROOT, *tp1;
+    deque<TreeNode<T> *> q, nexq;
     bool isunique; // pre post build
     inline int __height(TreeNode<T> *root) { return root == nullptr ? 0 : root->height; }
     inline int __depth(TreeNode<T> *root) { return root == nullptr ? 0 : root->depth; }
@@ -130,17 +131,17 @@ protected:
         if (!this->_ROOT)
             return -1;
         int cnt = 0;
-        queue<TreeNode<T> *> q;
-        q.push(this->_ROOT);
-        while (q.size())
+        this->q.clear();
+        this->q.push_back(this->_ROOT);
+        while (this->q.size())
         {
-            tp1 = q.front(), q.pop();
+            tp1 = this->q.front(), this->q.pop_front();
             if (!tp1->left && !tp1->right)
                 cnt++;
             if (tp1->left)
-                q.push(tp1->left);
+                this->q.push_back(tp1->left);
             if (tp1->right)
-                q.push(tp1->right);
+                this->q.push_back(tp1->right);
         }
         return cnt;
     }
@@ -149,32 +150,32 @@ protected:
         if (!this->_ROOT)
             return 0;
         int cnt = 0;
-        queue<TreeNode<T> *> q;
-        q.push(this->_ROOT);
-        while (q.size())
+        this->q.clear();
+        this->q.push_back(this->_ROOT);
+        while (this->q.size())
         {
-            tp1 = q.front(), q.pop();
+            tp1 = this->q.front(), this->q.pop_front();
             cnt++;
             if (tp1->left)
-                q.push(tp1->left);
+                this->q.push_back(tp1->left);
             if (tp1->right)
-                q.push(tp1->right);
+                this->q.push_back(tp1->right);
         }
         return cnt;
     }
     void __del_targetSub(TreeNode<T> *root, int target)
     {
-        queue<TreeNode<T> *> q;
+        this->q.clear();
         TreeNode<T> *x;
         if (root->val == target)
         {
             __del_allSub(root);
             return;
         }
-        q.push(root);
-        while (q.size())
+        this->q.push_back(root);
+        while (this->q.size())
         {
-            x = q.front(), q.pop();
+            x = this->q.front(), this->q.pop_front();
             if (x->left)
             {
                 if (x->left->val == target)
@@ -183,7 +184,7 @@ protected:
                     x->left = nullptr;
                 }
                 else
-                    q.push(x->left);
+                    this->q.push_back(x->left);
             }
             if (x->right)
             {
@@ -193,7 +194,7 @@ protected:
                     x->right = nullptr;
                 }
                 else
-                    q.push(x->right);
+                    this->q.push_back(x->right);
             }
         }
     }
@@ -301,6 +302,52 @@ protected:
         }
         return stof(root->val);
     }
+    int __diameter()
+    {
+        this->q.clear(), this->nexq.clear();
+        q.push_back(this->_ROOT);
+        int level = 0, last = 0;
+        while (q.size())
+        {
+            if (q.size() > 1)
+                last = level;
+            while (q.size())
+            {
+                tp1 = q.front(), q.pop_front();
+                if (tp1->left)
+                    nexq.push_back(tp1->left);
+                if (tp1->right)
+                    nexq.push_back(tp1->right);
+            }
+            level++;
+            swap(q, nexq);
+        }
+        return last + level - 1;
+    }
+    void __update_height(TreeNode<T> *root)
+    {
+        if (!root)
+            return;
+        __update_height(root->left);
+        __update_height(root->right);
+        __updateH(root);
+    }
+    void __update_depth(TreeNode<T> *root)
+    {
+        if (!root)
+            return;
+        __updateD(root);
+        __update_depth(root->left);
+        __update_depth(root->right);
+    }
+    void __update_parent(TreeNode<T> *root, TreeNode<T> *p)
+    {
+        if (!root)
+            return;
+        root->parent = p;
+        __update_parent(root->left, root);
+        __update_parent(root->right, root);
+    }
 
 public:
     unordered_map<T, TreeNode<T> *> table;
@@ -308,6 +355,7 @@ public:
     Bin_Tree()
     {
         this->_ROOT = nullptr;
+        this->isunique = true;
     }
     inline TreeNode<T> *ROOT()
     {
@@ -339,6 +387,17 @@ public:
     {
         return __nodecount();
     }
+    int height()
+    {
+        if (this->_ROOT->height == 1)
+            __update_height(this->_ROOT);
+        return this->_ROOT->height;
+    }
+    void update_parent()
+    {
+        __update_parent(_ROOT, nullptr);
+    }
+    inline int diam() { return __diameter(); }
     bool similar(Bin_Tree<T> T2)
     {
         return __TreeSimilar(this->_ROOT, T2.ROOT());
@@ -359,18 +418,18 @@ public:
     }
     bool iscmp()
     {
-        queue<TreeNode<T> *> q;
+        this->q.clear();
         TreeNode<T> *root = this->_ROOT;
-        q.push(root);
-        while (q.size())
+        this->q.push_back(root);
+        while (this->q.size())
         {
-            tp1 = q.front(), q.pop();
+            tp1 = this->q.front(), this->q.pop_front();
             if (tp1)
-                q.push(tp1->left), q.push(tp1->right);
+                this->q.push_back(tp1->left), this->q.push_back(tp1->right);
             else
-                while (q.size())
+                while (this->q.size())
                 {
-                    tp1 = q.front(), q.pop();
+                    tp1 = this->q.front(), this->q.pop_front();
                     if (tp1)
                         return false;
                 }
@@ -382,6 +441,16 @@ public:
     void intrav(_Function f)
     {
         __recur_in(this->_ROOT, f);
+    }
+    template <class _Function>
+    void pretrav(_Function f)
+    {
+        __recur_pre(this->_ROOT, f);
+    }
+    template <class _Function>
+    void posttrav(_Function f)
+    {
+        __recur_post(this->_ROOT, f);
     }
     void inTrav()
     {
@@ -515,14 +584,14 @@ public:
         priority_queue<TreeNode<T> *, vector<TreeNode<T> *>, cmp> pq;
         TreeNode<T> *v, *w, *root;
         for (auto i : data)
-            pq.push(new TreeNode<T>(i));
+            pq.push_back(new TreeNode<T>(i));
         while (pq.size() > 1)
         {
-            v = pq.top(), pq.pop();
-            w = pq.top(), pq.pop();
+            v = pq.top(), pq.pop_front();
+            w = pq.top(), pq.pop_front();
             root = new TreeNode<T>(v->val + w->val);
             root->left = v, root->right = w;
-            pq.push(root);
+            pq.push_back(root);
         }
         this->_ROOT = root;
     }
@@ -537,23 +606,24 @@ public:
     };
     void wpl_sum(TreeNode<T> *root, int &wpl)
     {
-        queue<TreeNode<T> *> q, nexq;
-        q.push(root);
+        this->q.clear();
+        this->nexq.clear();
+        this->q.push_back(root);
         TreeNode<T> *v;
         int le = 0;
-        while (q.size())
+        while (this->q.size())
         {
-            while (q.size())
+            while (this->q.size())
             {
-                v = q.front(), q.pop();
+                v = this->q.front(), this->q.pop_front();
                 if (!v->left && !v->right)
                     wpl += le * v->val;
                 if (v->left)
-                    nexq.push(v->left);
+                    this->nexq.push_back(v->left);
                 if (v->right)
-                    nexq.push(v->right);
+                    this->nexq.push_back(v->right);
             }
-            swap(q, nexq);
+            swap(this->q, this->nexq);
             le++;
         }
     };
@@ -612,6 +682,9 @@ public:
     {
         for (auto i : a)
             __insert(this->_ROOT, i);
+        this->update_parent();
+        this->__update_depth(this->_ROOT);
+        this->__update_height(this->_ROOT);
     }
     bool is_balanced()
     {
@@ -631,6 +704,9 @@ public:
     {
         for (auto i : a)
             __insert(this->_ROOT, i);
+        this->update_parent();
+        this->__update_depth(this->_ROOT);
+        this->__update_height(this->_ROOT);
     }
     void del_one(T val)
     {
@@ -754,6 +830,58 @@ public:
         int ra = find_root(a), rb = find_root(b);
         if (ra != rb)
             arr[rb] = ra;
+    }
+};
+class Heap
+{
+    // data[1....n] data[0] = INT_MAX
+public:
+    vector<int> data;
+    int size;
+    Heap()
+    {
+        data.push_back(INT_MAX);
+        data.resize(101);
+        generate(data.begin() + 1, data.end(), []() { return rand() % 100; });
+        size = data.size() - 1;
+    }
+    void push(int val)
+    {
+        data.push_back(val);
+        size = data.size() - 1;
+        int i = size;
+        for (; data[i / 2] < val; i /= 2)
+            data[i] = data[i / 2];
+        data[i] = val;
+    }
+    void percDown(int pos)
+    {
+        int val = data[pos], up = pos, down = 2 * pos;
+        for (; down <= size; up = down, down *= 2)
+        {
+            if (down < size && data[down] < data[down + 1])
+                ++down;
+            if (data[down] > val)
+                data[up] = data[down];
+            else
+                break;
+        }
+        data[up] = val;
+    }
+    void pop()
+    {
+        if (size == 1)
+            return;
+        data[1] = data.back();
+        data.pop_back();
+        size = data.size() - 1;
+        percDown(1);
+    }
+    void buildHeap()
+    {
+        int i;
+        for (i = size / 2; i; --i)
+            percDown(i);
     }
 };
 

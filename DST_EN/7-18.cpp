@@ -15,22 +15,22 @@ int main(int argc, char const *argv[])
     unordered_map<int, vector<int>> post;
     unordered_map<int, int> indegree;
     vector<int> ans;
-    int n, table[1000], v;
+    int n, hashmp[1000], v, suppose;
     cin >> n;
     for (int i = 0; i < n; i++)
-        scanf("%d", table + i);
+        scanf("%d", hashmp + i);
     for (int i = 0; i < n; i++)
     {
-        if (table[i] >= 0)
+        if (hashmp[i] >= 0)
         {
-            int suppose = table[i] % n;
+            suppose = hashmp[i] % n;
             if (suppose == i)
-                indegree[table[i]] = 0;
+                indegree[hashmp[i]] = 0;
             else
                 for (int j = suppose; j != i; j = (j + 1) % n)
                 {
-                    post[table[j]].push_back(table[i]);
-                    indegree[table[i]]++;
+                    post[hashmp[j]].push_back(hashmp[i]);
+                    indegree[hashmp[i]]++;
                 }
         }
     }

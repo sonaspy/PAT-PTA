@@ -3,10 +3,9 @@
 
 #include <bits/stdc++.h>
 
-#define test() freopen("in", "r", stdin)
-#define SIZE 20000
 using namespace std;
-
+namespace newsort
+{
 template <typename T>
 static void HeapSort(T *lo, T *hi)
 {
@@ -284,32 +283,14 @@ static void tableSort(T *a, T *b)
 }
 
 // template <class Iter>
-// void q_sort(Iter* left, Iter* right)
+// void quickSort(Iter* left, Iter* right)
 // {
 //     if (left >= right)
 //         return;
 //     Iter *mid = left;
 //     mid = partition(left + 1, right, bind2nd(less<int>(), *mid));
 //     iter_swap(mid - 1, left);
-//     q_sort(left, mid - 1);
-//     q_sort(mid, right);
+//     quickSort(left, mid - 1);
+//     quickSort(mid, right);
 // }
-
-int main(int argc, char const *argv[])
-{
-    /* code */
-    //test();
-    srand(time(NULL));
-    int b[SIZE];
-    generate(b, b + SIZE, [&]() { return rand() % SIZE; });
-    clock_t startTime, endTime;
-    startTime = clock();
-
-    //quickSort(b, b + SIZE);
-
-    endTime = clock();
-
-    cout << is_sorted(b, b + SIZE) << endl;
-    cout << "The run time is: " << (double)(endTime - startTime) / 1000 << "ms" << endl;
-    return 0;
-}
+}; // namespace newsort

@@ -2,9 +2,9 @@
 // coding - utf_8
 
 #include <bits/stdc++.h>
-#define test() freopen("in", "r", stdin)
-#define SIZE 1000
 using namespace std;
+namespace linear
+{
 struct ListNode
 {
     int val, freq;
@@ -662,21 +662,4 @@ bool bracketMatch(char *f)
 6.表达式处理完毕后 output rest in stack
 (before start, put a guard in stack ,pri = -1(lowest) );
 */
-
-int main(int argc, char const *argv[])
-{
-    /* code */
-    //test();
-    srand(time(NULL));
-    int b[SIZE];
-    generate(b, b + SIZE, [&]() { return rand() % SIZE; });
-    vector<int> a(b, b + SIZE);
-    //sort(a.begin(), a.end(), less<int>());
-    clock_t startTime, endTime;
-    reverse_(a.begin(), a.end());
-    //output(head);
-    endTime = clock();
-
-    cout << "The run time is: " << (double)(endTime - startTime) / 1000 << "ms" << endl;
-    return 0;
-}
+}; // namespace linear

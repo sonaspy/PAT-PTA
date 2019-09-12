@@ -736,4 +736,25 @@ protected:
         return root;
     }
 };
+
+class set_union
+{
+public:
+    vector<int> arr;
+    set_union()
+    {
+        arr = vector<int>(10000, -1);
+    }
+    inline int find_root(int id)
+    {
+        return arr[id] == -1 ? id : arr[id] = find_root(arr[id]);
+    }
+    inline void Union__(int a, int b)
+    {
+        int ra = find_root(a), rb = find_root(b);
+        if (ra != rb)
+            arr[rb] = ra;
+    }
+};
+
 }; // namespace newtree

@@ -32,6 +32,30 @@ struct BinNode
         return parent == nullptr;
     }
 };
+
+template <typename T>
+struct BNode
+{
+    T val;
+    BNode *left, *right, *parent;
+    int height, depth, ltag, rtag;
+    BNode(T x) : val(x), left(nullptr), right(nullptr), parent(nullptr), height(1), depth(1), ltag(0), rtag(0) {}
+    bool inline is_l()
+    {
+        return parent && parent->left == this;
+    }
+    bool inline is_r()
+    {
+        return parent && parent->right == this;
+    }
+    bool inline isroot()
+    {
+        return parent == nullptr;
+    }
+};
+
+
+
 template <typename T>
 class BinTree
 {
@@ -395,7 +419,7 @@ public:
     {
         if (!this->_ROOT)
             return;
-        printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+        printf("🌲\n");
         this->disp_buf = vector<vector<string>>(MAXROW, vector<string>(MAXCOL, string(2, ' ')));
         __print(this->_ROOT, 0, pow(2, this->_ROOT->height - 1) - 1, pow(2, this->_ROOT->height - 2));
         int n = this->_ROOT->height * 2 - 1, i, j;
@@ -416,7 +440,7 @@ public:
             }
             cout << endl;
         }
-        printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+        printf("🌲\n");
     }
 
     inline BinNode<T> *root()
@@ -1034,6 +1058,17 @@ public:
         return this->_ROOT;
     }
 };
+
+
+
+
+
+
+
+
+
+
+
 
 template <typename T>
 class Heap

@@ -8,20 +8,26 @@ namespace newtree
 {
 #define MAXCOL 1000
 #define MAXROW 20
-enum status
-{
-    LEFT,
-    RIGHT,
-    ROOT
-};
+
 template <typename T>
 struct BinNode
 {
     T val;
     BinNode *left, *right, *parent;
     int height, depth, ltag, rtag;
-    enum status LorR;
     BinNode(T x) : val(x), left(nullptr), right(nullptr), parent(nullptr), height(1), depth(1), ltag(0), rtag(0) {}
+    bool inline is_l()
+    {
+        return parent && parent->left == this;
+    }
+    bool inline is_r()
+    {
+        return parent && parent->right == this;
+    }
+    bool inline isroot()
+    {
+        return parent == nullptr;
+    }
 };
 template <typename T>
 class BinTree
@@ -35,8 +41,8 @@ protected:
     vector<vector<string>> disp_buf;
     inline int __height(BinNode<T> *root) { return root == nullptr ? 0 : root->height; }
     inline int __depth(BinNode<T> *root) { return root == nullptr ? 0 : root->depth; }
-    inline void __updateD(BinNode<T> *root) { root->depth = __depth(root->parent) + 1; }
-    inline void __updateH(BinNode<T> *root) { root->height = max(__height(root->left), __height(root->right)) + 1; }
+    inline void __updatedepth(BinNode<T> *root) { root->depth = __depth(root->parent) + 1; }
+    inline void __updateheight(BinNode<T> *root) { root->height = max(__height(root->left), __height(root->right)) + 1; }
     inline int __factor(BinNode<T> *root) { return __height(root->left) - __height(root->right); }
     inline BinNode<T> *__getmax(BinNode<T> *root)
     {
@@ -62,12 +68,12 @@ protected:
         BinNode<T> *node = new BinNode<T>(preorder[root]);
         table[preorder[root]] = node;
         node->parent = p;
-        __updateD(node);
+        __updatedepth(node);
         while (i < hi && inorder[i] != preorder[root])
             i++;
         node->left = __build_pi(root + 1, lo, i - 1, node);
         node->right = __build_pi(root + 1 + i - lo, i + 1, hi, node);
-        __updateH(node);
+        __updateheight(node);
         return node;
     }
     void __print(BinNode<T> *root, int root_x, int root_y, int interval)
@@ -96,12 +102,12 @@ protected:
         BinNode<T> *node = new BinNode<T>(postorder[root]);
         table[postorder[root]] = node;
         node->parent = p;
-        __updateD(node);
+        __updatedepth(node);
         while (i < hi && inorder[i] != postorder[root])
             i++;
         node->left = __build_ip(root - 1 + i - hi, lo, i - 1, node);
         node->right = __build_ip(root - 1, i + 1, hi, node);
-        __updateH(node);
+        __updateheight(node);
         return node;
     }
     BinNode<T> *__build_pp(int leftOfpre, int rightOfpre, int leftOfpost, int rightOfpost)
@@ -205,26 +211,17 @@ protected:
         while (this->q.size())
         {
             x = this->q.front(), this->q.pop_front();
+            if (x->val == target)
+            {
+                __del_allSub(x->left);
+                __del_allSub(x->right);
+                x->left = x->right = nullptr;
+                continue;
+            }
             if (x->left)
-            {
-                if (x->left->val == target)
-                {
-                    __del_allSub(x->left);
-                    x->left = nullptr;
-                }
-                else
-                    this->q.push_back(x->left);
-            }
+                this->q.push_back(x->left);
             if (x->right)
-            {
-                if (x->right->val == target)
-                {
-                    __del_allSub(x->right);
-                    x->right = nullptr;
-                }
-                else
-                    this->q.push_back(x->right);
-            }
+                this->q.push_back(x->right);
         }
         this->q.clear();
     }
@@ -378,14 +375,10 @@ protected:
         if (!root)
             return;
         root->parent = p;
-        __updateD(root);
-        if (p)
-            root->LorR = p->left == root ? LEFT : RIGHT;
-        else
-            root->LorR = ROOT;
+        __updatedepth(root);
         __update_member(root->left, root);
         __update_member(root->right, root);
-        __updateH(root);
+        __updateheight(root);
     }
 
 public:
@@ -402,6 +395,10 @@ public:
     }
     void printTree()
     {
+        if (!this->_ROOT)
+            return;
+        printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+        this->disp_buf = vector<vector<string>>(MAXROW, vector<string>(MAXCOL, string(3, ' ')));
         __print(this->_ROOT, 0, pow(2, this->_ROOT->height - 1) - 1, pow(2, this->_ROOT->height - 2));
         int n = this->_ROOT->height * 2 - 1, i, j;
         for (i = 0; i < n; ++i)
@@ -421,11 +418,26 @@ public:
             }
             cout << endl;
         }
+        printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
     }
 
     inline BinNode<T> *root()
     {
         return this->_ROOT;
+    }
+    BinNode<T> *__buildcmp(int id, vector<int> &a)
+    {
+        if (a.size() - 1 < id)
+            return nullptr;
+        BinNode<T> *v = new BinNode<T>(a[id]);
+        v->left = __buildcmp(id * 2 + 1, a);
+        v->right = __buildcmp(id * 2 + 2, a);
+        return v;
+    }
+    inline void build_cmp(vector<int> &a)
+    {
+        __updateROOT(__buildcmp(0, a));
+        __update_status();
     }
     inline void build_pi(vector<int> &pr, vector<int> &in)
     {
@@ -441,17 +453,23 @@ public:
     }
     inline void invert()
     {
+        if (!this->_ROOT)
+            return;
         __updateROOT(__invert(this->_ROOT));
-        update_status();
+        __update_status();
     }
-    inline void remove_leaf()
+    inline void eraseLeaf()
     {
+        if (!this->_ROOT)
+            return;
         __del_leaf(this->_ROOT, nullptr);
         this->_cnt = __nodecount();
-        update_status();
+        __update_status();
     }
     inline int countleaf()
     {
+        if (!this->_ROOT)
+            return 0;
         return __leafcount();
     }
     inline int size()
@@ -460,9 +478,11 @@ public:
     }
     inline int height()
     {
+        if (!this->_ROOT)
+            return 0;
         return this->_ROOT->height;
     }
-    inline void update_status()
+    inline void __update_status()
     {
         this->__update_member(_ROOT, nullptr);
     }
@@ -477,6 +497,8 @@ public:
     }
     BinNode<T> *convert2list()
     {
+        if (!this->_ROOT)
+            return;
         vector<BinNode<T> *> ls;
         intrav([&](BinNode<T> *v) { ls.push_back(v); });
         auto p1 = ls.begin(), p2 = ls.begin() + 1;
@@ -495,12 +517,20 @@ public:
         __tree2Infix(this->_ROOT, 0, s);
         return s;
     }
+    void eraseSubOf(T v)
+    {
+        if (!this->_ROOT)
+            return;
+        __del_targetSub(this->_ROOT, v);
+    }
     double infixval()
     {
         return __infix_val(this->_ROOT);
     }
     bool iscmp()
     {
+        if (!this->_ROOT)
+            return true;
         BinNode<T> *root = this->_ROOT;
         this->q.push_back(root);
         while (this->q.size())
@@ -692,6 +722,19 @@ template <typename T>
 class BST : public BinTree<T>
 {
 protected:
+    BinNode<T> *_last;
+    inline void __attAsL(BinNode<T> *&p, BinNode<T> *&lc)
+    {
+        p->left = lc;
+        if (lc)
+            lc->parent = p;
+    }
+    inline void __attAsR(BinNode<T> *&p, BinNode<T> *&rc)
+    {
+        p->right = rc;
+        if (rc)
+            rc->parent = p;
+    }
     BinNode<T> *__search(BinNode<T> *&root, const T &v)
     {
         BinNode<T> *x = root;
@@ -699,6 +742,7 @@ protected:
         {
             if (x->val == v)
                 break;
+            this->_last = x;
             x = x->val < v ? x->right : x->left;
         }
         return x;
@@ -708,9 +752,16 @@ protected:
         if (!root)
         {
             root = new BinNode<T>(v);
+            this->_cnt++;
             return;
         }
-        root->val <= v ? __insert(root->right, v) : __insert(root->left, v);
+        this->_last = nullptr;
+        BinNode<T> *x = __search(root, v);
+        if (x)
+            return;
+        x = new BinNode<T>(v);
+        v < this->_last->val ? this->_last->left = x : this->_last->right = x;
+        this->_cnt++;
     }
     bool __judge_avl(BinNode<T> *root)
     {
@@ -718,7 +769,7 @@ protected:
             return true;
         bool f1 = __judge_avl(root->left);
         bool f2 = __judge_avl(root->right);
-        this->__updateH(root);
+        this->__updateheight(root);
         return f1 && f2 && abs(this->__factor(root)) < 2;
     }
     BinNode<T> *__delete(BinNode<T> *&root, T x)
@@ -753,7 +804,7 @@ public:
     {
         for (auto i : a)
             __insert(this->_ROOT, i);
-        this->update_status();
+        this->__update_status();
     }
     bool balanced()
     {
@@ -767,11 +818,15 @@ public:
     void insert(const T &val)
     {
         __insert(this->_ROOT, val);
-        this->_cnt++;
     }
-    bool exist(const T &val)
+    BinNode<T> *search(const T &e)
     {
-        return __search(this->_ROOT, val);
+        this->_last = nullptr;
+        return __search(this->_ROOT, e);
+    }
+    inline bool exist(const T &e)
+    {
+        return search(e);
     }
 };
 
@@ -783,19 +838,18 @@ public:
     {
         for (auto i : a)
             __insert(this->_ROOT, i, nullptr);
-        this->update_status();
+        this->__update_status();
     }
     void erase(const T &val)
     {
         __delete(this->_ROOT, val);
-        this->update_status();
+        this->__update_status();
         this->_cnt--;
     }
     void insert(const T &val)
     {
         __insert(this->_ROOT, val, nullptr);
-        this->update_status();
-        this->_cnt++;
+        this->__update_status();
     }
 
 protected:
@@ -808,8 +862,8 @@ protected:
         tmp->right = root;
         tmp->parent = root->parent;
         root->parent = tmp;
-        this->__updateH(root);
-        this->__updateH(tmp);
+        this->__updateheight(root);
+        this->__updateheight(tmp);
         root = tmp;
     }
     inline void _zag(BinNode<T> *&root)
@@ -821,8 +875,8 @@ protected:
         tmp->left = root;
         tmp->parent = root->parent;
         root->parent = tmp;
-        this->__updateH(root);
-        this->__updateH(tmp);
+        this->__updateheight(root);
+        this->__updateheight(tmp);
         root = tmp;
     }
     inline void _zigzag(BinNode<T> *&root)
@@ -841,19 +895,20 @@ protected:
         {
             root = new BinNode<T>(val);
             root->parent = p;
+            this->_cnt++;
             return;
         }
         else if (val < root->val)
         {
             __insert(root->left, val, root);
-            this->__updateH(root);
+            this->__updateheight(root);
             if (this->__factor(root) == 2)
                 this->__factor(root->left) == 1 ? _zig(root) : _zigzag(root);
         }
         else if (val > root->val)
         {
             __insert(root->right, val, root);
-            this->__updateH(root);
+            this->__updateheight(root);
             if (this->__factor(root) == -2)
                 this->__factor(root->right) == -1 ? _zag(root) : _zagzig(root);
         }
@@ -866,14 +921,14 @@ protected:
         if (val < root->val)
         {
             root->left = __delete(root->left, val);
-            this->__updateH(root);
+            this->__updateheight(root);
             if (this->__factor(root) == -2)
                 this->__factor(root->right) == -1 ? _zag(root) : _zagzig(root);
         }
         else if (root->val < val)
         {
             root->right = __delete(root->right, val);
-            this->__updateH(root);
+            this->__updateheight(root);
             if (this->__factor(root) == 2)
                 (this->__factor(root->left) == 1) ? _zig(root) : _zigzag(root);
         }
@@ -905,6 +960,64 @@ protected:
         return root;
     }
 };
+
+template <class T>
+class splayTree : public BST<T>
+{ // still bug there
+protected:
+    BinNode<T> *__splay(BinNode<T> *&v)
+    {
+        if (!v)
+            return nullptr;
+        BinNode<T> *p, *g, *gg;
+        while (1)
+        {
+            p = v->parent;
+            if (!p)
+                break;
+            g = p->parent;
+            if (!g)
+                break;
+            if (v->is_l())
+                if (p->is_l())
+                    this->__attAsL(g, p->right), this->__attAsL(p, v->right), this->__attAsR(p, g), this->__attAsR(v, p);
+                else
+                    this->__attAsL(p, v->right), this->__attAsR(g, v->left), this->__attAsL(v, g), this->__attAsR(v, p);
+            else if (p->is_r())
+                this->__attAsR(g, p->left), this->__attAsR(p, v->left), this->__attAsL(p, g), this->__attAsL(v, p);
+            else
+                this->__attAsR(p, v->left), this->__attAsL(g, v->right), this->__attAsR(v, g), this->__attAsL(v, p);
+            if (!gg)
+                v->parent = nullptr;
+            else
+                g == gg->left ? this->__attAsL(gg, v) : this->__attAsR(gg, v);
+            this->__updateheight(g), this->__updateheight(p), this->__updateheight(v);
+        }
+        p = v->parent;
+        if (p)
+        {
+            if (v->is_l())
+                this->__attAsL(p, v->right), this->__attAsR(v, p);
+            else
+                this->__attAsR(p, v->left), this->__attAsL(v, p);
+            this->__updateheight(p), this->__updateheight(v);
+        }
+        v->parent = nullptr;
+        return v;
+    }
+
+public:
+    BinNode<T> *search(const T &e)
+    {
+        this->_last = nullptr;
+        BinNode<T> *p = this->__search(this->_ROOT, e);
+        this->_ROOT = __splay(p ? p : this->_last);
+        return this->_ROOT;
+    }
+};
+
+
+
 
 class set_union
 {

@@ -86,14 +86,12 @@ protected:
         int left_child = root_y - interval, right_child = root_y + interval;
         string tp = to_string(root->val);
         if (tp.size() == 1)
-            tp = ' ' + tp + ' ';
-        else if (tp.size() == 2)
             tp.push_back(' ');
         disp_buf[root_x][root_y] = tp;
         if (root->left)
-            disp_buf[root_x + 1][root_y - (interval + 1) / 2] = " / ";
+            disp_buf[root_x + 1][root_y - (interval + 1) / 2] = "/ ";
         if (root->right)
-            disp_buf[root_x + 1][root_y + (interval + 1) / 2] = " \\ ";
+            disp_buf[root_x + 1][root_y + (interval + 1) / 2] = " \\";
         __print(root->left, root_x + 2, left_child, (interval >> 1));
         __print(root->right, root_x + 2, right_child, (interval >> 1));
     }
@@ -141,8 +139,8 @@ protected:
     {
         if (!root)
             return nullptr;
-        BinNode<T> *tmp = invert(root->right);
-        root->right = invert(root->left);
+        BinNode<T> *tmp = __invert(root->right);
+        root->right = __invert(root->left);
         root->left = tmp;
         return root;
     }
@@ -252,9 +250,7 @@ protected:
             return 1;
         if (!T1 || !T2) // if wanna test the two trees is identical , plus "|| T1->val != T2->val"
             return 0;
-        bool lf = __TreeSimilar(T1->left, T2->left);
-        bool rf = __TreeSimilar(T1->right, T2->right);
-        return lf && rf;
+        return __TreeSimilar(T1->left, T2->left) && __TreeSimilar(T1->right, T2->right);
     }
     void __tree2Infix(BinNode<string> *root, int depth, string &s)
     {
@@ -394,20 +390,19 @@ public:
         this->isunique = true;
         this->q.clear(), this->nexq.clear();
         this->_cnt = 0;
-        this->disp_buf = vector<vector<string>>(MAXROW, vector<string>(MAXCOL, string(3, ' ')));
     }
     void printTree()
     {
         if (!this->_ROOT)
             return;
         printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
-        this->disp_buf = vector<vector<string>>(MAXROW, vector<string>(MAXCOL, string(3, ' ')));
+        this->disp_buf = vector<vector<string>>(MAXROW, vector<string>(MAXCOL, string(2, ' ')));
         __print(this->_ROOT, 0, pow(2, this->_ROOT->height - 1) - 1, pow(2, this->_ROOT->height - 2));
         int n = this->_ROOT->height * 2 - 1, i, j;
         for (i = 0; i < n; ++i)
         {
             j = MAXCOL;
-            while (j > 0 && disp_buf[i][--j] == "   ")
+            while (j > 0 && disp_buf[i][--j] == "  ")
                 ;
             disp_buf[i][j + 1] = "!";
         }
@@ -458,7 +453,7 @@ public:
     {
         if (!this->_ROOT)
             return;
-        __updateROOT(__invert(this->_ROOT));
+        __invert(this->_ROOT);
         __update_status();
     }
     inline void eraseLeaf()
@@ -497,6 +492,12 @@ public:
     inline bool identical(BinTree<T> T2)
     {
         return __TreeIdentical(this->_ROOT, T2.root());
+    }
+    inline bool symmetric()
+    {
+        if (!this->_ROOT)
+            return true;
+        return __TreeSimilar(this->_ROOT->left, this->_ROOT->right);
     }
     BinNode<T> *convert2list()
     {
@@ -1031,26 +1032,6 @@ public:
         BinNode<T> *p = this->__search(this->_ROOT, e);
         this->_ROOT = __splay(p ? p : this->_last);
         return this->_ROOT;
-    }
-};
-
-class set_union
-{
-public:
-    vector<int> arr;
-    set_union()
-    {
-        arr = vector<int>(10000, -1);
-    }
-    inline int find_root(int id)
-    {
-        return arr[id] == -1 ? id : arr[id] = find_root(arr[id]);
-    }
-    inline void Union__(int a, int b)
-    {
-        int ra = find_root(a), rb = find_root(b);
-        if (ra != rb)
-            arr[rb] = ra;
     }
 };
 

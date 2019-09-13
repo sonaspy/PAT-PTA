@@ -6,48 +6,60 @@
 using namespace std;
 namespace newtree
 {
-template <typename T>
-struct TreeNode
+#define MAXCOL 1000
+#define MAXROW 20
+enum status
 {
-    T val;
-    TreeNode *left, *right, *parent;
-    int height, depth, ltag, rtag;
-    TreeNode(T x) : val(x), left(nullptr), right(nullptr), parent(nullptr), height(1), depth(1), ltag(0), rtag(0) {}
+    LEFT,
+    RIGHT,
+    ROOT
 };
 template <typename T>
-class Bin_Tree
+struct BinNode
+{
+    T val;
+    BinNode *left, *right, *parent;
+    int height, depth, ltag, rtag;
+    enum status LorR;
+    BinNode(T x) : val(x), left(nullptr), right(nullptr), parent(nullptr), height(1), depth(1), ltag(0), rtag(0) {}
+};
+template <typename T>
+class BinTree
 {
 protected:
-    TreeNode<T> *_ROOT, *tp1;
-    deque<TreeNode<T> *> q, nexq;
+    BinNode<T> *_ROOT, *tp1;
+    bool _sta_changed;
+    deque<BinNode<T> *> q, nexq;
+    int _cnt;
     bool isunique; // pre post build
-    inline int __height(TreeNode<T> *root) { return root == nullptr ? 0 : root->height; }
-    inline int __depth(TreeNode<T> *root) { return root == nullptr ? 0 : root->depth; }
-    inline void __updateD(TreeNode<T> *root) { root->depth = __depth(root->parent) + 1; }
-    inline void __updateH(TreeNode<T> *root) { root->height = max(__height(root->left), __height(root->right)) + 1; }
-    inline int __factor(TreeNode<T> *root) { return __height(root->left) - __height(root->right); }
-    inline TreeNode<T> *__getmax(TreeNode<T> *root)
+    vector<vector<string>> disp_buf;
+    inline int __height(BinNode<T> *root) { return root == nullptr ? 0 : root->height; }
+    inline int __depth(BinNode<T> *root) { return root == nullptr ? 0 : root->depth; }
+    inline void __updateD(BinNode<T> *root) { root->depth = __depth(root->parent) + 1; }
+    inline void __updateH(BinNode<T> *root) { root->height = max(__height(root->left), __height(root->right)) + 1; }
+    inline int __factor(BinNode<T> *root) { return __height(root->left) - __height(root->right); }
+    inline BinNode<T> *__getmax(BinNode<T> *root)
     {
         while (root->right)
             root = root->right;
         return root;
     }
-    inline TreeNode<T> *__getmin(TreeNode<T> *root)
+    inline BinNode<T> *__getmin(BinNode<T> *root)
     {
         while (root->left)
             root = root->left;
         return root;
     }
-    inline void __updateROOT(TreeNode<T> *root)
+    inline void __updateROOT(BinNode<T> *root)
     {
         this->_ROOT = root;
     }
-    TreeNode<T> *__build_pi(int root, int lo, int hi, TreeNode<T> *p)
+    BinNode<T> *__build_pi(int root, int lo, int hi, BinNode<T> *p)
     {
         if (hi < lo)
             return nullptr;
         int i = lo;
-        TreeNode<T> *node = new TreeNode<T>(preorder[root]);
+        BinNode<T> *node = new BinNode<T>(preorder[root]);
         table[preorder[root]] = node;
         node->parent = p;
         __updateD(node);
@@ -58,12 +70,30 @@ protected:
         __updateH(node);
         return node;
     }
-    TreeNode<T> *__build_ip(int root, int lo, int hi, TreeNode<T> *p)
+    void __print(BinNode<T> *root, int root_x, int root_y, int interval)
+    {
+        if (!root)
+            return;
+        int left_child = root_y - interval, right_child = root_y + interval;
+        string tp = to_string(root->val);
+        if (tp.size() == 1)
+            tp = ' ' + tp + ' ';
+        else if (tp.size() == 2)
+            tp.push_back(' ');
+        disp_buf[root_x][root_y] = tp;
+        if (root->left)
+            disp_buf[root_x + 1][root_y - (interval + 1) / 2] = " / ";
+        if (root->right)
+            disp_buf[root_x + 1][root_y + (interval + 1) / 2] = " \\ ";
+        __print(root->left, root_x + 2, left_child, (interval >> 1));
+        __print(root->right, root_x + 2, right_child, (interval >> 1));
+    }
+    BinNode<T> *__build_ip(int root, int lo, int hi, BinNode<T> *p)
     {
         if (hi < lo)
             return nullptr;
         int i = lo;
-        TreeNode<T> *node = new TreeNode<T>(postorder[root]);
+        BinNode<T> *node = new BinNode<T>(postorder[root]);
         table[postorder[root]] = node;
         node->parent = p;
         __updateD(node);
@@ -74,11 +104,11 @@ protected:
         __updateH(node);
         return node;
     }
-    TreeNode<T> *__build_pp(int leftOfpre, int rightOfpre, int leftOfpost, int rightOfpost)
+    BinNode<T> *__build_pp(int leftOfpre, int rightOfpre, int leftOfpost, int rightOfpost)
     {
         if (leftOfpre > rightOfpre || leftOfpost > rightOfpost)
             return nullptr;
-        TreeNode<T> *root = new TreeNode<T>(preorder[leftOfpre]);
+        BinNode<T> *root = new BinNode<T>(preorder[leftOfpre]);
         if (leftOfpre == rightOfpre)
             return root;
         int leftSubVal = preorder[leftOfpre + 1], i, sub_cnt;
@@ -98,16 +128,16 @@ protected:
         }
         return root;
     }
-    TreeNode<T> *__invert(TreeNode<T> *root)
+    BinNode<T> *__invert(BinNode<T> *root)
     {
         if (!root)
             return nullptr;
-        TreeNode<T> *tmp = invert(root->right);
+        BinNode<T> *tmp = invert(root->right);
         root->right = invert(root->left);
         root->left = tmp;
         return root;
     }
-    void __del_leaf(TreeNode<T> *&root, TreeNode<T> *p)
+    void __del_leaf(BinNode<T> *&root, BinNode<T> *p)
     {
         if (!root)
             return;
@@ -163,9 +193,9 @@ protected:
         this->q.clear();
         return cnt;
     }
-    void __del_targetSub(TreeNode<T> *root, int target)
+    void __del_targetSub(BinNode<T> *root, int target)
     {
-        TreeNode<T> *x;
+        BinNode<T> *x;
         if (root->val == target)
         {
             __del_allSub(root);
@@ -198,7 +228,7 @@ protected:
         }
         this->q.clear();
     }
-    void __del_allSub(TreeNode<T> *root)
+    void __del_allSub(BinNode<T> *root)
     {
         if (!root)
             return;
@@ -206,7 +236,7 @@ protected:
         __del_allSub(root->right);
         delete root;
     }
-    bool __TreeIdentical(TreeNode<T> *T1, TreeNode<T> *T2)
+    bool __TreeIdentical(BinNode<T> *T1, BinNode<T> *T2)
     {
         if (!T1 && !T2)
             return 1;
@@ -216,7 +246,7 @@ protected:
         bool rf = __TreeIdentical(T1->right, T2->right);
         return lf && rf;
     }
-    bool __TreeSimilar(TreeNode<T> *T1, TreeNode<T> *T2)
+    bool __TreeSimilar(BinNode<T> *T1, BinNode<T> *T2)
     {
         if (!T1 && !T2)
             return 1;
@@ -226,7 +256,7 @@ protected:
         bool rf = __TreeSimilar(T1->right, T2->right);
         return lf && rf;
     }
-    void __tree2Infix(TreeNode<string> *root, int depth, string &s)
+    void __tree2Infix(BinNode<string> *root, int depth, string &s)
     {
         if (!root)
             return;
@@ -244,7 +274,7 @@ protected:
         }
     }
     template <class _Function>
-    void __recur_pre(TreeNode<T> *root, _Function f)
+    void __recur_pre(BinNode<T> *root, _Function f)
     {
         if (!root)
             return;
@@ -253,7 +283,7 @@ protected:
         __recur_pre(root->right, f);
     }
     template <class _Function>
-    void __recur_in(TreeNode<T> *root, _Function f)
+    void __recur_in(BinNode<T> *root, _Function f)
     {
         if (!root)
             return;
@@ -262,7 +292,7 @@ protected:
         __recur_in(root->right, f);
     }
     template <class _Function>
-    void __recur_post(TreeNode<T> *root, _Function f)
+    void __recur_post(BinNode<T> *root, _Function f)
     {
         if (!root)
             return;
@@ -271,7 +301,7 @@ protected:
         f(root);
     }
 
-    void __InThread(TreeNode<T> *root, TreeNode<T> *pre)
+    void __InThread(BinNode<T> *root, BinNode<T> *pre)
     {
         if (root)
         {
@@ -309,7 +339,7 @@ protected:
         }
         return res;
     }
-    double __infix_val(TreeNode<string> *root)
+    double __infix_val(BinNode<string> *root)
     {
         if (!root)
             return 0;
@@ -342,95 +372,115 @@ protected:
         this->q.clear(), this->nexq.clear();
         return last + level - 1;
     }
-    void __update_height(TreeNode<T> *root)
-    {
-        if (!root)
-            return;
-        __update_height(root->left);
-        __update_height(root->right);
-        __updateH(root);
-    }
-    void __update_depth(TreeNode<T> *root)
-    {
-        if (!root)
-            return;
-        __updateD(root);
-        __update_depth(root->left);
-        __update_depth(root->right);
-    }
-    void __update_parent(TreeNode<T> *root, TreeNode<T> *p)
+
+    void __update_member(BinNode<T> *root, BinNode<T> *p)
     {
         if (!root)
             return;
         root->parent = p;
-        __update_parent(root->left, root);
-        __update_parent(root->right, root);
+        __updateD(root);
+        if (p)
+            root->LorR = p->left == root ? LEFT : RIGHT;
+        else
+            root->LorR = ROOT;
+        __update_member(root->left, root);
+        __update_member(root->right, root);
+        __updateH(root);
     }
 
 public:
-    unordered_map<T, TreeNode<T> *> table;
+    unordered_map<T, BinNode<T> *> table;
     vector<T> preorder, inorder, postorder;
-    Bin_Tree()
+    BinTree()
     {
+        this->_sta_changed = 0;
         this->_ROOT = nullptr;
         this->isunique = true;
         this->q.clear(), this->nexq.clear();
+        this->_cnt = 0;
+        this->disp_buf = vector<vector<string>>(MAXROW, vector<string>(MAXCOL, string(3, ' ')));
     }
-    inline TreeNode<T> *ROOT()
+    void printTree()
+    {
+        __print(this->_ROOT, 0, pow(2, this->_ROOT->height - 1) - 1, pow(2, this->_ROOT->height - 2));
+        int n = this->_ROOT->height * 2 - 1, i, j;
+        for (i = 0; i < n; ++i)
+        {
+            j = MAXCOL;
+            while (j > 0 && disp_buf[i][--j] == "   ")
+                ;
+            disp_buf[i][j + 1] = "!";
+        }
+        for (i = 0; i < n; ++i)
+        {
+            for (j = 0; j < MAXCOL; ++j)
+            {
+                if (disp_buf[i][j] == "!")
+                    break;
+                cout << disp_buf[i][j];
+            }
+            cout << endl;
+        }
+    }
+
+    inline BinNode<T> *root()
     {
         return this->_ROOT;
     }
-    void build_pi(vector<int> &pr, vector<int> &in)
+    inline void build_pi(vector<int> &pr, vector<int> &in)
     {
         this->preorder = pr, this->inorder = in;
         __updateROOT(__build_pi(0, 0, pr.size() - 1, nullptr));
+        this->_cnt = in.size();
     }
-    void build_ip(vector<int> &in, vector<int> &po)
+    inline void build_ip(vector<int> &in, vector<int> &po)
     {
         this->postorder = po, this->inorder = in;
         __updateROOT(__build_ip(in.size() - 1, 0, in.size() - 1, nullptr));
+        this->_cnt = in.size();
     }
-    void invert()
+    inline void invert()
     {
         __updateROOT(__invert(this->_ROOT));
+        update_status();
     }
-    void delLeaf()
+    inline void remove_leaf()
     {
         __del_leaf(this->_ROOT, nullptr);
+        this->_cnt = __nodecount();
+        update_status();
     }
-    int countleaf()
+    inline int countleaf()
     {
         return __leafcount();
     }
-    int countnode()
+    inline int size()
     {
-        return __nodecount();
+        return _cnt;
     }
-    int height()
+    inline int height()
     {
-        if (this->_ROOT->height == 1)
-            __update_height(this->_ROOT);
         return this->_ROOT->height;
     }
-    void update_parent()
+    inline void update_status()
     {
-        __update_parent(_ROOT, nullptr);
+        this->__update_member(_ROOT, nullptr);
     }
     inline int diam() { return __diameter(); }
-    bool similar(Bin_Tree<T> T2)
+    inline bool similar(BinTree<T> T2)
     {
-        return __TreeSimilar(this->_ROOT, T2.ROOT());
+        return __TreeSimilar(this->_ROOT, T2.root());
     }
-    bool identical(Bin_Tree<T> T2)
+    inline bool identical(BinTree<T> T2)
     {
-        return __TreeIdentical(this->_ROOT, T2.ROOT());
+        return __TreeIdentical(this->_ROOT, T2.root());
     }
-    TreeNode<T> *convert2list()
+    BinNode<T> *convert2list()
     {
-        vector<TreeNode<T> *> ls;
-        intrav([&](TreeNode<T> *v) { ls.push_back(v); });
+        vector<BinNode<T> *> ls;
+        intrav([&](BinNode<T> *v) { ls.push_back(v); });
         auto p1 = ls.begin(), p2 = ls.begin() + 1;
-        TreeNode<T> *head = *p1;
+        BinNode<T> *head = *p1;
         for (; p2 != ls.end(); p1++, p2++)
         {
             (*p1)->left = nullptr;
@@ -451,7 +501,7 @@ public:
     }
     bool iscmp()
     {
-        TreeNode<T> *root = this->_ROOT;
+        BinNode<T> *root = this->_ROOT;
         this->q.push_back(root);
         while (this->q.size())
         {
@@ -488,11 +538,11 @@ public:
     void inTrav()
     {
         vector<T> resSeq;
-        stack<TreeNode<T> *> s;
-        TreeNode<T> *root = this->_ROOT;
+        stack<BinNode<T> *> s;
+        BinNode<T> *root = this->_ROOT;
         if (!root)
             return;
-        TreeNode<T> *p = root;
+        BinNode<T> *p = root;
         while (s.size() || p)
         {
             while (p)
@@ -513,10 +563,10 @@ public:
     void preTrav()
     {
         vector<T> resSeq;
-        TreeNode<T> *root = this->_ROOT;
+        BinNode<T> *root = this->_ROOT;
         if (!root)
             return;
-        stack<TreeNode<T> *> s;
+        stack<BinNode<T> *> s;
         s.push(root);
         while (s.size())
         {
@@ -532,10 +582,10 @@ public:
     void postTrav()
     {
         vector<T> resSeq;
-        TreeNode<T> *root = this->_ROOT;
+        BinNode<T> *root = this->_ROOT;
         if (!root)
             return;
-        stack<pair<TreeNode<T> *, bool>> s;
+        stack<pair<BinNode<T> *, bool>> s;
         s.push(make_pair(root, false));
         bool isMyTurn;
         while (s.size())
@@ -554,7 +604,7 @@ public:
         }
         this->postorder = resSeq;
     }
-    TreeNode<T> *get_LCA(TreeNode<T> *p, TreeNode<T> *q)
+    BinNode<T> *get_LCA(BinNode<T> *p, BinNode<T> *q)
     {
         while (p->depth > q->depth)
             p = p->parent;
@@ -566,7 +616,7 @@ public:
     }
 
     // T1 <-> T2  convertable, left <-> right;
-    int Isomprphic(TreeNode<T> *root1, TreeNode<T> *root2)
+    int Isomprphic(BinNode<T> *root1, BinNode<T> *root2)
     {
         if (!root1 && !root2)
             return 1;
@@ -584,33 +634,33 @@ public:
 };
 
 // 后缀表达式 -> exp_tree
-// stack : node*; 遇 oprand: create node then push, 遇operator: pop 2 item become its childs, then push, 2nd_pop item is left.
+// stack : node*; 遇 oprand: build node then push, 遇operator: pop 2 item become its childs, then push, 2nd_pop item is left.
 template <typename T>
-class Huffman : public Bin_Tree<T>
+class Huffman : public BinTree<T>
 {
 protected:
     int _wpl;
     struct __cmp
     {
-        bool operator()(const TreeNode<T> *a, const TreeNode<T> *b) const { return a->val > b->val; }
+        bool operator()(const BinNode<T> *a, const BinNode<T> *b) const { return a->val > b->val; }
     };
     void __build_hfm(vector<int> &data)
     {
-        priority_queue<TreeNode<T> *, vector<TreeNode<T> *>, __cmp> pq;
-        TreeNode<T> *v, *w, *root;
+        priority_queue<BinNode<T> *, vector<BinNode<T> *>, __cmp> pq;
+        BinNode<T> *v, *w, *root;
         for (auto i : data)
-            pq.push_back(new TreeNode<T>(i));
+            pq.push_back(new BinNode<T>(i));
         while (pq.size() > 1)
         {
             v = pq.top(), pq.pop_front();
             w = pq.top(), pq.pop_front();
-            root = new TreeNode<T>(v->val + w->val);
+            root = new BinNode<T>(v->val + w->val);
             root->left = v, root->right = w;
             pq.push_back(root);
         }
         this->__updateROOT(root);
     }
-    void __wpl(TreeNode<T> *root)
+    void __wpl(BinNode<T> *root)
     {
         if (!root)
             return;
@@ -625,8 +675,10 @@ public:
     {
         _wpl = -1;
     }
-    void create(vector<int> &a)
+    void build(vector<int> &a)
     {
+        if (a.empty())
+            return;
         __build_hfm(a);
     }
     int wpl()
@@ -637,19 +689,30 @@ public:
     }
 };
 template <typename T>
-class BST : public Bin_Tree<T>
+class BST : public BinTree<T>
 {
 protected:
-    void __insert(TreeNode<T> *&root, int v)
+    BinNode<T> *__search(BinNode<T> *&root, const T &v)
+    {
+        BinNode<T> *x = root;
+        while (x)
+        {
+            if (x->val == v)
+                break;
+            x = x->val < v ? x->right : x->left;
+        }
+        return x;
+    }
+    void __insert(BinNode<T> *&root, const T &v)
     {
         if (!root)
         {
-            root = new TreeNode<T>(v);
+            root = new BinNode<T>(v);
             return;
         }
         root->val <= v ? __insert(root->right, v) : __insert(root->left, v);
     }
-    bool __judge_avl(TreeNode<T> *root)
+    bool __judge_avl(BinNode<T> *root)
     {
         if (!root)
             return true;
@@ -658,7 +721,7 @@ protected:
         this->__updateH(root);
         return f1 && f2 && abs(this->__factor(root)) < 2;
     }
-    TreeNode<T> *__delete(TreeNode<T> *&root, int x)
+    BinNode<T> *__delete(BinNode<T> *&root, T x)
     {
         if (!root)
             return nullptr;
@@ -668,7 +731,7 @@ protected:
             root->right = __delete(root->right, x);
         else
         {
-            TreeNode<T> *tmp;
+            BinNode<T> *tmp;
             if (root->left && root->right)
             {
                 tmp = this->__getmin(root->right);
@@ -686,21 +749,29 @@ protected:
     }
 
 public:
-    void create(vector<int> &a)
+    void build(vector<T> &a)
     {
         for (auto i : a)
             __insert(this->_ROOT, i);
-        this->update_parent();
-        this->__update_depth(this->_ROOT);
-        this->__update_height(this->_ROOT);
+        this->update_status();
     }
-    bool is_balanced()
+    bool balanced()
     {
         return __judge_avl(this->_ROOT);
     }
-    void del_one(T val)
+    void erase(const T &val)
     {
         __delete(this->_ROOT, val);
+        this->_cnt--;
+    }
+    void insert(const T &val)
+    {
+        __insert(this->_ROOT, val);
+        this->_cnt++;
+    }
+    bool exist(const T &val)
+    {
+        return __search(this->_ROOT, val);
     }
 };
 
@@ -708,72 +779,87 @@ template <typename T>
 class AVLTree : public BST<T>
 {
 public:
-    void create(vector<int> &a)
+    void build(vector<T> &a)
     {
         for (auto i : a)
-            __insert(this->_ROOT, i);
-        this->update_parent();
-        this->__update_depth(this->_ROOT);
-        this->__update_height(this->_ROOT);
+            __insert(this->_ROOT, i, nullptr);
+        this->update_status();
     }
-    void del_one(T val)
+    void erase(const T &val)
     {
         __delete(this->_ROOT, val);
+        this->update_status();
+        this->_cnt--;
+    }
+    void insert(const T &val)
+    {
+        __insert(this->_ROOT, val, nullptr);
+        this->update_status();
+        this->_cnt++;
     }
 
 protected:
-    inline void LL(TreeNode<T> *&root)
+    inline void _zig(BinNode<T> *&root)
     {
-        TreeNode<T> *tmp = root->left;
+        BinNode<T> *tmp = root->left;
         root->left = tmp->right;
+        if (tmp->right)
+            tmp->right->parent = root;
         tmp->right = root;
+        tmp->parent = root->parent;
+        root->parent = tmp;
         this->__updateH(root);
         this->__updateH(tmp);
         root = tmp;
     }
-    inline void RR(TreeNode<T> *&root)
+    inline void _zag(BinNode<T> *&root)
     {
-        TreeNode<T> *tmp = root->right;
+        BinNode<T> *tmp = root->right;
         root->right = tmp->left;
+        if (tmp->left)
+            tmp->left->parent = root;
         tmp->left = root;
+        tmp->parent = root->parent;
+        root->parent = tmp;
         this->__updateH(root);
         this->__updateH(tmp);
         root = tmp;
     }
-    inline void LR(TreeNode<T> *&root)
+    inline void _zigzag(BinNode<T> *&root)
     {
-        RR(root->left);
-        LL(root);
+        _zag(root->left);
+        _zig(root);
     }
-    inline void RL(TreeNode<T> *&root)
+    inline void _zagzig(BinNode<T> *&root)
     {
-        LL(root->right);
-        RR(root);
+        _zig(root->right);
+        _zag(root);
     }
-    void __insert(TreeNode<T> *&root, int val)
+    void __insert(BinNode<T> *&root, const T &val, BinNode<T> *p)
     {
         if (!root)
         {
-            root = new TreeNode<T>(val);
+            root = new BinNode<T>(val);
+            root->parent = p;
             return;
         }
         else if (val < root->val)
         {
-            __insert(root->left, val);
+            __insert(root->left, val, root);
             this->__updateH(root);
             if (this->__factor(root) == 2)
-                this->__factor(root->left) == 1 ? LL(root) : LR(root);
+                this->__factor(root->left) == 1 ? _zig(root) : _zigzag(root);
         }
         else if (val > root->val)
         {
-            __insert(root->right, val);
+            __insert(root->right, val, root);
             this->__updateH(root);
             if (this->__factor(root) == -2)
-                this->__factor(root->right) == -1 ? RR(root) : RL(root);
+                this->__factor(root->right) == -1 ? _zag(root) : _zagzig(root);
         }
     }
 
-    TreeNode<T> *__delete(TreeNode<T> *&root, int val)
+    BinNode<T> *__delete(BinNode<T> *&root, const T &val)
     {
         if (!root)
             return nullptr;
@@ -782,18 +868,18 @@ protected:
             root->left = __delete(root->left, val);
             this->__updateH(root);
             if (this->__factor(root) == -2)
-                this->__factor(root->right) == -1 ? RR(root) : RL(root);
+                this->__factor(root->right) == -1 ? _zag(root) : _zagzig(root);
         }
         else if (root->val < val)
         {
             root->right = __delete(root->right, val);
             this->__updateH(root);
             if (this->__factor(root) == 2)
-                (this->__factor(root->left) == 1) ? LL(root) : LR(root);
+                (this->__factor(root->left) == 1) ? _zig(root) : _zigzag(root);
         }
         else // find it
         {
-            TreeNode<T> *tmp;
+            BinNode<T> *tmp;
             if (root->right && root->left)
             {
                 if (this->__factor(root) > 0)
@@ -839,34 +925,22 @@ public:
             arr[rb] = ra;
     }
 };
+
+template <typename T>
 class Heap
 {
     // data[1....n] data[0] = INT_MAX
-public:
-    vector<int> data;
-    int size;
-    Heap()
+protected:
+    vector<T> data;
+    int _size;
+
+    void __percDown(int pos)
     {
-        data.push_back(INT_MAX);
-        data.resize(101);
-        generate(data.begin() + 1, data.end(), []() { return rand() % 100; });
-        size = data.size() - 1;
-    }
-    void push(int val)
-    {
-        data.push_back(val);
-        size = data.size() - 1;
-        int i = size;
-        for (; data[i / 2] < val; i /= 2)
-            data[i] = data[i / 2];
-        data[i] = val;
-    }
-    void percDown(int pos)
-    {
-        int val = data[pos], up = pos, down = 2 * pos;
-        for (; down <= size; up = down, down *= 2)
+        T val = data[pos];
+        int up = pos, down = 2 * pos;
+        for (; down <= _size; up = down, down *= 2)
         {
-            if (down < size && data[down] < data[down + 1])
+            if (down < _size && data[down] < data[down + 1])
                 ++down;
             if (data[down] > val)
                 data[up] = data[down];
@@ -875,20 +949,51 @@ public:
         }
         data[up] = val;
     }
+
+    void __buildHeap()
+    {
+        int i;
+        for (i = _size / 2; i; --i)
+            __percDown(i);
+    }
+
+public:
+    Heap()
+    {
+        _size = 0;
+    }
+    void push(const T &val)
+    {
+        data.push_back(val);
+        _size++;
+        int i = _size;
+        for (; data[i / 2] < val; i /= 2)
+            data[i] = data[i / 2];
+        data[i] = val;
+    }
     void pop()
     {
-        if (size == 1)
+        if (_size == 1)
             return;
         data[1] = data.back();
         data.pop_back();
-        size = data.size() - 1;
-        percDown(1);
+        _size--;
+        __percDown(1);
     }
-    void buildHeap()
+    T top()
     {
-        int i;
-        for (i = size / 2; i; --i)
-            percDown(i);
+        return data[1];
+    }
+    int size()
+    {
+        return _size;
+    }
+    void build(vector<T> &a)
+    {
+        data.push_back(INT_MAX);
+        data.insert(data.end(), a.begin(), a.end());
+        _size = a.size();
+        __buildHeap();
     }
 };
 

@@ -3,7 +3,7 @@
 
 #include "Trees.h"
 
-#define SIZE 100
+#define SIZE 20
 using namespace std;
 using namespace newtree;
 
@@ -13,13 +13,12 @@ int main(int argc, char const *argv[])
     //test();
     srand(time(NULL));
     int b[SIZE];
-    generate(b, b + SIZE, [&]() { return rand() % 500; });
+    generate(b, b + SIZE, [&]() { return rand() % 1000; });
     //iota(b, b + SIZE, 1);
     vector<int> a(b, b + SIZE), c = a, d;
-    AVLTree<int> x;
-    x.create(a);
-    x.del_one(x.ROOT()->val);
-    cout << x.is_balanced();
+    AVLTree<int> ax;
+    ax.build(a);
+    ax.printTree();
 
     return 0;
 }

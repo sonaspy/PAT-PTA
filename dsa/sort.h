@@ -4,6 +4,8 @@
 #include <bits/stdc++.h>
 
 using namespace std;
+#ifndef __NEW_SORT__
+#define __NEW_SORT__
 namespace newsort
 {
 template <typename T>
@@ -233,14 +235,54 @@ template <typename T>
 static T *findKthMin(T *lo, T *hi, int k)
 {
     T *p = __partition(lo, hi);
-    int rank = p - lo;
-    if (rank == k)
+    int cur = p - lo;
+    if (cur == k)
         return p;
-    else if (k < rank)
+    else if (k < cur)
         return findKthMin(lo, p - 1, k);
     else
-        return findKthMin(p + 1, hi, k - (rank + 1));
+        return findKthMin(p + 1, hi, k - (cur + 1));
 }
+
+template <typename T>
+static void partial_k_sort(T *lo, T *hi, int k)
+{
+    // k < size / 2  sort k max elem to bottom;
+    T *walk = hi;
+    if (k > hi - lo)
+        return;
+    make_heap(lo, hi);
+    for (; hi - walk < k; walk--)
+        pop_heap(lo, walk);
+}
+template <typename T>
+static void partial_k_sort2(T *lo, T *hi, int k)
+{
+    // k > size / 2  sort k max elem to neck;
+    T *walk = lo + k;
+    if (k > hi - lo)
+        return;
+    make_heap(lo, lo + k, greater<int>());
+    for (; walk < hi; ++walk)
+    {
+        if (*walk > *lo)
+        {
+            //swap(*walk, *lo);
+            pop_heap(lo, lo + k, greater<int>());
+            swap(*walk, *(lo + k - 1));
+            push_heap(lo, lo + k, greater<int>());
+        }
+    }
+}
+
+template <typename T>
+static void s_output(T *lo, T *hi)
+{
+    for (; lo < hi; ++lo)
+        cout << *lo << " ";
+    cout << endl;
+}
+
 /*
 
 1:Build max heap , then call DeletMax for k times.  
@@ -294,3 +336,5 @@ static void tableSort(T *a, T *b)
 //     quickSort(mid, right);
 // }
 }; // namespace newsort
+
+#endif

@@ -4,6 +4,9 @@
 #include <bits/stdc++.h>
 
 using namespace std;
+
+#ifndef __NEW_TREE__
+#define __NEW_TREE__
 namespace newtree
 {
 #define MAXCOL 1000
@@ -772,6 +775,7 @@ protected:
         this->__updateheight(root);
         return f1 && f2 && abs(this->__factor(root)) < 2;
     }
+
     BinNode<T> *__delete(BinNode<T> *&root, T x)
     {
         if (!root)
@@ -819,14 +823,28 @@ public:
     {
         __insert(this->_ROOT, val);
     }
-    BinNode<T> *search(const T &e)
+    BinNode<T> *locate(const T &e)
     {
         this->_last = nullptr;
         return __search(this->_ROOT, e);
     }
+    BinNode<T> *findLCA(T v1, T v2)
+    {
+        BinNode<T> *walk = this->_ROOT;
+        while (walk)
+        {
+            if (v1 < walk->val && v2 < walk->val)
+                walk = walk->left;
+            else if (walk->val < v1 && walk->val < v2)
+                walk = walk->right;
+            else
+                break;
+        }
+        return walk;
+    }
     inline bool exist(const T &e)
     {
-        return search(e);
+        return locate(e);
     }
 };
 
@@ -1007,7 +1025,7 @@ protected:
     }
 
 public:
-    BinNode<T> *search(const T &e)
+    BinNode<T> *locate(const T &e)
     {
         this->_last = nullptr;
         BinNode<T> *p = this->__search(this->_ROOT, e);
@@ -1015,9 +1033,6 @@ public:
         return this->_ROOT;
     }
 };
-
-
-
 
 class set_union
 {
@@ -1088,7 +1103,7 @@ public:
     {
         if (_size == 1)
             return;
-        data[1] = data.back();
+        iter_swap(data.begin() + 1, data.end() - 1);
         data.pop_back();
         _size--;
         __percDown(1);
@@ -1111,3 +1126,4 @@ public:
 };
 
 }; // namespace newtree
+#endif

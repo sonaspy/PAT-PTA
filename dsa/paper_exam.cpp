@@ -364,18 +364,27 @@ public:
     }
 };
 
-
+void Solution_10_2(string &s)
+{
+    auto i = s.begin(), j = s.end() - 1;
+    while (i < j)
+    {
+        while (i < j && islower(*i))
+            ++i;
+        while (i < j && isupper(*j))
+            --j;
+        if (i < j)
+            iter_swap(i, j);
+    }
+}
 int main(int argc, char const *argv[])
 {
     /* code */
     //test();
     srand(time(NULL));
-    int b[SIZE];
-    generate(b, b + SIZE, [&]() { return rand() % 10000; });
-    vector<int> a(b, b + SIZE);
-    Solution5_2 s;
-    string str = "WARNING     Re-reading the partition table failed with error 16    Device or resource busy";
-    s.reverse_words(str);
+    string str(SIZE, ' ');
+    generate(str.begin(), str.end(), [&]() { return rand() % 2 ? 'A' + rand() % 26 : 'a' + rand() % 26; });
+    Solution_10_2(str);
     cout << str;
     return 0;
 }

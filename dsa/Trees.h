@@ -38,7 +38,7 @@ class BinTree
 {
 protected:
     BinNode<T> *_ROOT, *tp1;
-    bool _sta_changed;
+    unordered_set<BinNode<T> *> __MEM_OF_NODE;
     deque<BinNode<T> *> q, nexq;
     int _cnt;
     bool isunique; // pre post build
@@ -70,6 +70,7 @@ protected:
             return nullptr;
         int i = lo;
         BinNode<T> *node = new BinNode<T>(preorder[root]);
+        __MEM_OF_NODE.insert(node);
         table[preorder[root]] = node;
         node->parent = p;
         __updatedepth(node);
@@ -102,6 +103,7 @@ protected:
             return nullptr;
         int i = lo;
         BinNode<T> *node = new BinNode<T>(postorder[root]);
+        __MEM_OF_NODE.insert(node);
         table[postorder[root]] = node;
         node->parent = p;
         __updatedepth(node);
@@ -117,6 +119,7 @@ protected:
         if (leftOfpre > rightOfpre || leftOfpost > rightOfpost)
             return nullptr;
         BinNode<T> *root = new BinNode<T>(preorder[leftOfpre]);
+        __MEM_OF_NODE.insert(root);
         if (leftOfpre == rightOfpre)
             return root;
         int leftSubVal = preorder[leftOfpre + 1], i, sub_cnt;
@@ -157,6 +160,7 @@ protected:
                     p->left = nullptr;
                 if (root == p->right)
                     p->right = nullptr;
+                this->__MEM_OF_NODE.erase(root);
                 delete root;
             }
             return;
@@ -233,6 +237,7 @@ protected:
             return;
         __del_allSub(root->left);
         __del_allSub(root->right);
+        this->__MEM_OF_NODE.erase(root);
         delete root;
     }
     bool __TreeIdentical(BinNode<T> *T1, BinNode<T> *T2)
@@ -386,7 +391,6 @@ public:
     vector<T> preorder, inorder, postorder;
     BinTree()
     {
-        this->_sta_changed = 0;
         this->_ROOT = nullptr;
         this->isunique = true;
         this->q.clear(), this->nexq.clear();
@@ -429,6 +433,7 @@ public:
         if (a.size() - 1 < id)
             return nullptr;
         BinNode<T> *v = new BinNode<T>(a[id]);
+        __MEM_OF_NODE.insert(v);
         v->left = __buildcmp(id * 2 + 1, a);
         v->right = __buildcmp(id * 2 + 2, a);
         return v;
@@ -554,6 +559,17 @@ public:
         this->q.clear();
         return true;
     }
+    inline void clear()
+    {
+        _ROOT = tp1 = nullptr;
+        q.clear(), nexq.clear();
+        _cnt = 0;
+        isunique = 1;
+        disp_buf.clear();
+        for (auto &p : __MEM_OF_NODE)
+            delete p;
+        __MEM_OF_NODE.clear();
+    }
 
     template <class _Function>
     void intrav(_Function f)
@@ -666,6 +682,10 @@ public:
         else
             return Isomprphic(root1->left, root2->right) && Isomprphic(root1->right, root2->left);
     }
+    ~BinTree()
+    {
+        this->clear();
+    }
 };
 
 // 后缀表达式 -> exp_tree
@@ -684,12 +704,17 @@ protected:
         priority_queue<BinNode<T> *, vector<BinNode<T> *>, __cmp> pq;
         BinNode<T> *v, *w, *root;
         for (auto i : data)
-            pq.push_back(new BinNode<T>(i));
+        {
+            BinNode<T> *v = new BinNode<T>(i);
+            pq.push_back(v);
+            this->__MEM_OF_NODE.insert(v);
+        }
         while (pq.size() > 1)
         {
             v = pq.top(), pq.pop_front();
             w = pq.top(), pq.pop_front();
             root = new BinNode<T>(v->val + w->val);
+            this->__MEM_OF_NODE.insert(root);
             root->left = v, root->right = w;
             pq.push_back(root);
         }
@@ -716,12 +741,18 @@ public:
             return;
         __build_hfm(a);
     }
+    inline void clear()
+    {
+        BinTree<T>::clear();
+        _wpl = 0;
+    }
     int wpl()
     {
         if (_wpl == -1)
             __wpl(this->_ROOT);
         return _wpl;
     }
+    ~Huffman() { this->clear(); }
 };
 template <typename T>
 class BST : public BinTree<T>
@@ -757,6 +788,7 @@ protected:
         if (!root)
         {
             root = new BinNode<T>(v);
+            this->__MEM_OF_NODE.insert(root);
             this->_cnt++;
             return;
         }
@@ -765,6 +797,7 @@ protected:
         if (x)
             return;
         x = new BinNode<T>(v);
+        this->__MEM_OF_NODE.insert(x);
         v < this->_last->val ? this->_last->left = x : this->_last->right = x;
         this->_cnt++;
     }
@@ -799,6 +832,7 @@ protected:
             {
                 tmp = root;
                 root = root->left ? root->left : root->right;
+                BinTree<T>::__MEM_OF_NODE.erase(tmp);
                 delete tmp;
             }
         }
@@ -830,6 +864,11 @@ public:
         this->_last = nullptr;
         return __search(this->_ROOT, e);
     }
+    inline void clear()
+    {
+        BinTree<T>::clear();
+        this->_last = nullptr;
+    }
     BinNode<T> *findLCA(T v1, T v2)
     {
         BinNode<T> *walk = this->_ROOT;
@@ -848,6 +887,7 @@ public:
     {
         return locate(e);
     }
+    ~BST() { this->clear(); }
 };
 
 template <typename T>
@@ -870,6 +910,11 @@ public:
     {
         __insert(this->_ROOT, val, nullptr);
         this->__update_status();
+    }
+    inline void clear() { BST<T>::clear(); }
+    ~AVLTree()
+    {
+        this->clear();
     }
 
 protected:
@@ -914,6 +959,7 @@ protected:
         if (!root)
         {
             root = new BinNode<T>(val);
+            this->__MEM_OF_NODE.insert(root);
             root->parent = p;
             this->_cnt++;
             return;
@@ -974,6 +1020,7 @@ protected:
             {
                 tmp = root;
                 root = root->left ? root->left : root->right;
+                BinTree<T>::__MEM_OF_NODE.erase(tmp);
                 delete tmp;
             }
         }
@@ -1056,10 +1103,6 @@ struct BNode
         return parent == nullptr;
     }
 };
-
-
-
-
 
 template <typename T>
 class Heap

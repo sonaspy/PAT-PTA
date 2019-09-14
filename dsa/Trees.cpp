@@ -3,7 +3,7 @@
 
 #include "dsa.h"
 
-#define SIZE 63
+#define SIZE 100000
 using namespace std;
 using namespace newtree;
 
@@ -16,14 +16,18 @@ int main(int argc, char const *argv[])
     //generate(b, b + SIZE, [&]() { return rand() % 100; });
     iota(b, b + SIZE, 1);
     vector<int> a(b, b + SIZE), c = a, d;
-    AVLTree<int> ax;
-
-    ax.build(a);
     clock_t startTime, endTime;
     startTime = clock();
 
+    while (getchar() != '0')
+    {
+        AVLTree<int> ax;
+        ax.build(a);
+        cout << ax.size() << endl;
+        //ax.printTree();
+    }
+
     endTime = clock();
-    ax.printTree();
     cout << "The run time is: " << (double)(endTime - startTime) / 1000 << "ms" << endl;
     return 0;
 }

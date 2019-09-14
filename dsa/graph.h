@@ -58,7 +58,7 @@ class udGraph
 {
 protected:
     int nv, connected_cnt, stp_unique;
-    unordered_set<edge *> edgetable;
+    unordered_set<edge *> __MEM_OF_EDGE;
     unordered_map<int, vector<int>> posv, pre, prev, post;
     vector<vector<edge *>> matrix;
     vector<int> indeg, outdeg, vis, cost1, cost2, tmppath;
@@ -227,7 +227,7 @@ public:
                     matrix[j][i] = matrix[i][j] = new edge(g[i][j], i, j);
                     posv[i].push_back(j), posv[j].push_back(i);
                     e_pq.push(matrix[i][j]);
-                    edgetable.insert(matrix[i][j]);
+                    __MEM_OF_EDGE.insert(matrix[i][j]);
                     mpOfedge[matrix[i][j]->w1].push_back(matrix[i][j]);
                 }
         }
@@ -257,9 +257,9 @@ public:
         this->stp.clear();
         this->tmppath.clear();
         this->vis.clear();
-        for (auto node : edgetable)
+        for (auto node : __MEM_OF_EDGE)
             delete node;
-        this->edgetable.clear();
+        this->__MEM_OF_EDGE.clear();
     }
     inline int stpsum()
     {
@@ -367,7 +367,7 @@ public:
         init(g);
     }
     inline int vsize() { return this->nv; }
-    inline int esize() { return edgetable.size(); }
+    inline int esize() { return __MEM_OF_EDGE.size(); }
     ~udGraph()
     {
         this->clear();
@@ -455,7 +455,7 @@ protected:
             v_late[walk] = mint;
         }
         vector<int> ksrc, kdst;
-        for (auto &e : edgetable)
+        for (auto &e : __MEM_OF_EDGE)
         {
             aoe[e].first = v_early[e->v1];
             aoe[e].second = v_late[e->v2] - e->w1;
@@ -580,7 +580,7 @@ public:
                     matrix[i][j] = new edge(g[i][j], i, j);
                     prev[j].push_back(i), posv[i].push_back(j);
                     indeg[j]++, outdeg[i]++;
-                    edgetable.insert(matrix[i][j]);
+                    __MEM_OF_EDGE.insert(matrix[i][j]);
                 }
         }
         for (int i = 0; i < nv; i++)

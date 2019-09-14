@@ -14,7 +14,7 @@ namespace newgraph
 #define INF_VAL 1 << 30
 struct edge
 {
-    int w1, w2, w3, v1, v2;
+    int w1, w2, w3, v1, v2, mark = 0;
     edge(int w1) : w1(w1), w2(INF_VAL), w3(INF_VAL), v1(-1), v2(-1) {}
     edge(int v1, int v2) : w1(INF_VAL), w2(INF_VAL), w3(INF_VAL), v1(v1), v2(v2) {}
     edge(int w1, int v1, int v2) : w1(w1), w2(INF_VAL), w3(INF_VAL), v1(v1), v2(v2) {}
@@ -45,24 +45,32 @@ public:
     inline int sum() { return _sum; }
     bool overlap(int v1, int v2) { return st.same(v1, v2); }
     bool exist(int v) { return vset.count(v); }
+    inline bool empty() { return vset.empty(); }
+    bool connected()
+    {
+        st.resize(vset.size());
+        return st.connected();
+    }
     inline void clear() { _sum = 0, st.clear(), vset.clear(), eset.clear(); }
 };
 
 class udGraph
 {
 protected:
-    int nv, connected_cnt, ev;
+    int nv, connected_cnt, ev, stp_unique;
     unordered_set<edge *> memTable;
-    unordered_set<int> table[MAXVSIZE];
+    unordered_set<int> prev[MAXVSIZE], posv[MAXVSIZE];
     vector<vector<edge *>> matrix;
-    vector<int> indeg, outdeg, vis, w1, w2, tmppath, respath, pre[MAXVSIZE];
+    vector<int> indeg, outdeg, vis, cost1, cost2, tmppath, respath, pre[MAXVSIZE];
     priority_queue<edge *, vector<edge *>, __cmp1> e_pq;
+    unordered_map<int, vector<edge *>> mpOfedge;
     spanningTree stp;
-    void __clearArray()
+    void __clear_buf()
     {
         fill(vis.begin(), vis.end(), 0);
-        fill(w1.begin(), w1.end(), 0);
-        fill(w2.begin(), w2.end(), 0);
+        fill(cost1.begin(), cost1.end(), 0);
+        fill(cost2.begin(), cost1.end(), 0);
+        tmppath.clear();
     }
     void __prim()
     {
@@ -122,20 +130,60 @@ protected:
 
     void __dfs(int v_id)
     {
-        for (auto w : table[v_id])
+        for (auto w : posv[v_id])
             if (!vis[w])
             {
                 vis[w] = 1;
                 __dfs(w);
             }
     }
+    void __bfs(int src)
+    {
+        __clear_buf();
+        int layer = 0, v;
+        queue<int> q, nexq;
+        q.push(src);
+        vis[src] = 1;
+        while (q.size())
+        {
+            while (q.size())
+            {
+                v = q.front(), q.pop();
+                for (auto w : posv[v])
+                    if (!vis[w])
+                    {
+                        vis[w] = 1;
+                        nexq.push(w);
+                    }
+            }
+            layer++;
+            swap(q, nexq);
+        }
+        __clear_buf();
+    }
+
+        void __getPath(int walk, int &src)
+    {
+        tmppath.push_back(walk);
+        if (walk == src)
+        {
+            // some condition
+            if (1)
+                respath = tmppath;
+            return;
+        }
+        for (auto j : pre[walk])
+            __getPath(j, src);
+        tmppath.pop_back();
+    }
 
 public:
     udGraph()
     {
         matrix = vector<vector<edge *>>(MAXVSIZE, vector<edge *>(MAXVSIZE, nullptr));
-        w1 = w2 = vis = indeg = outdeg = vector<int>(MAXVSIZE, 0);
+        vis = indeg = outdeg = vector<int>(MAXVSIZE, 0);
         nv = ev = connected_cnt = 0;
+        stp_unique = -1;
     }
     inline int connected_component()
     {
@@ -174,34 +222,29 @@ public:
         int n = g.size();
         this->nv = n;
         for (int i = 0; i < n; i++)
+        {
             for (int j = i + 1; j < n; j++)
                 if (g[i][j] != INF_VAL)
                 {
                     matrix[j][i] = matrix[i][j] = new edge(g[i][j], i, j);
-                    table[i].insert(j), table[j].insert(i);
+                    posv[i].insert(j), posv[j].insert(i);
                     this->ev++;
                     e_pq.push(matrix[i][j]);
                     memTable.insert(matrix[i][j]);
+                    mpOfedge[matrix[i][j]->w1].push_back(matrix[i][j]);
                 }
+        }
+        for (auto &i : mpOfedge)
+        {
+            if (i.second.size() > 1)
+                for (auto &j : i.second)
+                    j->mark = 1;
+        }
         connected();
     }
     inline int stpsum()
     {
         return stp.sum();
-    }
-    void __getPath(int walk, int &src)
-    {
-        tmppath.push_back(walk);
-        if (walk == src)
-        {
-            // some condition
-            if (1)
-                respath = tmppath;
-            return;
-        }
-        for (auto j : pre[walk])
-            __getPath(j, src);
-        tmppath.pop_back();
     }
     vector<int> dijkstra(int src, int dst, vector<int> &cost)
     {
@@ -258,6 +301,10 @@ public:
         reverse(respath.begin(), respath.end());
         return respath;
     }
+    bool stpUnique()
+    {
+        return stp_unique;
+    }
     bool Floyd(vector<vector<int>> &mp, vector<vector<int>> &path)
     {
         int i, j, k;
@@ -289,7 +336,17 @@ public:
     inline void makestp(int f)
     {
         f ? __kruskal() : __prim();
-        cout << stp.vsize() << " " << stp.esize() << endl;
+    }
+    void random_init(int n_)
+    {
+        srand(time(NULL));
+        vector<vector<int>> g(n_, vector<int>(n_, INF_VAL));
+        for (int i = 0; i < n_; i++)
+        {
+            for (int j = i + 1; j < n_; j++)
+                g[i][j] = g[j][i] = rand() % 4 ? INF_VAL : rand() % 100 + 1;
+        }
+        init(g);
     }
     inline int vsize() { return this->nv; }
     inline int esize() { return this->ev; }
@@ -297,24 +354,119 @@ public:
 
 class dGraph : public udGraph
 {
+protected:
+    vector<int> __top_order;
+    void __dfs(int v_id, vector<int> &o)
+    {
+        for (auto w : posv[v_id])
+            if (!vis[w])
+            {
+                vis[w] = 1;
+                __dfs(w, o);
+            }
+        o.push_back(v_id);
+    }
+    bool _acyclic;
+    void __top_sort()
+    {
+        int v;
+        queue<int> q;
+        vector<int> indegtmp(indeg.begin(), indeg.begin() + nv);
+        for (int i = 0; i < nv; i++)
+            if (!indegtmp[i])
+                q.push(i);
+        while (q.size())
+        {
+            v = q.front(), q.pop();
+            __top_order.push_back(v);
+            for (auto w : posv[v])
+                if (--indegtmp[w] == 0)
+                    q.push(w);
+        }
+        _acyclic = __top_order.size() == nv;
+        __clear_buf();
+    }
 
 public:
     dGraph()
     {
         matrix = vector<vector<edge *>>(MAXVSIZE, vector<edge *>(MAXVSIZE, nullptr));
-        w1 = w2 = vis = indeg = outdeg = vector<int>(MAXVSIZE, 0);
+        vis = indeg = outdeg = vector<int>(MAXVSIZE, 0);
+    }
+
+    inline bool acyclic() { return _acyclic; }
+    void in_toporder(vector<int> &ord)
+    {
+        for (int i = 0; i < nv; i++)
+        {
+            if (!indeg[i] && !vis[i])
+            {
+                vis[i] = 1;
+                __dfs(i, ord);
+            }
+        }
+        __clear_buf();
+    }
+    void toporder(vector<int> &ord)
+    {
+        ord = __top_order;
+        __clear_buf();
+    }
+    bool istoporder(vector<int> &ord)
+    {
+        if (ord.size() != nv)
+            return 0;
+        vector<int> In = indeg;
+        for (auto V : ord)
+        {
+            if (In[V])
+                return false;
+            for (auto w : posv[V])
+                In[w]--;
+        }
+        __clear_buf();
+        return true;
+    }
+    void topsort()
+    {
+        __top_sort();
+        __clear_buf();
+    }
+
+    void random_init(int n_, int sparse_level, int weight_range)
+    {
+        srand(time(NULL));
+        vector<vector<int>> g(n_, vector<int>(n_, INF_VAL));
+        for (int i = 0; i < n_; i++)
+        {
+            for (int j = 0; j < n_; j++)
+                if (i == j)
+                    continue;
+                else
+                    g[i][j] = rand() % sparse_level ? INF_VAL : rand() % weight_range + 1;
+        }
+        init(g);
+        __clear_buf();
     }
     void init(vector<vector<int>> &g)
     {
-        int n = g.size(), m = g[0].size();
+        int n = g.size();
+        this->nv = n;
         for (int i = 0; i < n; i++)
-            for (int j = 0; j < m; j++)
+        {
+            for (int j = 0; j < n; j++)
                 if (g[i][j] != INF_VAL)
                 {
                     matrix[i][j] = new edge(g[i][j], i, j);
-                    table[i].insert(j);
+                    prev[j].insert(i);
+                    posv[i].insert(j);
+                    indeg[j]++, outdeg[i]++;
                     memTable.insert(matrix[i][j]);
                 }
+        }
+        connected();
+        __top_sort();
+        __clear_buf();
     }
 };
 

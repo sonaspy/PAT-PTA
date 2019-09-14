@@ -1,9 +1,9 @@
 // author - newguo@sonaspy.cn
 // coding - utf_8
 
-#define SIZE 100
+#define SIZE 20
 #include <bits/stdc++.h>
-#include "graph.h"
+#include "dsa.h"
 #define test() freopen("in", "r", stdin)
 using namespace newgraph;
 using namespace std;
@@ -12,31 +12,20 @@ int main(int argc, char const *argv[])
 {
     /* code */
     //test();
-    udGraph udg;
+    dGraph dg;
     srand(time(NULL));
-    vector<vector<int>> g(SIZE, vector<int>(SIZE, INF_VAL));
-    for (int i = 0; i < SIZE; i++)
-    {
-        for (int j = i + 1; j < SIZE; j++)
-            g[i][j] = g[j][i] = rand() % 4 ? INF_VAL : rand() % 100 + 1;
-    }
-    udg.init(g);
-
+    dg.random_init(SIZE, 20, 10);
+    vector<int> ord;
+    dg.in_toporder(ord);
+    output_vec(ord);
+    reverse(ord.begin(), ord.end());
     clock_t startTime, endTime;
     startTime = clock();
-
-    udg.makestp(1); // kru
-    cout << udg.stpsum() << endl;
-
-    endTime = clock();
-    cout << "The run time is: " << (double)(endTime - startTime) / 1000 << "ms" << endl;
-
-    startTime = clock();
-
-    udg.makestp(0);
-    cout << udg.stpsum() << endl;
+    cout << dg.acyclic() << endl;
+    cout << dg.istoporder(ord) << endl;
 
     endTime = clock();
     cout << "The run time is: " << (double)(endTime - startTime) / 1000 << "ms" << endl;
+
     return 0;
 }

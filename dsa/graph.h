@@ -59,9 +59,9 @@ class udGraph
 protected:
     int nv, connected_cnt, stp_unique;
     unordered_set<edge *> edgetable;
-    vector<int> prev[MAXVSIZE], posv[MAXVSIZE];
+    unordered_map<int, vector<int>> posv, pre, prev, post;
     vector<vector<edge *>> matrix;
-    vector<int> indeg, outdeg, vis, cost1, cost2, tmppath, pre[MAXVSIZE];
+    vector<int> indeg, outdeg, vis, cost1, cost2, tmppath;
     vector<vector<int>> respath;
     priority_queue<edge *, vector<edge *>, __cmp1> e_pq;
     unordered_map<int, vector<edge *>> mpOfedge;
@@ -239,6 +239,28 @@ public:
         }
         connected();
     }
+    inline void clear()
+    {
+        while (e_pq.size())
+            this->e_pq.pop();
+        this->cost1.clear(), this->cost2.clear();
+        this->connected_cnt = 0;
+        this->indeg.clear();
+        this->matrix.clear();
+        this->mpOfedge.clear();
+        this->nv = 0;
+        this->outdeg.clear();
+        this->posv.clear();
+        this->prev.clear();
+        this->pre.clear();
+        this->respath.clear();
+        this->stp.clear();
+        this->tmppath.clear();
+        this->vis.clear();
+        for (auto node : edgetable)
+            delete node;
+        this->edgetable.clear();
+    }
     inline int stpsum()
     {
         return stp.sum();
@@ -346,6 +368,10 @@ public:
     }
     inline int vsize() { return this->nv; }
     inline int esize() { return edgetable.size(); }
+    ~udGraph()
+    {
+        this->clear();
+    }
 };
 
 class dGraph : public udGraph
@@ -355,7 +381,6 @@ protected:
     unordered_map<edge *, pair<int, int>> aoe; // aoe pair(early, late), flexible time = second - first. keyaction is which has zero flexible time;
     int _total_cost;
     unordered_set<int> _src, _dst;
-    unordered_map<int, vector<int>> post;
     bool _acyclic;
     void __dfs(int v_id, vector<int> &o)
     {
@@ -445,14 +470,19 @@ protected:
             }
         }
         for (auto &v : post)
+        {
             sort(v.second.begin(), v.second.end());
+        }
+        sort(ksrc.begin(), ksrc.end()), sort(kdst.begin(), kdst.end());
         for (auto s : ksrc)
+        {
             for (auto d : kdst)
             {
                 tmppath.push_back(s);
                 __getPath(s, d);
                 tmppath.pop_back();
             }
+        }
     }
 
 public:
@@ -460,6 +490,14 @@ public:
     {
         matrix = vector<vector<edge *>>(MAXVSIZE, vector<edge *>(MAXVSIZE, nullptr));
         vis = indeg = outdeg = vector<int>(MAXVSIZE, 0);
+    }
+    inline void clear()
+    {
+        udGraph::clear();
+        __top_order.clear(), __intop_order.clear(), v_early.clear(), v_late.clear(), rescost.clear();
+        aoe.clear();
+        _total_cost = 0;
+        _src.clear(), _dst.clear();
     }
 
     inline bool acyclic() { return _acyclic; }
@@ -563,6 +601,10 @@ public:
         connected();
         __top_sort();
         __clear_buf();
+    }
+    ~dGraph()
+    {
+        this->clear();
     }
 };
 

@@ -3,7 +3,7 @@
 
 #include "dsa.h"
 
-#define SIZE 50
+#define SIZE 63
 using namespace std;
 using namespace newtree;
 

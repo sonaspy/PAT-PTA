@@ -23,6 +23,7 @@ struct __cmp1
 {
     bool operator()(const edge *e1, const edge *e2) const { return e1->w1 > e2->w1; }
 };
+inline bool __cmp2(const edge *e1, const edge *e2) { return e1->v1 < e2->v1 && e1->v2 < e2->v2; }
 class spanningTree
 {
 private:
@@ -57,9 +58,9 @@ public:
 class udGraph
 {
 protected:
-    int nv, connected_cnt, ev, stp_unique;
-    unordered_set<edge *> memTable;
-    unordered_set<int> prev[MAXVSIZE], posv[MAXVSIZE];
+    int nv, connected_cnt, stp_unique;
+    unordered_set<edge *> edgetable;
+    vector<int> prev[MAXVSIZE], posv[MAXVSIZE];
     vector<vector<edge *>> matrix;
     vector<int> indeg, outdeg, vis, cost1, cost2, tmppath, respath, pre[MAXVSIZE];
     priority_queue<edge *, vector<edge *>, __cmp1> e_pq;
@@ -162,7 +163,7 @@ protected:
         __clear_buf();
     }
 
-        void __getPath(int walk, int &src)
+    void __getPath(int walk, int &src)
     {
         tmppath.push_back(walk);
         if (walk == src)
@@ -182,7 +183,7 @@ public:
     {
         matrix = vector<vector<edge *>>(MAXVSIZE, vector<edge *>(MAXVSIZE, nullptr));
         vis = indeg = outdeg = vector<int>(MAXVSIZE, 0);
-        nv = ev = connected_cnt = 0;
+        nv = connected_cnt = 0;
         stp_unique = -1;
     }
     inline int connected_component()
@@ -227,10 +228,9 @@ public:
                 if (g[i][j] != INF_VAL)
                 {
                     matrix[j][i] = matrix[i][j] = new edge(g[i][j], i, j);
-                    posv[i].insert(j), posv[j].insert(i);
-                    this->ev++;
+                    posv[i].push_back(j), posv[j].push_back(i);
                     e_pq.push(matrix[i][j]);
-                    memTable.insert(matrix[i][j]);
+                    edgetable.insert(matrix[i][j]);
                     mpOfedge[matrix[i][j]->w1].push_back(matrix[i][j]);
                 }
         }
@@ -337,7 +337,7 @@ public:
     {
         f ? __kruskal() : __prim();
     }
-    void random_init(int n_)
+    void rand_acyclic(int n_)
     {
         srand(time(NULL));
         vector<vector<int>> g(n_, vector<int>(n_, INF_VAL));
@@ -349,13 +349,16 @@ public:
         init(g);
     }
     inline int vsize() { return this->nv; }
-    inline int esize() { return this->ev; }
+    inline int esize() { return edgetable.size(); }
 };
 
 class dGraph : public udGraph
 {
 protected:
-    vector<int> __top_order;
+    vector<int> __top_order, __intop_order, v_early, v_late;
+    unordered_map<edge *, pair<int, int>> aoe; // aoe pair(early, late), flexible time = second - first. keyaction is which has zero flexible time;
+    vector<edge *> keypath;
+    int _total_cost;
     void __dfs(int v_id, vector<int> &o)
     {
         for (auto w : posv[v_id])
@@ -374,17 +377,54 @@ protected:
         vector<int> indegtmp(indeg.begin(), indeg.begin() + nv);
         for (int i = 0; i < nv; i++)
             if (!indegtmp[i])
+            {
                 q.push(i);
+                __top_order.push_back(i);
+            }
         while (q.size())
         {
             v = q.front(), q.pop();
-            __top_order.push_back(v);
             for (auto w : posv[v])
                 if (--indegtmp[w] == 0)
+                {
                     q.push(w);
+                    __top_order.push_back(w);
+                }
         }
         _acyclic = __top_order.size() == nv;
+        __intop_order.insert(__intop_order.end(), __top_order.rbegin(), __top_order.rend());
         __clear_buf();
+    }
+    void __key_action()
+    {
+        if(aoe.size())return;
+        v_early = v_late = vector<int>(nv, 0);
+        for (int walk : __top_order)
+        {
+            int maxt = 0;
+            for (int pre : this->prev[walk])
+                maxt = max(this->matrix[pre][walk]->w1 + v_early[pre], maxt);
+            v_early[walk] = maxt;
+        }
+        for (int walk : __intop_order)
+        {
+            int mint = v_early[__top_order.back()];
+            for (int post : this->posv[walk])
+                mint = min(v_late[post] - this->matrix[walk][post]->w1, mint);
+            v_late[walk] = mint;
+        }
+        _total_cost = 0;
+        for (auto &e : edgetable)
+        {
+            aoe[e].first = v_early[e->v1];
+            aoe[e].second = v_late[e->v2] - e->w1;
+            if (aoe[e].first == aoe[e].second)
+            {
+                keypath.push_back(e);
+                _total_cost += e->w1;
+            }
+        }
+        sort(keypath.begin(), keypath.end(), __cmp2);
     }
 
 public:
@@ -409,6 +449,8 @@ public:
     }
     void toporder(vector<int> &ord)
     {
+        if (!_acyclic)
+            return;
         ord = __top_order;
         __clear_buf();
     }
@@ -432,18 +474,29 @@ public:
         __top_sort();
         __clear_buf();
     }
-
-    void random_init(int n_, int sparse_level, int weight_range)
+    inline void get_keyaction()
     {
-        srand(time(NULL));
+        __key_action();
+        cout << keypath[0]->v1 << " -> " << keypath[0]->v2;
+        for (int i = 1; i < keypath.size(); i++)
+            cout << " -> " << keypath[i]->v2;
+        cout << endl;
+        cout << "The Key Actions' Path Length Is -> " << _total_cost << endl;
+    }
+    inline int keysize()
+    {
+        if (aoe.size())
+            return keypath.size();
+        __key_action();
+        return keypath.size();
+    }
+    void rand_acyclic(int n_, int sparse_level, int weight_range)
+    {
         vector<vector<int>> g(n_, vector<int>(n_, INF_VAL));
         for (int i = 0; i < n_; i++)
         {
-            for (int j = 0; j < n_; j++)
-                if (i == j)
-                    continue;
-                else
-                    g[i][j] = rand() % sparse_level ? INF_VAL : rand() % weight_range + 1;
+            for (int j = i + 1; j < n_; j++)
+                g[i][j] = rand() % sparse_level ? INF_VAL : rand() % weight_range + 1;
         }
         init(g);
         __clear_buf();
@@ -458,10 +511,9 @@ public:
                 if (g[i][j] != INF_VAL)
                 {
                     matrix[i][j] = new edge(g[i][j], i, j);
-                    prev[j].insert(i);
-                    posv[i].insert(j);
+                    prev[j].push_back(i), posv[i].push_back(j);
                     indeg[j]++, outdeg[i]++;
-                    memTable.insert(matrix[i][j]);
+                    edgetable.insert(matrix[i][j]);
                 }
         }
         connected();

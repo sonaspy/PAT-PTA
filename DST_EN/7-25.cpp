@@ -1,6 +1,16 @@
+// author - newguo@sonaspy.cn
+// coding - utf_8
+
+#define SIZE 100
 #include <bits/stdc++.h>
-#define INF 1 << 30
-int n, m, mp[105][105];
+
+#define test() freopen("in", "r", stdin)
+
+using namespace std;
+
+#define INF 0x3f3f3f3f
+int n, m;
+int mp[105][105];
 void Floyd()
 {
     int i, j, k;
@@ -12,37 +22,47 @@ void Floyd()
 }
 int main()
 {
-    int i, j, a, b, d;
+
+    test();
+    int i, j;
     scanf("%d%d", &n, &m);
     memset(mp, INF, sizeof(mp));
+    for(int i = 0; i < n ; i++)mp[i][i] = 0;
     for (i = 0; i < m; i++)
     {
+        int a, b, d;
         scanf("%d%d%d", &a, &b, &d);
         mp[a][b] = mp[b][a] = d;
     }
     Floyd();
-    int min = INF, f = -1;
+    int min = INF;
+    int f = -1;
     for (i = 1; i <= n; i++)
     {
-        int tmpMax = 0;
+        int max = 0;
+        int flag = 1;
         for (j = 1; j <= n; j++)
         {
             if (j == i)
                 continue;
             if (mp[i][j] == INF)
             {
-                printf("0");
-                return 0;
+                flag = 0;
+                break;
             }
-            if (mp[i][j] > tmpMax)
-                tmpMax = mp[i][j];
+            max = mp[i][j] > max ? mp[i][j] : max;
         }
-        if (tmpMax > 0 && tmpMax < min)
+        if (!flag)
+            continue;
+        if (max && max < min)
         {
-            min = tmpMax;
+            min = max;
             f = i;
         }
     }
-    printf("%d %d\n", f, min);
+    if (min == INF)
+        printf("0\n");
+    else
+        printf("%d %d\n", f, min);
     return 0;
 }

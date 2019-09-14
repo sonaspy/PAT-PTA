@@ -34,29 +34,6 @@ struct BinNode
 };
 
 template <typename T>
-struct BNode
-{
-    T val;
-    BNode *left, *right, *parent;
-    int height, depth, ltag, rtag;
-    BNode(T x) : val(x), left(nullptr), right(nullptr), parent(nullptr), height(1), depth(1), ltag(0), rtag(0) {}
-    bool inline is_l()
-    {
-        return parent && parent->left == this;
-    }
-    bool inline is_r()
-    {
-        return parent && parent->right == this;
-    }
-    bool inline isroot()
-    {
-        return parent == nullptr;
-    }
-};
-
-
-
-template <typename T>
 class BinTree
 {
 protected:
@@ -1059,12 +1036,26 @@ public:
     }
 };
 
-
-
-
-
-
-
+template <typename T>
+struct BNode
+{
+    T val;
+    BNode *left, *right, *parent;
+    int height, depth, ltag, rtag;
+    BNode(T x) : val(x), left(nullptr), right(nullptr), parent(nullptr), height(1), depth(1), ltag(0), rtag(0) {}
+    bool inline is_l()
+    {
+        return parent && parent->left == this;
+    }
+    bool inline is_r()
+    {
+        return parent && parent->right == this;
+    }
+    bool inline isroot()
+    {
+        return parent == nullptr;
+    }
+};
 
 
 

@@ -205,8 +205,8 @@ public:
     }
     vector<int> dijkstra(int src, int dst, vector<int> &cost)
     {
-        //vector<int> cost2,cost3..., pathsum;
-        //pathsum[src] = 1;
+        vector<int> cost2, cost3, pathsum;
+        pathsum[src] = 1;
         int v, min_, w;
         unordered_set<int> vset;
         fill(cost.begin(), cost.end(), INF_VAL);
@@ -225,29 +225,32 @@ public:
             vset.insert(v);
             for (w = 0; w < nv; w++)
             {
-                if (!vset.count(w) && matrix[v][w])           // one type weight
+                if (!vset.count(w) && matrix[v][w]) // one type weight
+                {
                     if (matrix[v][w]->w1 + cost[v] < cost[w]) // 1.
                     {
                         cost[w] = matrix[v][w]->w1 + cost[v];
                         //cost2[w] = matrix[v][w]->w2 + cost2[v];
-                        //pre[w] = v; pahtsum[w] = pathsum[v];
+                        pre[w].clear(), pre[w].push_back(v);
+                        pathsum[w] = pathsum[v];
                     }
                     else if (matrix[v][w]->w1 + cost[v] == cost[w]) //2.
                     {
-                        //pre[w].push_back(v);
-                        //pathsum[w] += pathsum[v];
+                        pre[w].push_back(v);
+                        pathsum[w] += pathsum[v];
                     }
-                //or 1.same
-                //2. else if (matrix[v][w]->w1 + cost[v] == cost[w] && matrix[v][w]->w2 + cost2[v] < cost2[w])
-                // {
-                //  cost2[w] = matrix[v][w]->w2 + cost2[v];
-                //  pre[w] = v; pahtsum[w] = pathsum[v];
-                // }
-                // 3. else if (matrix[v][w]->w1 + cost[v] == cost[w] && matrix[v][w]->w2 + cost2[v] == cost2[w])
-                // {
-                //    pre[w].push_back(v);
-                //    pathsum[w] += pathsum[v];
-                // }........ analog
+                    //or 1.same
+                    //2. else if (matrix[v][w]->w1 + cost[v] == cost[w] && matrix[v][w]->w2 + cost2[v] < cost2[w])
+                    // {
+                    //  cost2[w] = matrix[v][w]->w2 + cost2[v];
+                    //  pre[w] = v; pahtsum[w] = pathsum[v];
+                    // }
+                    // 3. else if (matrix[v][w]->w1 + cost[v] == cost[w] && matrix[v][w]->w2 + cost2[v] == cost2[w])
+                    // {
+                    //    pre[w].push_back(v);
+                    //    pathsum[w] += pathsum[v];
+                    // }........ analog
+                }
             }
         }
         tmppath.clear(), respath.clear();
@@ -255,6 +258,34 @@ public:
         reverse(respath.begin(), respath.end());
         return respath;
     }
+    bool Floyd(vector<vector<int>> &mp, vector<vector<int>> &path)
+    {
+        int i, j, k;
+        fill(path.begin(), path.end(), vector<int>(path.size(), -1));
+        for (i = 0; i < nv; i++)
+        {
+            for (j = 0; j < nv; j++)
+            {
+                mp[i][j] = matrix[i][j] ? matrix[i][j]->w1 : INF_VAL;
+                mp[i][j] = i == j ? 0 : mp[i][j];
+            }
+        }
+        for (k = 0; k < nv; k++)
+        {
+            for (i = 0; i < nv; i++)
+            {
+                for (j = 0; j < nv; j++)
+                {
+                    if (mp[i][k] != INF_VAL && mp[k][j] != INF_VAL && mp[i][j] > mp[i][k] + mp[k][j])
+                        mp[i][j] = mp[i][k] + mp[k][j], path[i][j] = k;
+                    if (i == j && mp[i][j] < 0)
+                        return false;
+                }
+            }
+        }
+        return true;
+    }
+
     inline void makestp(int f)
     {
         f ? __kruskal() : __prim();

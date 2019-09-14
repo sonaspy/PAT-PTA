@@ -23,7 +23,6 @@ struct __cmp1
 {
     bool operator()(const edge *e1, const edge *e2) const { return e1->w1 > e2->w1; }
 };
-inline bool __cmp2(const edge *e1, const edge *e2) { return e1->v1 < e2->v1 && e1->v2 < e2->v2; }
 class spanningTree
 {
 private:
@@ -62,7 +61,8 @@ protected:
     unordered_set<edge *> edgetable;
     vector<int> prev[MAXVSIZE], posv[MAXVSIZE];
     vector<vector<edge *>> matrix;
-    vector<int> indeg, outdeg, vis, cost1, cost2, tmppath, respath, pre[MAXVSIZE];
+    vector<int> indeg, outdeg, vis, cost1, cost2, tmppath, pre[MAXVSIZE];
+    vector<vector<int>> respath;
     priority_queue<edge *, vector<edge *>, __cmp1> e_pq;
     unordered_map<int, vector<edge *>> mpOfedge;
     spanningTree stp;
@@ -162,19 +162,16 @@ protected:
         }
         __clear_buf();
     }
-
-    void __getPath(int walk, int &src)
+    void __getPath2(int walk, int &src)
     {
         tmppath.push_back(walk);
         if (walk == src)
         {
-            // some condition
-            if (1)
-                respath = tmppath;
+            respath.push_back(tmppath);
             return;
         }
         for (auto j : pre[walk])
-            __getPath(j, src);
+            __getPath2(j, src);
         tmppath.pop_back();
     }
 
@@ -246,7 +243,7 @@ public:
     {
         return stp.sum();
     }
-    vector<int> dijkstra(int src, int dst, vector<int> &cost)
+    void dijkstra(int src, int dst, vector<int> &cost)
     {
         vector<int> cost2, cost3, pathsum;
         pathsum[src] = 1;
@@ -297,9 +294,8 @@ public:
             }
         }
         tmppath.clear(), respath.clear();
-        __getPath(dst, src);
+        __getPath2(dst, src);
         reverse(respath.begin(), respath.end());
-        return respath;
     }
     bool stpUnique()
     {
@@ -355,21 +351,40 @@ public:
 class dGraph : public udGraph
 {
 protected:
-    vector<int> __top_order, __intop_order, v_early, v_late;
+    vector<int> __top_order, __intop_order, v_early, v_late, rescost;
     unordered_map<edge *, pair<int, int>> aoe; // aoe pair(early, late), flexible time = second - first. keyaction is which has zero flexible time;
-    vector<edge *> keypath;
     int _total_cost;
+    unordered_set<int> _src, _dst;
+    unordered_map<int, vector<int>> post;
+    bool _acyclic;
     void __dfs(int v_id, vector<int> &o)
     {
         for (auto w : posv[v_id])
-            if (!vis[w])
-            {
-                vis[w] = 1;
-                __dfs(w, o);
-            }
+        {
+            if (vis[w])
+                continue;
+            vis[w] = 1;
+            __dfs(w, o);
+        }
         o.push_back(v_id);
     }
-    bool _acyclic;
+    void __getPath(int walk, int &dst)
+    {
+        if (walk == dst)
+        {
+            rescost.push_back(_total_cost);
+            respath.push_back(tmppath);
+            return;
+        }
+        for (auto w : post[walk])
+        {
+            tmppath.push_back(w);
+            _total_cost += matrix[walk][w]->w1;
+            __getPath(w, dst);
+            _total_cost -= matrix[walk][w]->w1;
+            tmppath.pop_back();
+        }
+    }
     void __top_sort()
     {
         int v;
@@ -397,7 +412,8 @@ protected:
     }
     void __key_action()
     {
-        if(aoe.size())return;
+        if (aoe.size())
+            return;
         v_early = v_late = vector<int>(nv, 0);
         for (int walk : __top_order)
         {
@@ -413,18 +429,30 @@ protected:
                 mint = min(v_late[post] - this->matrix[walk][post]->w1, mint);
             v_late[walk] = mint;
         }
-        _total_cost = 0;
+        vector<int> ksrc, kdst;
         for (auto &e : edgetable)
         {
             aoe[e].first = v_early[e->v1];
             aoe[e].second = v_late[e->v2] - e->w1;
+
             if (aoe[e].first == aoe[e].second)
             {
-                keypath.push_back(e);
-                _total_cost += e->w1;
+                this->post[e->v1].push_back(e->v2);
+                if (_src.count(e->v1))
+                    ksrc.push_back(e->v1);
+                if (_dst.count(e->v2))
+                    kdst.push_back(e->v2);
             }
         }
-        sort(keypath.begin(), keypath.end(), __cmp2);
+        for (auto &v : post)
+            sort(v.second.begin(), v.second.end());
+        for (auto s : ksrc)
+            for (auto d : kdst)
+            {
+                tmppath.push_back(s);
+                __getPath(s, d);
+                tmppath.pop_back();
+            }
     }
 
 public:
@@ -477,18 +505,19 @@ public:
     inline void get_keyaction()
     {
         __key_action();
-        cout << keypath[0]->v1 << " -> " << keypath[0]->v2;
-        for (int i = 1; i < keypath.size(); i++)
-            cout << " -> " << keypath[i]->v2;
-        cout << endl;
-        cout << "The Key Actions' Path Length Is -> " << _total_cost << endl;
-    }
-    inline int keysize()
-    {
-        if (aoe.size())
-            return keypath.size();
-        __key_action();
-        return keypath.size();
+        if (!rescost.size())
+        {
+            printf("No Key Path Exists\n");
+            return;
+        }
+        for (int i = 0; i < rescost.size(); i++)
+        {
+            cout << respath[i][0];
+            for (int j = 1; j < respath[i].size(); j++)
+                cout << " -> " << respath[i][j];
+            cout << endl;
+            printf("The No.%d Key Actions' Path Length Is -> %d\n", i + 1, rescost[i]);
+        }
     }
     void rand_acyclic(int n_, int sparse_level, int weight_range)
     {
@@ -516,6 +545,21 @@ public:
                     edgetable.insert(matrix[i][j]);
                 }
         }
+        for (int i = 0; i < nv; i++)
+        {
+            if (indeg[i] == 0)
+                _src.insert(i);
+            if (outdeg[i] == 0)
+                _dst.insert(i);
+        }
+        cout << "src: \n";
+        for (auto i : _src)
+            cout << i << " ";
+        cout << endl;
+        cout << "dst: \n";
+        for (auto i : _dst)
+            cout << i << " ";
+        cout << endl;
         connected();
         __top_sort();
         __clear_buf();

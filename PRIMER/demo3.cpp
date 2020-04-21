@@ -22,7 +22,7 @@ int main()
     if (flag != 0)
         cout << flag;
     while (!cnt.empty())
-        {
+        {   
             cout << cnt.top();
             cnt.pop();
         }
